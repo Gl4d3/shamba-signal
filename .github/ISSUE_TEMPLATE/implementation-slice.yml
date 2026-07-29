@@ -1,0 +1,46 @@
+name: Implementation slice
+description: Deliver one testable end-to-end product or research outcome.
+title: "[Slice] "
+body:
+  - type: markdown
+    attributes:
+      value: Every slice must finish with a demonstrable artifact and acceptance evidence.
+  - type: input
+    id: outcome
+    attributes:
+      label: Traceable end outcome
+      description: What can a researcher or user do when this closes?
+    validations:
+      required: true
+  - type: textarea
+    id: deliverables
+    attributes:
+      label: Deliverables
+      description: List concrete code, data, model, documentation, UI, or deployment artifacts.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance tests
+      description: Commands, metrics, journeys, and evidence that prove completion.
+    validations:
+      required: true
+  - type: textarea
+    id: nonclaims
+    attributes:
+      label: Scientific boundaries and non-claims
+      description: State what this slice must not imply or advertise.
+    validations:
+      required: true
+  - type: checkboxes
+    id: gates
+    attributes:
+      label: Required gates
+      options:
+        - label: Tests are written before production behavior.
+          required: true
+        - label: Data and model outputs include lineage and versions.
+          required: true
+        - label: Documentation and public claims match evaluation evidence.
+          required: true

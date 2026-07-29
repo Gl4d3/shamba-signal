@@ -1,0 +1,32 @@
+name: Research evidence
+description: Record a dataset, modelling, validation, or scientific investigation.
+title: "[Research] "
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Research question
+      description: Frame a falsifiable question rather than a technology task.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence and sources
+      description: Include official URLs, versions, coverage, licences, and expected limitations.
+    validations:
+      required: true
+  - type: textarea
+    id: method
+    attributes:
+      label: Method and validation
+      description: Define comparison baselines, holdouts, metrics, and failure criteria.
+    validations:
+      required: true
+  - type: textarea
+    id: artifact
+    attributes:
+      label: Reproducible artifact
+      description: Name the dataset card, notebook/report, code, model card, or decision record produced.
+    validations:
+      required: true

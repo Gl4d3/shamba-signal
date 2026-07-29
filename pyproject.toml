@@ -1,0 +1,43 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "shamba-signal"
+version = "0.1.0"
+description = "Research-grade crop yield decision intelligence for Kenya"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [{ name = "Shamba Signal contributors" }]
+dependencies = [
+  "fastapi>=0.115,<1.0",
+  "jinja2>=3.1,<4.0",
+  "pydantic>=2.10,<3.0",
+  "uvicorn[standard]>=0.34,<1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "httpx>=0.28,<1.0",
+  "pytest>=8.3,<10.0",
+  "pytest-cov>=6.0,<8.0",
+  "ruff>=0.11,<1.0",
+]
+
+[project.scripts]
+shamba-signal = "shamba_signal.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/shamba_signal"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
