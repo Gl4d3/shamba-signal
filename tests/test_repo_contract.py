@@ -18,3 +18,10 @@ REQUIRED_FILES = [
 def test_repository_contains_foundation_artifacts() -> None:
     missing = [path for path in REQUIRED_FILES if not Path(path).is_file()]
     assert missing == []
+
+
+def test_ci_uses_official_github_python_actions() -> None:
+    workflow = Path('.github/workflows/ci.yml').read_text()
+    assert 'actions/checkout@v6' in workflow
+    assert 'actions/setup-python@v6' in workflow
+    assert 'astral-sh/setup-uv' not in workflow
