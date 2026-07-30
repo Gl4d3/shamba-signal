@@ -8,12 +8,13 @@ from shamba_signal.services.platform_status import get_platform_status
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[1]
 WEB_ROOT = PACKAGE_ROOT / "web"
+RELEASE = "slice-1-feasibility-v0"
 
 
 def create_app() -> FastAPI:
     application = FastAPI(
         title="Shamba Signal API",
-        version="0.1.0",
+        version="0.2.0",
         description="County-season crop yield decision intelligence for Kenya.",
     )
     application.mount("/static", StaticFiles(directory=WEB_ROOT / "static"), name="static")
@@ -23,7 +24,7 @@ def create_app() -> FastAPI:
         return {
             "status": "ok",
             "service": "shamba-signal-api",
-            "release": "foundation-v0",
+            "release": RELEASE,
         }
 
     @application.get("/api/v1/platform/status", tags=["platform"])
