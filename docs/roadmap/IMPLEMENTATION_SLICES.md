@@ -14,23 +14,28 @@ platform-status API, public foundation page, tests, and backlog issues.
 
 ## Slice 1 — Data feasibility and pilot selection
 
+**Status:** implemented on `slice/1-data-feasibility`; selected maize + Busia, with Trans Nzoia as fallback.
+
 **Outcome:** one crop, one deep-dive county, a historical window, and a target-label policy are selected by evidence.
 
-**Artifacts:** source adapters for metadata/sample retrieval, profiling notebook/report, 47-county scorecard,
-crop scorecard, licensing decisions, data dictionary, and a signed selection decision record.
+**Artifacts:** versioned evidence register, four-crop comparison, 47-county scorecard, licensing decisions,
+sensitivity analysis, machine-readable selection record, deterministic generation command, and pilot decision report.
 
 **Acceptance:** another environment regenerates the scorecard; weights total 100; every selected source has a licence decision;
 selection is stable under documented sensitivity checks.
 
+**Result:** maize scores 91.25/100; Busia scores 85.75/100; Trans Nzoia is the 80.75/100 fallback. The pair remains unchanged under approved, labels-heavy, spatial-heavy, and governance-heavy scenarios. The result ranks metadata-level feasibility, not model skill.
+
 ## Slice 2 — Reproducible county-season target dataset
 
-**Outcome:** official production, harvested area, and yield become a versioned modelling table.
+**Next active slice.**
 
-**Artifacts:** raw snapshot manifests, canonical schemas, unit conversions, crop/calendar mapping, quality classes,
-Parquet output, dataset card, and data-quality report.
+**Outcome:** official maize production, harvested area, and yield become a versioned county-season modelling table; Busia either passes the downloaded-data gates or the pilot switches to Trans Nzoia.
+
+**Artifacts:** immutable raw snapshot manifests, source adapters, canonical schemas, unit conversions, reported-versus-derived yield policy, crop/calendar mapping, quality classes, Parquet output, dataset card, and data-quality report.
 
 **Acceptance:** target rows are unique by county/crop/season; derivations reconcile production and area within tolerance;
-source flags and missingness are preserved; reruns from the same snapshots are byte- or value-equivalent.
+source flags and missingness are preserved; reruns from the same snapshots are byte- or value-equivalent; the pilot decision is confirmed or changed through a signed evidence record.
 
 ## Slice 3 — Defensible baseline yield model
 
