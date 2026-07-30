@@ -20,6 +20,23 @@ def _load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def load_profiles(path: Path) -> tuple[dict[str, Any], list[CandidateProfile]]:
+    payload = _load_json(path)
+    candidates = [CandidateProfile.from_mapping(item) for item in payload["crops"]]
+    template = payload["county_template"]
+    overrides = payload.get("county_overrides", {})
+    for county in payload["counties"]:
+        values = {
+            "candidate_id": county["candidate_id"],
+            "candidate_type": "county",
+            "name": county["name"],
+            **template,
+            **overrides.get(county["candidate_id"], {}),
+        }
+        candidates.append(CandidateProfile.from_mapping(values))
+    return payload, candidates
+
+
 def _scenarios() -> dict[str, ScoreWeights]:
     return {
         "approved": ScoreWeights.approved(),
@@ -44,8 +61,7 @@ def generate_artifacts(
     *, evidence_path: Path, profiles_path: Path, output_dir: Path
 ) -> SelectionResult:
     evidence = _load_json(evidence_path)
-    profile_payload = _load_json(profiles_path)
-    profiles = [CandidateProfile.from_mapping(item) for item in profile_payload["candidates"]]
+    profile_payload, profiles = load_profiles(profiles_path)
     evidence_ids = {item["id"] for item in evidence["evidence"]}
     for profile in profiles:
         missing = set(profile.evidence_refs) - evidence_ids
