@@ -1,6 +1,6 @@
 PYTHON ?= python3
 
-.PHONY: install test lint verify run validate
+.PHONY: install test lint verify run validate feasibility
 
 install:
 	uv sync --extra dev
@@ -13,6 +13,9 @@ lint:
 
 validate:
 	PYTHONPATH=src $(PYTHON) scripts/validate_repo.py
+
+feasibility:
+	PYTHONPATH=src $(PYTHON) scripts/run_feasibility.py
 
 verify: test validate
 	PYTHONPATH=src $(PYTHON) -m compileall -q src scripts
