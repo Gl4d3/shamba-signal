@@ -13,12 +13,35 @@ The project is deliberately honest about resolution:
 - **Explanatory spatial output:** relative yield potential and crop-stress indicators.
 - **Not claimed:** measured ward yield or farm-level yield prediction without matching labels.
 
+## Current product decision
+
+Slice 1 now provides a reproducible data-feasibility pipeline covering four crop candidates
+and all 47 Kenyan counties. Under the approved 35/20/15/10/10/10 score contract it selects:
+
+- **MVP crop:** maize — 91.25/100
+- **Deep-dive county:** Busia — 85.75/100
+- **Fallback county:** Trans Nzoia — 80.75/100
+
+The choice remains stable under labels-heavy, spatial-heavy, and governance-heavy sensitivity
+scenarios. It is still conditional on Slice 2 downloading the official records and measuring
+county-year completeness, units, flags, and satellite observation availability.
+
+Run the selection pipeline with:
+
+```bash
+make feasibility
+```
+
+See [`docs/data/pilot-selection-decision.md`](docs/data/pilot-selection-decision.md) for the
+decision and [`data/feasibility/`](data/feasibility/) for the evidence, profiles, scorecard,
+and machine-readable selection.
+
 ## Foundation release
 
-This repository currently contains the approved product specification, architecture,
-MVP contract, implementation slices, data-source registry, CI rules, and a runnable
-FastAPI web/API shell. The next slice selects the crop and pilot county through a
-reproducible data-feasibility scorecard.
+The repository contains the approved product specification, architecture, MVP contract,
+implementation slices, source registry, CI rules, and a runnable FastAPI web/API shell.
+The next implementation slice builds the reproducible maize county-season target dataset
+and verifies whether Busia passes the snapshot-level evidence gates.
 
 ## Run locally
 
@@ -35,13 +58,14 @@ Open `http://127.0.0.1:8000` and inspect the API contract at
 
 ## Repository map
 
-- `src/shamba_signal/` — application and domain code.
+- `src/shamba_signal/` — application, domain, and feasibility code.
 - `tests/` — behavioral and repository-contract tests.
 - `data/catalog/` — source metadata and selection rules, never raw datasets.
+- `data/feasibility/` — evidence register, 47-county profiles, scorecard, and selection.
 - `docs/product/` — PRD and MVP definition.
 - `docs/architecture/` — working and AWS target architectures.
 - `docs/roadmap/` — testable implementation slices.
-- `docs/data/` — data discovery and licensing evidence.
+- `docs/data/` — data discovery, licensing evidence, and pilot decision.
 - `.github/` — CI, issue forms, and contribution workflow.
 
 ## Engineering rules
