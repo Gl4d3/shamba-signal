@@ -1,0 +1,52 @@
+candidate_id,candidate_type,name,weighted_score,yield_label_quality,historical_depth,spatial_resolution,satellite_usability,license_and_redistribution,access_stability
+busia,county,Busia,85.7500,80.0,85.0,95.0,90.0,90.0,85.0
+trans_nzoia,county,Trans Nzoia,80.7500,80.0,85.0,75.0,85.0,80.0,80.0
+nakuru,county,Nakuru,79.5000,80.0,85.0,70.0,82.0,80.0,78.0
+narok,county,Narok,79.5000,80.0,85.0,70.0,82.0,80.0,78.0
+isiolo,county,Isiolo,79.1000,78.0,95.0,60.0,82.0,80.0,76.0
+baringo,county,Baringo,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+bomet,county,Bomet,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+bungoma,county,Bungoma,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+elgeyo_marakwet,county,Elgeyo-Marakwet,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+embu,county,Embu,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+garissa,county,Garissa,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+homa_bay,county,Homa Bay,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+kajiado,county,Kajiado,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+kakamega,county,Kakamega,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+kericho,county,Kericho,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+kiambu,county,Kiambu,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+kilifi,county,Kilifi,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+kirinyaga,county,Kirinyaga,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+kisii,county,Kisii,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+kisumu,county,Kisumu,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+kitui,county,Kitui,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+kwale,county,Kwale,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+laikipia,county,Laikipia,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+lamu,county,Lamu,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+machakos,county,Machakos,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+makueni,county,Makueni,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+mandera,county,Mandera,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+marsabit,county,Marsabit,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+meru,county,Meru,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+migori,county,Migori,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+mombasa,county,Mombasa,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+muranga,county,Murang'a,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+nairobi_city,county,Nairobi City,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+nandi,county,Nandi,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+nyamira,county,Nyamira,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+nyandarua,county,Nyandarua,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+nyeri,county,Nyeri,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+samburu,county,Samburu,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+siaya,county,Siaya,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+taita_taveta,county,Taita-Taveta,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+tana_river,county,Tana River,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+tharaka_nithi,county,Tharaka-Nithi,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+turkana,county,Turkana,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+uasin_gishu,county,Uasin Gishu,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+vihiga,county,Vihiga,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+wajir,county,Wajir,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+west_pokot,county,West Pokot,74.5000,80.0,85.0,50.0,75.0,75.0,70.0
+maize,crop,Maize,91.2500,95.0,90.0,90.0,90.0,90.0,85.0
+beans,crop,Beans,68.9500,68.0,50.0,75.0,82.0,85.0,72.0
+sorghum,crop,Sorghum,61.4000,58.0,45.0,62.0,80.0,80.0,68.0
+cowpea,crop,Cowpea,57.2000,52.0,40.0,58.0,78.0,80.0,65.0
