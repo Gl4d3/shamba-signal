@@ -1,0 +1,54 @@
+{
+  "decision_status": "selected-for-slice-2-with-source-snapshot-validation",
+  "non_claims": [
+    "This scorecard does not prove model skill.",
+    "County yield-label completeness must be re-measured from downloaded source snapshots.",
+    "Optical observation usability must be measured before feature production."
+  ],
+  "runner_up_county": {
+    "candidate_id": "trans_nzoia",
+    "dimensions": {"access_stability": 80.0, "historical_depth": 85.0, "license_and_redistribution": 80.0, "satellite_usability": 85.0, "spatial_resolution": 75.0, "yield_label_quality": 80.0},
+    "evidence_refs": ["kilimostat-county-crops", "nipfn-maize-2012-2020", "sentinel-2-l2a", "chirps-v3", "soilgrids", "icpac-admin1", "africultures-crop-calendar"],
+    "limitations": ["County-year label completeness is not yet measured from the source snapshot.", "Sentinel observation usability is not yet measured by forecast cutoff."],
+    "name": "Trans Nzoia",
+    "score": 80.75
+  },
+  "runner_up_crop": {
+    "candidate_id": "beans",
+    "dimensions": {"access_stability": 72.0, "historical_depth": 50.0, "license_and_redistribution": 85.0, "satellite_usability": 82.0, "spatial_resolution": 75.0, "yield_label_quality": 68.0},
+    "evidence_refs": ["kilimostat-county-crops", "fsd-beans-yield", "africultures-crop-calendar", "plantvillage-kenya", "sentinel-2-l2a"],
+    "limitations": ["Long national county history was not independently located during this audit."],
+    "name": "Beans",
+    "score": 68.95
+  },
+  "selected_county": {
+    "candidate_id": "busia",
+    "dimensions": {"access_stability": 85.0, "historical_depth": 85.0, "license_and_redistribution": 90.0, "satellite_usability": 90.0, "spatial_resolution": 95.0, "yield_label_quality": 80.0},
+    "evidence_refs": ["kilimostat-county-crops", "nipfn-maize-2012-2020", "sentinel-2-l2a", "chirps-v3", "soilgrids", "icpac-admin1", "africultures-crop-calendar", "plantvillage-kenya", "nasa-busia-crop-map"],
+    "limitations": ["County-year label completeness is not yet measured from the source snapshot.", "Sentinel observation usability is not yet measured by forecast cutoff.", "The NASA Busia crop-map page does not specify a license; the CC BY PlantVillage layer is the redistributable anchor."],
+    "name": "Busia",
+    "score": 85.75
+  },
+  "selected_crop": {
+    "candidate_id": "maize",
+    "dimensions": {"access_stability": 85.0, "historical_depth": 90.0, "license_and_redistribution": 90.0, "satellite_usability": 90.0, "spatial_resolution": 90.0, "yield_label_quality": 95.0},
+    "evidence_refs": ["kilimostat-county-crops", "nipfn-maize-2012-2020", "fsd-maize-yield", "africultures-crop-calendar", "plantvillage-kenya", "sentinel-2-l2a"],
+    "limitations": ["Exact county-year missingness and unit consistency require downloaded snapshots.", "The 2012-2020 source page does not itself expose redistribution terms."],
+    "name": "Maize",
+    "score": 91.25
+  },
+  "selection_version": "0.1.0",
+  "sensitivity": {
+    "county_winner_stable": true,
+    "county_winners": {"approved": "busia", "governance_heavy": "busia", "labels_heavy": "busia", "spatial_heavy": "busia"},
+    "crop_winner_stable": true,
+    "crop_winners": {"approved": "maize", "governance_heavy": "maize", "labels_heavy": "maize", "spatial_heavy": "maize"},
+    "scenarios": {
+      "approved": {"access_stability": 10, "historical_depth": 20, "license_and_redistribution": 10, "satellite_usability": 10, "spatial_resolution": 15, "yield_label_quality": 35},
+      "governance_heavy": {"access_stability": 15, "historical_depth": 15, "license_and_redistribution": 15, "satellite_usability": 10, "spatial_resolution": 15, "yield_label_quality": 30},
+      "labels_heavy": {"access_stability": 10, "historical_depth": 15, "license_and_redistribution": 10, "satellite_usability": 10, "spatial_resolution": 10, "yield_label_quality": 45},
+      "spatial_heavy": {"access_stability": 10, "historical_depth": 15, "license_and_redistribution": 10, "satellite_usability": 10, "spatial_resolution": 25, "yield_label_quality": 30}
+    }
+  },
+  "weights": {"access_stability": 10, "historical_depth": 20, "license_and_redistribution": 10, "satellite_usability": 10, "spatial_resolution": 15, "yield_label_quality": 35}
+}
