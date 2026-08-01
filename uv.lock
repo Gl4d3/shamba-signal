@@ -145,6 +145,7 @@ dependencies = [
   { name = "iniconfig" },
   { name = "packaging" },
   { name = "pluggy" },
+  { name = "pygments" },
 ]
 
 [[package]]
