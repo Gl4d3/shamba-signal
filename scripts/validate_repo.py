@@ -178,7 +178,10 @@ def validate_feasibility(root: Path = Path(".")) -> list[str]:
     if any(item is None for item in (catalog, profiles, evidence, selection)):
         return errors
 
-    pilot = catalog["pilot_selection"]
+    pilot = catalog.get("pilot_selection")
+    if not isinstance(pilot, dict):
+        errors.append("data catalog pilot_selection must be an object")
+        return errors
     if profiles.get("weights") != APPROVED_WEIGHTS:
         errors.append("candidate profile weights must match approved values")
     if selection.get("weights") != APPROVED_WEIGHTS:
@@ -229,8 +232,12 @@ def validate_feasibility(root: Path = Path(".")) -> list[str]:
 def validate_repository(root: Path = Path(".")) -> list[str]:
     errors = validate_required_files(root)
     catalog_path = root / CATALOG_RELATIVE_PATH
+    catalog_errors: list[str] = []
     if catalog_path.is_file():
-        errors.extend(validate_catalog(catalog_path))
+        catalog_errors = validate_catalog(catalog_path)
+        errors.extend(catalog_errors)
+    if catalog_errors:
+        return errors
     if all((root / path).is_file() for path in (
         CATALOG_RELATIVE_PATH,
         FEASIBILITY_PROFILES_PATH,
