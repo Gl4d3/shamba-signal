@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools==75.8.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "shamba-signal"
+version = "0.1.0"
+description = "Research-grade crop yield decision intelligence for Kenya"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [{ name = "Shamba Signal contributors" }]
+dependencies = [
+  "fastapi==0.115.8",
+  "pydantic==2.10.6",
+  "uvicorn==0.34.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "httpx==0.28.1",
+  "pytest==8.3.4",
+  "pytest-cov==6.0.0",
+  "ruff==0.9.9",
+]
+
+[project.scripts]
+shamba-signal = "shamba_signal.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+shamba_signal = ["web/*.html", "web/static/*.css", "web/static/*.js"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]

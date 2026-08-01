@@ -1,0 +1,89 @@
+{
+  "catalog_version": "0.1.0",
+  "country": "KEN",
+  "pilot_selection": {
+    "decision": "select one crop and one deep-dive county after profiling",
+    "weights": {
+      "yield_label_quality": 35,
+      "historical_depth": 20,
+      "spatial_resolution": 15,
+      "satellite_usability": 10,
+      "license_and_redistribution": 10,
+      "access_stability": 10
+    }
+  },
+  "sources": [
+    {
+      "id": "kilimostat-crops",
+      "publisher": "Kenya Ministry of Agriculture and Livestock Development",
+      "dataset_title": "KilimoSTAT Crops",
+      "role": "candidate production, harvested-area, and yield labels",
+      "spatial_coverage": "Kenya national and county statistics",
+      "temporal_coverage": "source-defined; verified per snapshot",
+      "access_url": "https://statistics.kilimo.go.ke/en/cd_s_crops/",
+      "access_method": "interactive download, bulk download, and parameterized endpoint",
+      "license_status": "review-required",
+      "license_note": "Portal-level terms are not sufficient to assume redistribution of every downloaded extract. Capture dataset-specific terms in each snapshot."
+    },
+    {
+      "id": "sentinel-2-l2a",
+      "publisher": "European Union Copernicus Programme",
+      "dataset_title": "Sentinel-2 Level-2A",
+      "role": "multispectral vegetation and crop-condition time series",
+      "spatial_coverage": "global",
+      "temporal_coverage": "2015 onward",
+      "access_url": "https://documentation.dataspace.copernicus.eu/Data/SentinelMissions/Sentinel2.html",
+      "access_method": "Copernicus Data Space catalogue and processing APIs",
+      "license_status": "verified",
+      "license_note": "Record collection, processing baseline, tile, acquisition date, and Copernicus attribution per snapshot."
+    },
+    {
+      "id": "chirps-v3",
+      "publisher": "UCSB Climate Hazards Center",
+      "dataset_title": "CHIRPS v3",
+      "role": "rainfall totals, onset, anomalies, and dry-spell features",
+      "spatial_coverage": "quasi-global land grid at 0.05 degrees",
+      "temporal_coverage": "1981 to near-present",
+      "access_url": "https://www.chc.ucsb.edu/data/chirps3",
+      "access_method": "public data archive",
+      "license_status": "review-required",
+      "license_note": "Capture the downloaded product README and attribution terms before publication."
+    },
+    {
+      "id": "soilgrids",
+      "publisher": "ISRIC World Soil Information",
+      "dataset_title": "SoilGrids",
+      "role": "static soil property covariates and uncertainty",
+      "spatial_coverage": "global",
+      "temporal_coverage": "static product version recorded per snapshot",
+      "access_url": "https://docs.isric.org/globaldata/soilgrids/index.html",
+      "access_method": "WCS subsets or WebDAV assets",
+      "license_status": "verified",
+      "license_note": "Capture property, depth interval, quantile, version, and citation for every extract."
+    },
+    {
+      "id": "icpac-admin1",
+      "publisher": "ICPAC Geoportal",
+      "dataset_title": "Kenya Administrative Level 1",
+      "role": "candidate Kenya county boundaries",
+      "spatial_coverage": "Kenya administrative level 1",
+      "temporal_coverage": "source-defined boundary vintage",
+      "access_url": "https://geoportal.icpac.net/layers/geonode%3Aken_adm1",
+      "access_method": "download and OGC services",
+      "license_status": "review-required",
+      "license_note": "Confirm licence and boundary vintage before redistribution."
+    },
+    {
+      "id": "icpac-cropland-2015",
+      "publisher": "ICPAC / RCMRD",
+      "dataset_title": "Kenya Croplands 2015",
+      "role": "candidate crop mask and crop-area context",
+      "spatial_coverage": "Kenya",
+      "temporal_coverage": "reference year 2015",
+      "access_url": "https://geoportal.icpac.net/layers/geonode%3Akenya_croplands_2015",
+      "access_method": "download and OGC services",
+      "license_status": "blocked",
+      "license_note": "Metadata reports no specified licence; do not redistribute or make it the sole crop mask without permission."
+    }
+  ]
+}
