@@ -32,9 +32,9 @@ The approved weighted score selects Maize at **91.25/100** and Busia at **85.75/
 
 Maize has the strongest combination of county-level yield history, current official dashboard coverage, crop-calendar support, and compatibility with open satellite and crop-mask evidence.
 
-Busia adds unusually strong spatial evidence. The PlantVillage Kenya collection provides open **10 m crop-type and crop-density labels** in western Kenya under **CC BY 4.0**, and NASA Harvest publishes a Busia-specific 2020 cropland raster. Busia still uses the same national county-yield evidence available to the other counties.
+Busia adds distinct registered evidence: PlantVillage Crop Type Kenya and Crop Maps - Busia 2020 and Kenya 2019. It also retains the shared county-yield, climate, soil, boundary, calendar, and satellite evidence used to compare all counties.
 
-Trans Nzoia remains the first fallback because AfriCultuReS publishes a dedicated Trans-Nzoia crop-calendar layer and the county is well suited to maize monitoring, but this audit did not locate comparably open field-level crop-type evidence there.
+Trans Nzoia remains the first fallback at **80.75/100**. Its profile retains the shared evidence set and becomes the pilot if the selected county fails the measured gates.
 
 ## Sensitivity
 
