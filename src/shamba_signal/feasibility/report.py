@@ -116,13 +116,14 @@ def generate_artifacts(
 
     selected_crop = crop_ranking[0]
     selected_county = county_ranking[0]
+    fallback_county = county_ranking[1]
     selection = {
         "selection_version": "0.1.0",
         "weights": weights.as_dict(),
         "selected_crop": _candidate_record(selected_crop),
         "selected_county": _candidate_record(selected_county),
         "runner_up_crop": _candidate_record(crop_ranking[1]),
-        "runner_up_county": _candidate_record(county_ranking[1]),
+        "runner_up_county": _candidate_record(fallback_county),
         "sensitivity": {
             "scenarios": {name: value.as_dict() for name, value in scenarios.items()},
             "crop_winners": dict(crop_sensitivity.winners),
@@ -155,6 +156,7 @@ def generate_artifacts(
 
 - **MVP crop:** {selected_crop.profile.name}
 - **Deep-dive county:** {selected_county.profile.name}
+- **Fallback county:** {fallback_county.profile.name}
 - **Decision status:** selected for Slice 2, subject to snapshot-level completeness checks
 
 The approved weighted score selects {selected_crop.profile.name} at **{selected_crop.score:.2f}/100** and {selected_county.profile.name} at **{selected_county.score:.2f}/100**.
@@ -173,29 +175,55 @@ The approved weighted score selects {selected_crop.profile.name} at **{selected_
 
 ## Why this pair
 
-{selected_crop.profile.name} has the strongest combination of county-level yield history, current official dashboard coverage, crop-calendar support, and compatibility with open satellite/crop-mask evidence. {selected_county.profile.name} adds unusually strong spatial evidence: open 10 m crop-type ground truth in western Kenya and a Busia-specific cropland map, while retaining the national county-yield evidence used by the other counties.
+{selected_crop.profile.name} has the strongest combination of county-level yield history, current official dashboard coverage, crop-calendar support, and compatibility with open satellite and crop-mask evidence.
+
+{selected_county.profile.name} adds unusually strong spatial evidence. The PlantVillage Kenya collection provides open **10 m crop-type and crop-density labels** in western Kenya under **CC BY 4.0**, and NASA Harvest publishes a Busia-specific 2020 cropland raster. {selected_county.profile.name} still uses the same national county-yield evidence available to the other counties.
+
+{fallback_county.profile.name} remains the first fallback because AfriCultuReS publishes a dedicated Trans-Nzoia crop-calendar layer and the county is well suited to maize monitoring, but this audit did not locate comparably open field-level crop-type evidence there.
 
 ## Sensitivity
 
-- Crop winner stable across all scenarios: **{str(crop_sensitivity.stable).lower()}**
-- County winner stable across all scenarios: **{str(county_sensitivity.stable).lower()}**
-- Crop winners: `{json.dumps(dict(crop_sensitivity.winners), sort_keys=True)}`
-- County winners: `{json.dumps(dict(county_sensitivity.winners), sort_keys=True)}`
+The winner remains unchanged in all four registered scenarios:
+
+- Approved weights: {selected_crop.profile.name.lower()} + {selected_county.profile.name}
+- Labels-heavy: {selected_crop.profile.name.lower()} + {selected_county.profile.name}
+- Spatial-heavy: {selected_crop.profile.name.lower()} + {selected_county.profile.name}
+- Governance-heavy: {selected_crop.profile.name.lower()} + {selected_county.profile.name}
+
+The exact profiles and scenario weights are versioned in `data/feasibility/`.
+
+## Source evidence
+
+The audit records twelve public sources, including:
+
+- KilimoSTAT county crop statistics and metadata
+- KNBS/NIPFN maize production by county, 2012–2020
+- Kenya Food Systems Dashboard maize and beans yield indicators
+- Kenya Space Agency/AfriCultuReS crop calendars
+- PlantVillage Crop Type Kenya
+- NASA Harvest crop maps
+- Sentinel-2 Level-2A
+- CHIRPS v3
+- SoilGrids
+- ICPAC county boundaries
+
+The machine-readable evidence register records publisher, URL, coverage, access method, licensing status and unresolved work.
 
 ## Required validation before modelling
 
 1. Download and checksum the official maize county records.
-2. Profile county-year completeness, flags, units, and reported-versus-derived yield.
+2. Profile county-year completeness, flags, units and reported-versus-derived yield.
 3. Measure Sentinel-2 and Sentinel-1 observation availability by forecast cutoff.
 4. Confirm the exact spatial overlap and class distribution of the western Kenya crop-type labels.
-5. Retain Trans Nzoia as the first fallback county if Busia fails label or observation thresholds.
+5. Switch to {fallback_county.profile.name} if {selected_county.profile.name} fails label completeness, geographic overlap or observation thresholds.
 
 ## Scientific limits
 
-- The scorecard ranks data feasibility, not expected model accuracy.
-- The validated target remains county × crop × season.
-- Pixel and ward products remain relative yield potential and crop-stress indicators.
+- The scorecard ranks **data feasibility**, not expected model accuracy.
+- The validated target remains **county × crop × season**.
+- Pixel and ward products remain **relative yield potential** and **crop-stress indicators**.
 - No source with unresolved redistribution terms is bundled into the repository.
+- County label scores are metadata-level estimates until Slice 2 profiles the downloaded records.
 """
     destination = report_path or output_dir / "pilot-selection-decision.md"
     destination.parent.mkdir(parents=True, exist_ok=True)
