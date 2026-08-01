@@ -1,11 +1,17 @@
 from __future__ import annotations
 
+import csv
 import json
 import math
 from pathlib import Path
 from typing import Any
 
 CATALOG_RELATIVE_PATH = Path("data/catalog/datasets.yaml")
+FEASIBILITY_PROFILES_PATH = Path("data/feasibility/candidate_profiles.json")
+FEASIBILITY_EVIDENCE_PATH = Path("data/feasibility/evidence.json")
+FEASIBILITY_SCORECARD_PATH = Path("data/feasibility/scorecard.csv")
+FEASIBILITY_SELECTION_PATH = Path("data/feasibility/selection.json")
+FEASIBILITY_REPORT_PATH = Path("docs/data/pilot-selection-decision.md")
 APPROVED_WEIGHTS = {
     "yield_label_quality": 35,
     "historical_depth": 20,
@@ -42,6 +48,11 @@ REQUIRED_FILES = (
     Path("docs/roadmap/IMPLEMENTATION_SLICES.md"),
     Path("docs/data/data-source-register.md"),
     CATALOG_RELATIVE_PATH,
+    FEASIBILITY_PROFILES_PATH,
+    FEASIBILITY_EVIDENCE_PATH,
+    FEASIBILITY_SCORECARD_PATH,
+    FEASIBILITY_SELECTION_PATH,
+    FEASIBILITY_REPORT_PATH,
     Path("docs/superpowers/specs/2026-07-29-shamba-signal-foundation-design.md"),
     Path("docs/superpowers/plans/2026-07-29-shamba-signal-foundation.md"),
     Path(".github/workflows/ci.yml"),
@@ -60,16 +71,20 @@ def validate_required_files(root: Path = Path(".")) -> list[str]:
     ]
 
 
-def _load_catalog(path: Path) -> tuple[dict[str, Any] | None, list[str]]:
+def _load_json(path: Path, label: str) -> tuple[dict[str, Any] | None, list[str]]:
     if not path.is_file():
-        return None, [f"missing required file: {CATALOG_RELATIVE_PATH.as_posix()}"]
+        return None, [f"missing required file: {path.as_posix()}"]
     try:
         payload = json.loads(path.read_text(encoding="utf-8"))
     except (json.JSONDecodeError, UnicodeDecodeError):
-        return None, ["data catalog is not valid JSON"]
+        return None, [f"{label} is not valid JSON"]
     if not isinstance(payload, dict):
-        return None, ["data catalog root must be an object"]
+        return None, [f"{label} root must be an object"]
     return payload, []
+
+
+def _load_catalog(path: Path) -> tuple[dict[str, Any] | None, list[str]]:
+    return _load_json(path, "data catalog")
 
 
 def validate_catalog(path: Path = CATALOG_RELATIVE_PATH) -> list[str]:
@@ -127,8 +142,7 @@ def validate_catalog(path: Path = CATALOG_RELATIVE_PATH) -> list[str]:
             errors.append(f"{label} must be an object")
             continue
         source_id = source.get("id")
-        valid_source_id = isinstance(source_id, str) and bool(source_id.strip())
-        if valid_source_id:
+        if isinstance(source_id, str) and source_id.strip():
             source_id = source_id.strip()
             label = f"source {source_id}"
             if source_id in seen_ids:
@@ -152,11 +166,77 @@ def validate_catalog(path: Path = CATALOG_RELATIVE_PATH) -> list[str]:
     return errors
 
 
+def validate_feasibility(root: Path = Path(".")) -> list[str]:
+    errors: list[str] = []
+    catalog, catalog_errors = _load_catalog(root / CATALOG_RELATIVE_PATH)
+    profiles, profile_errors = _load_json(root / FEASIBILITY_PROFILES_PATH, "candidate profiles")
+    evidence, evidence_errors = _load_json(root / FEASIBILITY_EVIDENCE_PATH, "evidence register")
+    selection, selection_errors = _load_json(root / FEASIBILITY_SELECTION_PATH, "selection record")
+    errors.extend(catalog_errors + profile_errors + evidence_errors + selection_errors)
+    if any(item is None for item in (catalog, profiles, evidence, selection)):
+        return errors
+
+    pilot = catalog["pilot_selection"]
+    if profiles.get("weights") != APPROVED_WEIGHTS:
+        errors.append("candidate profile weights must match approved values")
+    if selection.get("weights") != APPROVED_WEIGHTS:
+        errors.append("selection record weights must match approved values")
+
+    counties = profiles.get("counties")
+    crops = profiles.get("crops")
+    if not isinstance(counties, list) or len(counties) != 47:
+        errors.append("candidate profiles must contain all 47 counties")
+    if not isinstance(crops, list) or len(crops) != 4:
+        errors.append("candidate profiles must contain four crop candidates")
+
+    evidence_rows = evidence.get("evidence")
+    evidence_ids = {
+        item.get("id")
+        for item in evidence_rows
+        if isinstance(evidence_rows, list) and isinstance(item, dict)
+    } if isinstance(evidence_rows, list) else set()
+    if not evidence_ids or None in evidence_ids or len(evidence_ids) != len(evidence_rows or []):
+        errors.append("evidence register IDs must be non-empty and unique")
+
+    selected_crop = selection.get("selected_crop", {}).get("candidate_id")
+    selected_county = selection.get("selected_county", {}).get("candidate_id")
+    fallback_county = selection.get("runner_up_county", {}).get("candidate_id")
+    if selected_crop != pilot.get("selected_crop"):
+        errors.append("catalog and selection record disagree on selected crop")
+    if selected_county != pilot.get("selected_county"):
+        errors.append("catalog and selection record disagree on selected county")
+    if fallback_county != pilot.get("fallback_county"):
+        errors.append("catalog and selection record disagree on fallback county")
+
+    scorecard_path = root / FEASIBILITY_SCORECARD_PATH
+    if scorecard_path.is_file():
+        with scorecard_path.open(encoding="utf-8", newline="") as handle:
+            rows = list(csv.DictReader(handle))
+        keys = [(row.get("candidate_type"), row.get("candidate_id")) for row in rows]
+        if len(keys) != len(set(keys)):
+            errors.append("feasibility scorecard candidate keys must be unique")
+        if len([row for row in rows if row.get("candidate_type") == "county"]) != 47:
+            errors.append("feasibility scorecard must contain 47 county rows")
+        if len([row for row in rows if row.get("candidate_type") == "crop"]) != 4:
+            errors.append("feasibility scorecard must contain four crop rows")
+        if ("crop", selected_crop) not in keys or ("county", selected_county) not in keys:
+            errors.append("feasibility scorecard must contain the selected crop and county")
+    return errors
+
+
 def validate_repository(root: Path = Path(".")) -> list[str]:
     errors = validate_required_files(root)
     catalog_path = root / CATALOG_RELATIVE_PATH
     if catalog_path.is_file():
         errors.extend(validate_catalog(catalog_path))
+    if all((root / path).is_file() for path in (
+        CATALOG_RELATIVE_PATH,
+        FEASIBILITY_PROFILES_PATH,
+        FEASIBILITY_EVIDENCE_PATH,
+        FEASIBILITY_SCORECARD_PATH,
+        FEASIBILITY_SELECTION_PATH,
+    )):
+        errors.extend(validate_feasibility(root))
     return errors
 
 
