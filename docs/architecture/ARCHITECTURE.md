@@ -12,6 +12,10 @@ Shamba Signal is designed as a **modular monolith with independent workers where
 
 ### Active next slice
 
+- Metadata-level data feasibility and provisional crop/county selection.
+
+### Planned immediately after feasibility
+
 - Source acquisition, immutable snapshots, target-data normalisation, quality reporting, and pilot confirmation.
 
 ### Planned local components

@@ -26,3 +26,12 @@ def test_lockfile_matches_declared_project_dependencies() -> None:
         "specifier" in item
         for item in locked_project["metadata"]["requires-extra"]["dev"]
     )
+
+
+def test_compiled_packages_have_portable_source_fallbacks() -> None:
+    lock = tomllib.loads(Path("uv.lock").read_text(encoding="utf-8"))
+    packages = {package["name"]: package for package in lock["package"]}
+
+    for package_name in ("coverage", "pydantic-core", "ruff"):
+        assert "sdist" in packages[package_name]
+        assert packages[package_name]["sdist"]["url"].endswith(".tar.gz")

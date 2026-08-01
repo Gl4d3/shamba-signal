@@ -2,18 +2,23 @@
 
 **Crop-yield research infrastructure for Kenya**
 
-Shamba Signal is building a research-grade decision-intelligence workflow for a narrow question: can publicly obtainable county-season maize data support a defensible mid-season yield forecast under geographic and temporal holdouts?
+Shamba Signal is building a research-grade decision-intelligence workflow for a narrow question:
+can publicly obtainable county-season data for one feasibility-selected crop support a defensible
+mid-season yield forecast under geographic and temporal holdouts?
 
 ## Current implementation state
 
 **Implemented in the foundation:**
 
 - approved PRD, MVP, architecture, scientific boundaries, and implementation slices;
-- a FastAPI application shell with `/`, `/healthz`, `/openapi.json`, and `/api/v1/platform/status`;
+- a FastAPI application shell with `/`, `/healthz`, `/openapi.json`, and
+  `/api/v1/platform/status`;
 - a public foundation page that reports implemented, next, and planned capabilities;
 - a candidate source catalogue, repository validator, tests, and hardened CI definition.
 
-**Not implemented:** a downloaded target dataset, trained model, calibrated forecast, stress attribution, research dashboard, advisory engine, scheduler, AWS deployment, or Druid benchmark. Those remain planned and must not be inferred from the logical architecture diagram.
+**Not implemented:** a downloaded target dataset, trained model, calibrated forecast, stress
+attribution, research dashboard, advisory engine, scheduler, AWS deployment, or Druid benchmark.
+Those remain planned and must not be inferred from the logical architecture diagram.
 
 ## Resolution boundary
 
@@ -31,7 +36,8 @@ make verify
 make run
 ```
 
-Open `http://127.0.0.1:8000`. The platform contract is available at `http://127.0.0.1:8000/api/v1/platform/status`.
+Open `http://127.0.0.1:8000`. The platform contract is available at
+`http://127.0.0.1:8000/api/v1/platform/status`.
 
 ## Repository map
 
@@ -44,4 +50,5 @@ Open `http://127.0.0.1:8000`. The platform contract is available at `http://127.
 - `docs/data/` — source discovery, access, and licensing evidence.
 - `.github/` — read-only CI and contribution workflow.
 
-See [the PRD](docs/product/PRD.md), [architecture](docs/architecture/ARCHITECTURE.md), and [implementation slices](docs/roadmap/IMPLEMENTATION_SLICES.md).
+See [the PRD](docs/product/PRD.md), [architecture](docs/architecture/ARCHITECTURE.md), and
+[implementation slices](docs/roadmap/IMPLEMENTATION_SLICES.md).
