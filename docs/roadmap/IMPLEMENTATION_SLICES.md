@@ -4,21 +4,29 @@ A slice is a testable end-to-end product or research outcome. Infrastructure set
 
 ## Foundation — Product and repository contract
 
+**Status:** complete on `main`.
+
 **Outcome:** a contributor can run a web/API shell and understand exactly what the product currently implements and does not claim.
 
 **Artifacts:** PRD, MVP, architecture, source register, repo scaffold, locked dependencies, hardened CI, issue templates, platform-status API, public foundation page, tests, and backlog issues.
 
-**Acceptance:** locked install contract is current; `make verify` passes; `/`, `/healthz`, static assets, OpenAPI, and `/api/v1/platform/status` respond; repository validation passes.
+**Acceptance:** locked install contract is current; `make verify` passes when package infrastructure is available; `/`, `/healthz`, static assets, OpenAPI, and `/api/v1/platform/status` respond; repository validation passes. The external GitHub Actions pre-run blocker remains tracked separately in #12.
 
 ## Slice 1 — Metadata-level data feasibility and provisional pilot selection
 
+**Status:** complete when PR #13 is merged. The selected pair remains conditional on Slice 2 measurements.
+
 **Outcome:** one crop and deep-dive county are provisionally ranked from documented metadata and expert-judgement scores, with limitations and tested sensitivity scenarios disclosed.
 
-**Artifacts:** evidence register, four-crop and 47-county profiles, scorecard, sensitivity scenarios, source/licence notes, and provisional selection record.
+**Decision:** maize + Busia, with Trans Nzoia as fallback.
 
-**Acceptance:** the generation command writes canonical paths, is byte-stable, leaves a clean Git diff, regenerates scores from registered weights/evidence, and clearly transfers downloaded-record validation to Slice 2.
+**Artifacts:** evidence register, four-crop and 47-county profiles, scorecard, sensitivity scenarios, source/licence notes, generated canonical decision record, and machine-readable selection.
+
+**Acceptance:** the generation command writes canonical paths, is byte-stable, matches committed artifacts, regenerates scores from registered weights/evidence, and clearly transfers downloaded-record validation to Slice 2.
 
 ## Slice 2 — Reproducible county-season target dataset
+
+**Status:** next. No modelling work begins before this gate closes.
 
 **Outcome:** official production, harvested area, and yield evidence becomes a versioned modelling table, or the slice publishes a rigorous evidence-insufficiency result.
 
