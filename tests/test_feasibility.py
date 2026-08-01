@@ -24,6 +24,35 @@ def test_weights_must_sum_to_100() -> None:
         ScoreWeights(35, 20, 15, 10, 10, 9)
 
 
+def test_weight_mapping_preserves_fractional_values() -> None:
+    weights = ScoreWeights.from_mapping(
+        {
+            "yield_label_quality": 34.5,
+            "historical_depth": 20.5,
+            "spatial_resolution": 15,
+            "satellite_usability": 10,
+            "license_and_redistribution": 10,
+            "access_stability": 10,
+        }
+    )
+    assert weights.yield_label_quality == 34.5
+    assert weights.historical_depth == 20.5
+
+
+def test_weight_mapping_rejects_boolean_values() -> None:
+    with pytest.raises(ValueError, match="must be numeric"):
+        ScoreWeights.from_mapping(
+            {
+                "yield_label_quality": True,
+                "historical_depth": 20,
+                "spatial_resolution": 15,
+                "satellite_usability": 10,
+                "license_and_redistribution": 10,
+                "access_stability": 10,
+            }
+        )
+
+
 def test_score_candidate_applies_approved_weighted_average() -> None:
     weights = ScoreWeights.approved()
     candidate = CandidateProfile(
