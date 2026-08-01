@@ -1,8 +1,8 @@
 # Product Requirements Document — Shamba Signal
 
-**Status:** Approved programme; foundation implementation only  
-**Product direction:** Modular decision-intelligence platform  
-**Primary geography:** Kenya  
+**Status:** Approved programme; foundation implementation only
+**Product direction:** Modular decision-intelligence platform
+**Primary geography:** Kenya
 **Validated output grain:** County × crop × season
 
 ## 1. Product statement
