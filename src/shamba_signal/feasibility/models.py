@@ -69,8 +69,15 @@ class CandidateProfile:
     def __post_init__(self) -> None:
         if set(self.dimensions) != set(DIMENSIONS):
             raise ValueError(f"candidate dimensions must be exactly {DIMENSIONS}")
-        if any(not 0 <= float(value) <= 100 for value in self.dimensions.values()):
-            raise ValueError("candidate scores must be between 0 and 100")
+        for name, value in self.dimensions.items():
+            if (
+                isinstance(value, bool)
+                or not isinstance(value, (int, float))
+                or not math.isfinite(value)
+            ):
+                raise ValueError(f"candidate score {name} must be a finite number")
+            if not 0 <= value <= 100:
+                raise ValueError("candidate scores must be between 0 and 100")
         if not self.evidence_refs:
             raise ValueError("candidate must reference at least one evidence record")
         if self.rationales is not None and set(self.rationales) != set(DIMENSIONS):
@@ -82,10 +89,20 @@ class CandidateProfile:
             candidate_id=str(values["candidate_id"]),
             candidate_type=values["candidate_type"],
             name=str(values["name"]),
-            dimensions={name: float(values["dimensions"][name]) for name in DIMENSIONS},
+            dimensions=cls._parse_dimensions(values["dimensions"]),
             evidence_refs=tuple(str(item) for item in values["evidence_refs"]),
             limitations=tuple(str(item) for item in values.get("limitations", [])),
             rationales={name: str(values["rationales"][name]) for name in DIMENSIONS}
             if values.get("rationales")
             else None,
         )
+
+    @staticmethod
+    def _parse_dimensions(values: Mapping[str, Any]) -> dict[str, float]:
+        dimensions: dict[str, float] = {}
+        for name in DIMENSIONS:
+            value = values[name]
+            if isinstance(value, bool) or not isinstance(value, (int, float)):
+                raise ValueError(f"candidate score {name} must be numeric")
+            dimensions[name] = float(value)
+        return dimensions
