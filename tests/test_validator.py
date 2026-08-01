@@ -67,22 +67,6 @@ def test_missing_weight_key_is_reported(tmp_path: Path) -> None:
     assert any("weight keys" in error for error in errors)
 
 
-def test_changed_weight_distribution_is_rejected_even_when_total_is_100(
-    tmp_path: Path,
-) -> None:
-    payload = valid_catalog()
-    payload["pilot_selection"]["weights"] = {
-        "yield_label_quality": 34,
-        "historical_depth": 21,
-        "spatial_resolution": 15,
-        "satellite_usability": 10,
-        "license_and_redistribution": 10,
-        "access_stability": 10,
-    }
-    errors = validate_catalog(write_catalog(tmp_path, payload))
-    assert "pilot-selection weights must match approved values" in errors
-
-
 def test_malformed_source_shape_is_reported(tmp_path: Path) -> None:
     payload = valid_catalog()
     payload["sources"] = "not-a-list"
@@ -127,6 +111,22 @@ def test_required_source_text_fields_reject_empty_values(
     assert any(f"{field} must be a non-empty string" in error for error in errors)
 
 
+def test_changed_weight_distribution_is_rejected_even_when_total_is_100(
+    tmp_path: Path,
+) -> None:
+    payload = valid_catalog()
+    payload["pilot_selection"]["weights"] = {
+        "yield_label_quality": 34,
+        "historical_depth": 21,
+        "spatial_resolution": 15,
+        "satellite_usability": 10,
+        "license_and_redistribution": 10,
+        "access_stability": 10,
+    }
+    errors = validate_catalog(write_catalog(tmp_path, payload))
+    assert "pilot-selection weights must match approved values" in errors
+
+
 def test_fractional_weight_total_uses_tolerance(tmp_path: Path) -> None:
     payload = valid_catalog()
     payload["pilot_selection"]["weights"] = {
@@ -140,3 +140,17 @@ def test_fractional_weight_total_uses_tolerance(tmp_path: Path) -> None:
     errors = validate_catalog(write_catalog(tmp_path, payload))
     assert "pilot-selection weights must total 100" not in errors
     assert "pilot-selection weights must match approved values" in errors
+
+
+def test_repository_validation_handles_malformed_pilot_without_traceback(
+    tmp_path: Path,
+) -> None:
+    catalog_path = tmp_path / "data/catalog/datasets.yaml"
+    catalog_path.parent.mkdir(parents=True)
+    payload = valid_catalog()
+    payload["pilot_selection"] = "not-an-object"
+    catalog_path.write_text(json.dumps(payload), encoding="utf-8")
+
+    errors = validate_repository(root=tmp_path)
+
+    assert "data catalog pilot_selection must be an object" in errors
