@@ -57,6 +57,14 @@ def _candidate_record(item: RankedCandidate) -> dict[str, Any]:
     }
 
 
+def _human_join(values: list[str]) -> str:
+    if not values:
+        return ""
+    if len(values) == 1:
+        return values[0]
+    return f"{', '.join(values[:-1])}, and {values[-1]}"
+
+
 def generate_artifacts(
     *,
     evidence_path: Path,
@@ -66,7 +74,8 @@ def generate_artifacts(
 ) -> SelectionResult:
     evidence = _load_json(evidence_path)
     profile_payload, profiles = load_profiles(profiles_path)
-    evidence_ids = {item["id"] for item in evidence["evidence"]}
+    evidence_by_id = {item["id"]: item for item in evidence["evidence"]}
+    evidence_ids = set(evidence_by_id)
     for profile in profiles:
         missing = set(profile.evidence_refs) - evidence_ids
         if missing:
@@ -160,19 +169,33 @@ def generate_artifacts(
         "yield history, current official dashboard coverage, crop-calendar support, "
         "and compatibility with open satellite and crop-mask evidence."
     )
-    county_reason = (
-        f"{selected_county.profile.name} adds unusually strong spatial evidence. The "
-        "PlantVillage Kenya collection provides open **10 m crop-type and crop-density "
-        "labels** in western Kenya under **CC BY 4.0**, and NASA Harvest publishes a "
-        "Busia-specific 2020 cropland raster. "
-        f"{selected_county.profile.name} still uses the same national county-yield "
-        "evidence available to the other counties."
-    )
+    county_evidence_sets = [set(item.profile.evidence_refs) for item in county_ranking]
+    shared_county_evidence = set.intersection(*county_evidence_sets)
+    selected_distinct_refs = [
+        ref
+        for ref in selected_county.profile.evidence_refs
+        if ref not in shared_county_evidence
+    ]
+    selected_distinct_titles = [
+        str(evidence_by_id[ref].get("title", ref)) for ref in selected_distinct_refs
+    ]
+    if selected_distinct_titles:
+        county_reason = (
+            f"{selected_county.profile.name} adds distinct registered evidence: "
+            f"{_human_join(selected_distinct_titles)}. It also retains the shared "
+            "county-yield, climate, soil, boundary, calendar, and satellite evidence "
+            "used to compare all counties."
+        )
+    else:
+        county_reason = (
+            f"{selected_county.profile.name} ranks highest on the registered feasibility "
+            "dimensions, but the current register contains no county-exclusive source "
+            "for it. Slice 2 must therefore validate the shared evidence directly."
+        )
     fallback_reason = (
-        f"{fallback_county.profile.name} remains the first fallback because AfriCultuReS "
-        "publishes a dedicated Trans-Nzoia crop-calendar layer and the county is well "
-        "suited to maize monitoring, but this audit did not locate comparably open "
-        "field-level crop-type evidence there."
+        f"{fallback_county.profile.name} remains the first fallback at "
+        f"**{fallback_county.score:.2f}/100**. Its profile retains the shared evidence "
+        "set and becomes the pilot if the selected county fails the measured gates."
     )
     evidence_sentence = (
         "The machine-readable evidence register records publisher, URL, coverage, access "
