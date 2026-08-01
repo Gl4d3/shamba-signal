@@ -28,7 +28,9 @@ def get_platform_status() -> PlatformStatus:
                 id="stress-attribution",
                 name="Crop-stress attribution",
                 status=CapabilityStatus.PLANNED,
-                outcome="Explain rainfall, heat, moisture, and vegetation signals behind forecasts.",
+                outcome=(
+                    "Explain rainfall, heat, moisture, and vegetation signals behind forecasts."
+                ),
             ),
             Capability(
                 id="guardrailed-advisory",

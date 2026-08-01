@@ -1,21 +1,24 @@
-PYTHON ?= python3
-
-.PHONY: install test lint verify run validate
+.PHONY: install lint test validate compile smoke verify run
 
 install:
-	uv sync --extra dev
-
-test:
-	PYTHONPATH=src $(PYTHON) -m pytest
+	uv sync --locked --extra dev
 
 lint:
 	uv run ruff check src tests scripts
 
-validate:
-	PYTHONPATH=src $(PYTHON) scripts/validate_repo.py
+test:
+	uv run pytest -q
 
-verify: test validate
-	PYTHONPATH=src $(PYTHON) -m compileall -q src scripts
+validate:
+	uv run python scripts/validate_repo.py
+
+compile:
+	uv run python -m compileall -q src scripts
+
+smoke:
+	uv run python scripts/smoke_api.py
+
+verify: lint test validate compile smoke
 
 run:
-	PYTHONPATH=src $(PYTHON) -m uvicorn shamba_signal.api.app:app --reload --host 127.0.0.1 --port 8000
+	uv run uvicorn shamba_signal.api.app:app --reload --host 127.0.0.1 --port 8000

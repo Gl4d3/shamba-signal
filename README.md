@@ -1,57 +1,47 @@
 # Shamba Signal
 
-**Crop Yield Intelligence with Stress Attribution for Kenya**
+**Crop-yield research infrastructure for Kenya**
 
-Shamba Signal is a research-grade decision-intelligence platform for mid-season,
-county-level crop-yield forecasting. It combines official agricultural statistics,
-satellite observations, climate histories, soils, and crop calendars to estimate yield,
-quantify uncertainty, explain stress signals, and surface approved response options.
+Shamba Signal is building a research-grade decision-intelligence workflow for a narrow question: can publicly obtainable county-season maize data support a defensible mid-season yield forecast under geographic and temporal holdouts?
 
-The project is deliberately honest about resolution:
+## Current implementation state
 
-- **Validated output:** county-season yield forecast.
-- **Explanatory spatial output:** relative yield potential and crop-stress indicators.
-- **Not claimed:** measured ward yield or farm-level yield prediction without matching labels.
+**Implemented in the foundation:**
 
-## Foundation release
+- approved PRD, MVP, architecture, scientific boundaries, and implementation slices;
+- a FastAPI application shell with `/`, `/healthz`, `/openapi.json`, and `/api/v1/platform/status`;
+- a public foundation page that reports implemented, next, and planned capabilities;
+- a candidate source catalogue, repository validator, tests, and hardened CI definition.
 
-This repository currently contains the approved product specification, architecture,
-MVP contract, implementation slices, data-source registry, CI rules, and a runnable
-FastAPI web/API shell. The next slice selects the crop and pilot county through a
-reproducible data-feasibility scorecard.
+**Not implemented:** a downloaded target dataset, trained model, calibrated forecast, stress attribution, research dashboard, advisory engine, scheduler, AWS deployment, or Druid benchmark. Those remain planned and must not be inferred from the logical architecture diagram.
 
-## Run locally
+## Resolution boundary
+
+- **Future validated output:** county × crop × season yield forecast, only where evidence gates pass.
+- **Possible explanatory output:** relative yield potential and crop-stress indicators.
+- **Never implied:** measured ward yield or farm-level yield prediction without matching labels.
+
+## Reproducible local setup
+
+Python 3.12 and uv 0.10.x are required.
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -e '.[dev]'
+uv sync --locked --extra dev
 make verify
 make run
 ```
 
-Open `http://127.0.0.1:8000` and inspect the API contract at
-`http://127.0.0.1:8000/api/v1/platform/status`.
+Open `http://127.0.0.1:8000`. The platform contract is available at `http://127.0.0.1:8000/api/v1/platform/status`.
 
 ## Repository map
 
-- `src/shamba_signal/` — application and domain code.
-- `tests/` — behavioral and repository-contract tests.
-- `data/catalog/` — source metadata and selection rules, never raw datasets.
+- `src/shamba_signal/` — implemented application and domain code.
+- `tests/` — behavioral, OpenAPI, validator, and repository-contract tests.
+- `data/catalog/` — candidate source metadata; no raw restricted datasets.
 - `docs/product/` — PRD and MVP definition.
-- `docs/architecture/` — working and AWS target architectures.
-- `docs/roadmap/` — testable implementation slices.
-- `docs/data/` — data discovery and licensing evidence.
-- `.github/` — CI, issue forms, and contribution workflow.
+- `docs/architecture/` — logical local architecture and deferred AWS mapping.
+- `docs/roadmap/` — testable implementation slices and no-go outcomes.
+- `docs/data/` — source discovery, access, and licensing evidence.
+- `.github/` — read-only CI and contribution workflow.
 
-## Engineering rules
-
-1. Every slice ends in a demonstrable, testable artifact.
-2. Classical baselines are mandatory before deep-learning models.
-3. Spatial and temporal holdouts replace random-row validation.
-4. Forecasts always include uncertainty and data-quality context.
-5. AI advisory output is constrained to approved playbooks.
-6. AWS is introduced after working product slices, with local interfaces designed for migration.
-
-See [the PRD](docs/product/PRD.md), [architecture](docs/architecture/ARCHITECTURE.md),
-and [implementation slices](docs/roadmap/IMPLEMENTATION_SLICES.md).
+See [the PRD](docs/product/PRD.md), [architecture](docs/architecture/ARCHITECTURE.md), and [implementation slices](docs/roadmap/IMPLEMENTATION_SLICES.md).

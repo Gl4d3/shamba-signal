@@ -1,103 +1,57 @@
 # Shamba Signal Implementation Slices
 
-A slice is a testable end-to-end product or research outcome. Infrastructure setup belongs inside the
-slice whose outcome needs it; it is not a standalone achievement.
+A slice is a testable end-to-end product or research outcome. Infrastructure setup belongs inside the slice whose outcome needs it; it is not a standalone achievement. Roadmap completion reflects merged artifacts, not open-PR claims.
 
 ## Foundation — Product and repository contract
 
-**Outcome:** a contributor can run a web/API shell and understand exactly what the product will and will not claim.
+**Outcome:** a contributor can run a web/API shell and understand exactly what the product currently implements and does not claim.
 
-**Artifacts:** PRD, MVP, architecture, AWS mapping, source register, repo scaffold, CI, issue templates,
-platform-status API, public foundation page, tests, and backlog issues.
+**Artifacts:** PRD, MVP, architecture, source register, repo scaffold, locked dependencies, hardened CI, issue templates, platform-status API, public foundation page, tests, and backlog issues.
 
-**Acceptance:** `make verify` passes; `/`, `/healthz`, and `/api/v1/platform/status` respond; repository-contract tests pass.
+**Acceptance:** locked install contract is current; `make verify` passes; `/`, `/healthz`, static assets, OpenAPI, and `/api/v1/platform/status` respond; repository validation passes.
 
-## Slice 1 — Data feasibility and pilot selection
+## Slice 1 — Metadata-level data feasibility and provisional pilot selection
 
-**Outcome:** one crop, one deep-dive county, a historical window, and a target-label policy are selected by evidence.
+**Outcome:** one crop and deep-dive county are provisionally ranked from documented metadata and expert-judgement scores, with limitations and tested sensitivity scenarios disclosed.
 
-**Artifacts:** source adapters for metadata/sample retrieval, profiling notebook/report, 47-county scorecard,
-crop scorecard, licensing decisions, data dictionary, and a signed selection decision record.
+**Artifacts:** evidence register, four-crop and 47-county profiles, scorecard, sensitivity scenarios, source/licence notes, and provisional selection record.
 
-**Acceptance:** another environment regenerates the scorecard; weights total 100; every selected source has a licence decision;
-selection is stable under documented sensitivity checks.
+**Acceptance:** the generation command writes canonical paths, is byte-stable, leaves a clean Git diff, regenerates scores from registered weights/evidence, and clearly transfers downloaded-record validation to Slice 2.
 
 ## Slice 2 — Reproducible county-season target dataset
 
-**Outcome:** official production, harvested area, and yield become a versioned modelling table.
+**Outcome:** official production, harvested area, and yield evidence becomes a versioned modelling table, or the slice publishes a rigorous evidence-insufficiency result.
 
-**Artifacts:** raw snapshot manifests, canonical schemas, unit conversions, crop/calendar mapping, quality classes,
-Parquet output, dataset card, and data-quality report.
+**Artifacts:** immutable snapshots or protected references, manifests, canonical schema, unit and county mappings, Parquet/CSV target data, data dictionary, dataset card, quality report, and Busia-confirm or fallback decision.
 
-**Acceptance:** target rows are unique by county/crop/season; derivations reconcile production and area within tolerance;
-source flags and missingness are preserved; reruns from the same snapshots are byte- or value-equivalent.
+**Acceptance:** unique county/crop/season keys; deterministic rebuild; schema-drift failure; licence-aware publication; missingness and continuity profiles; reported-versus-derived reconciliation; positive-area and unit checks; snapshot-to-output lineage.
 
 ## Slice 3 — Defensible baseline yield model
 
-**Outcome:** a transparent mid-season benchmark predicts held-out county-season yield.
+**Outcome:** answer whether public data supports a useful mid-season forecast.
 
-**Artifacts:** cutoff-aware feature table, historical mean and previous-season baselines, regularised regression,
-tree-based model, spatial/temporal evaluation, error analysis, model card, and forecast fixture.
+**Artifacts:** frozen cutoff and feature contracts, historical mean and previous-season baselines, regularised regression, one tree model, geographic and temporal evaluation, prediction intervals, error analysis, model card, and real forecast fixture.
 
-**Acceptance:** no post-cutoff feature leakage; metrics include MAE/RMSE and interval coverage; headline model beats simple baselines
-or the slice explicitly concludes that available data is insufficient.
+**Acceptance:** no post-cutoff leakage; MAE, RMSE, interval coverage, and width are reported; the model beats mandatory naïve baselines under frozen holdouts **or** the slice publishes a documented no-go/insufficiency result and abstains.
 
-## Slice 4 — Remote-sensing temporal model
+## Slice 4 — Minimal evidence UI
 
-**Outcome:** a small temporal model tests whether seasonal sequences improve held-out performance.
+**Outcome:** a user can inspect the actual baseline fixture without a notebook.
 
-**Artifacts:** Sentinel-2 compositing, observation-quality features, temporal tensors, small temporal CNN,
-training/evaluation pipeline, comparison report, and retained or rejected architecture decision.
+**Artifacts:** county outlook, selected-county deep dive, actual-versus-predicted history, interval, evidence quality, cutoff, lineage, and visible abstention state.
 
-**Acceptance:** model is accepted only if it improves predetermined held-out criteria without materially worsening calibration;
-otherwise the baseline remains the production model and the negative result is documented.
+**Acceptance:** every displayed value reconciles with the fixture/API; missing counties are not fabricated; relative indicators are not labelled measured yield.
 
-## Slice 5 — Uncertainty and stress attribution
+## Deferred programme slices
 
-**Outcome:** every forecast carries calibrated uncertainty and an evidence-based explanation.
+The following remain valid long-term work but are deferred until the target dataset and baseline are complete:
 
-**Artifacts:** interval-calibration method, confidence/data-quality classes, rainfall/heat/vegetation/moisture attribution,
-similar-season retrieval, abstention rules, and explanation tests.
+- Remote-sensing temporal model.
+- Rich stress attribution.
+- Full national dashboard.
+- Guardrailed advisory.
+- Scheduled operations and forecast versioning.
+- AWS portability exercise.
+- Druid proof with one concrete benchmark.
 
-**Acceptance:** interval coverage is reported by geography/time; low-evidence cases abstain; explanations never claim causality;
-all factors trace to feature values and source snapshots.
-
-## Slice 6 — National outlook and county deep dive
-
-**Outcome:** a public user can investigate forecasts without a notebook.
-
-**Artifacts:** map-ready forecast API, national outlook, selected-county analysis, model evidence screen, data explorer,
-responsive/accessibility checks, export endpoints, and deployed preview.
-
-**Acceptance:** displayed values match published forecast fixtures; keyboard and mobile journeys work; map statuses are not colour-only;
-all headline values expose lineage and uncertainty.
-
-## Slice 7 — Guardrailed advisory
-
-**Outcome:** forecasts link to approved operational response options without pretending to be a farm agronomist.
-
-**Artifacts:** playbook schema, approved action catalogue, evidence-to-action rules, AI contextualisation adapter,
-suppression gates, review UI, audit log, and adversarial tests.
-
-**Acceptance:** generated text cannot introduce an action absent from the playbook; low confidence/stage mismatch suppresses advice;
-chemical dosage, irrigation quantity, and farm-specific treatment are rejected.
-
-## Slice 8 — Scheduled operations and forecast versioning
-
-**Outcome:** national refreshes and analyst-triggered runs are reliable, comparable, and recoverable.
-
-**Artifacts:** scheduler, queue/worker contract, run state machine, idempotency, retry policy, publication promotion,
-run comparison, structured logs, operational dashboard, and failure drills.
-
-**Acceptance:** a failed run leaves the prior published version active; duplicate requests are idempotent; run IDs connect logs,
-source snapshots, features, model, forecasts, and advisory outputs.
-
-## Slice 9 — AWS portability and Druid proof
-
-**Outcome:** one completed product slice runs on AWS with equivalent contracts, and Druid proves or fails a concrete use case.
-
-**Artifacts:** IaC, S3/RDS/container/job/queue deployment, IAM model, Secrets Manager, CloudWatch, cost notes,
-local-to-AWS migration runbook, Druid ingestion/query benchmark, and architecture decision record.
-
-**Acceptance:** the selected slice reproduces local forecast outputs within documented tolerance; least-privilege roles pass review;
-Druid is retained only if a named analytical query or latency target materially benefits.
+A negative benchmark or decision to reject a technology is an acceptable outcome.

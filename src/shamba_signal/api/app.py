@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 
+from shamba_signal.domain.platform import PlatformStatus
 from shamba_signal.services.platform_status import get_platform_status
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[1]
@@ -26,8 +27,12 @@ def create_app() -> FastAPI:
             "release": "foundation-v0",
         }
 
-    @application.get("/api/v1/platform/status", tags=["platform"])
-    def platform_status():
+    @application.get(
+        "/api/v1/platform/status",
+        tags=["platform"],
+        response_model=PlatformStatus,
+    )
+    def platform_status() -> PlatformStatus:
         return get_platform_status()
 
     @application.get("/", response_class=HTMLResponse, include_in_schema=False)

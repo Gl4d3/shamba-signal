@@ -1,39 +1,52 @@
 # Shamba Signal Architecture
 
-## 1. Architectural stance
+## 1. Architectural stance and implementation status
 
-Shamba Signal begins as a **modular monolith with independent workers**, not a microservice fleet.
-The boundaries are explicit enough to split later, while local execution remains understandable and cheap.
-The platform has four deployable responsibilities:
+Shamba Signal is designed as a **modular monolith with independent workers where justified**, not a premature microservice fleet.
 
-1. **Web client** — national outlook, county analysis, model evidence, data explorer, advisory review.
-2. **Application API** — query contracts, run requests, exports, authentication boundary, and metadata.
-3. **Pipeline worker** — source ingestion, validation, harmonisation, feature materialisation, and lineage.
-4. **Forecast worker** — training, backtesting, inference, interval calibration, attribution, and publication.
+### Implemented in the foundation
 
-The foundation release combines the web client and API in one FastAPI process while preserving package
-boundaries. The first split should occur only when scheduled jobs or scaling requirements justify it.
+- One FastAPI process serving the public foundation page, health endpoint, static assets, OpenAPI, and the platform-status contract.
+- Product, scientific, source-governance, testing, and delivery contracts.
+- Candidate source catalogue and repository validation.
 
-## 2. Working architecture
+### Active next slice
+
+- Source acquisition, immutable snapshots, target-data normalisation, quality reporting, and pilot confirmation.
+
+### Planned local components
+
+- Pipeline worker.
+- Forecast/evaluation worker.
+- PostgreSQL operational metadata.
+- Object and Parquet storage.
+- Published forecast query model.
+- Minimal evidence UI after a real baseline fixture exists.
+
+### Deferred components
+
+- Scheduler and queue.
+- Guardrailed advisory service.
+- AWS deployment.
+- Druid benchmark.
+
+The architecture diagrams show logical boundaries and future deployment options. They are not evidence that those services are running.
+
+## 2. Logical architecture
 
 ```mermaid
 flowchart LR
-    analyst[Researcher / Analyst] --> web[Web Application]
-    web --> api[Application API]
-    api --> metadata[(PostgreSQL metadata)]
-    api --> published[(Published forecasts)]
-    api --> runq[Run request queue]
-    scheduler[Scheduler] --> runq
-    runq --> pipeline[Pipeline worker]
-    pipeline --> sources[Public data sources]
-    pipeline --> object[(Object and Parquet store)]
-    pipeline --> feature[(Versioned feature datasets)]
-    feature --> forecast[Forecast worker]
-    forecast --> models[(Model artifacts)]
-    forecast --> published
-    forecast --> evidence[(Evaluation and attribution)]
-    api --> evidence
-    api --> playbooks[(Approved advisory playbooks)]
+    analyst[Researcher or analyst] --> web[Foundation web experience]
+    web --> api[FastAPI application]
+    api -. planned .-> metadata[(PostgreSQL metadata)]
+    api -. planned .-> published[(Published forecast outputs)]
+    scheduler[Deferred scheduler] -. planned .-> runq[Deferred run queue]
+    runq -. planned .-> pipeline[Planned pipeline worker]
+    pipeline -. planned .-> sources[Public data sources]
+    pipeline -. planned .-> object[(Object and Parquet store)]
+    object -. planned .-> forecast[Planned forecast worker]
+    forecast -. planned .-> published
+    forecast -. planned .-> evidence[(Evaluation artifacts)]
 ```
 
 Editable companion diagram: https://www.figma.com/board/1CIbu9BqxVNXwr6pv3suY0
@@ -42,170 +55,104 @@ Editable companion diagram: https://www.figma.com/board/1CIbu9BqxVNXwr6pv3suY0
 
 ### Data catalogue
 
-Owns source metadata, licensing state, access method, dataset versions, and pilot-selection criteria.
-It does not download data by itself.
+Owns source metadata, licensing state, access method, versions, and pilot-selection evidence. It does not itself prove a source is downloadable, complete, or redistributable.
 
 ### Ingestion adapters
 
-One adapter per external source. Each adapter produces an immutable raw snapshot plus a manifest.
-Adapters never perform model-specific feature engineering.
+One bounded adapter per external source. Each adapter validates status, redirects, media type, content shape, and expected schema; rejects HTML/login/bot/error documents; preserves source bytes before transformation; uses bounded timeouts; and produces an immutable snapshot manifest.
 
 ### Quality and harmonisation
 
-Validates schemas, units, temporal coverage, geometry, missingness, duplicates, and source flags.
-It produces canonical county, crop, season, and observation contracts.
+Validates schemas, units, county identity, temporal coverage, duplicates, missingness, impossible values, and source flags. It produces canonical county, crop, season, and observation records.
 
 ### Feature materialisation
 
-Consumes canonical data and a forecast cutoff. It produces feature tables that cannot include information
-published after the cutoff. Every feature table records its source snapshot IDs and transformation version.
+Consumes canonical data and a forecast cutoff. It may not include information published after the cutoff. Every feature table records source snapshot IDs and transformation revision.
 
 ### Forecasting
 
-Trains baselines and candidate models, performs spatial and temporal validation, calibrates intervals,
-and writes immutable model/evaluation artifacts.
+Begins with mandatory naïve and tabular baselines, frozen folds, and leakage tests. A later model is retained only when held-out evidence justifies it. A documented no-go result is valid.
 
-### Forecast publication
+### Publication and UI
 
-Converts model output into a stable query model: county estimate, interval, anomaly, flag, confidence,
-data quality, run ID, cutoff, calendar source, model version, and attribution references.
-
-### Advisory
-
-Consumes published forecast evidence and versioned playbooks. It returns only allowed actions and
-suppresses output when confidence, stage, or evidence rules are not satisfied.
+A future stable query model exposes supported estimates, intervals, evidence quality, cutoff, model/source lineage, and abstention. The first UI is built only after a real versioned fixture exists.
 
 ## 4. Data contracts
 
 ### Source snapshot
 
+Where applicable, a snapshot records:
+
+- `snapshot_id`
 - `source_id`
-- `retrieved_at`
+- `publisher`
+- `dataset_title`
+- `landing_url`
+- `acquisition_url` or request parameters
+- `access_method`
 - `source_version`
-- `request_parameters`
+- `retrieved_at`
+- `spatial_coverage`
+- `temporal_coverage`
+- `media_type`
+- `byte_size`
 - `content_checksum`
-- `license_snapshot`
-- `storage_uri`
+- `schema_fingerprint`
+- `license_or_terms_snapshot`
+- `license_decision`
+- `redistribution_status`
+- `storage_uri` using a portable logical or content-addressed identifier
+- `transformation_code_revision`
+
+Canonical manifests must not contain credentials, cookies, bearer tokens, signed URLs, or developer-machine absolute paths.
 
 ### County-season target
 
-- `country_code`
-- `county_code`
-- `crop_code`
-- `season_id`
-- `calendar_source`
-- `harvested_area_ha`
-- `production_tonnes`
-- `yield_t_ha`
-- `yield_derivation`
-- `source_flag`
-- `quality_class`
+- stable country and county codes;
+- source-provided and canonical county names;
+- crop code;
+- year or season and calendar source;
+- original element, value, and unit;
+- normalised value and unit;
+- production and harvested area;
+- reported yield and derived yield as separate fields;
+- source and source flag;
+- derivation method and conversion details;
+- quality class and snapshot ID.
 
-### Forecast
+Derived yield requires positive area, matching county/crop/period, compatible units, explicit conversion, and a documented reconciliation tolerance. It never silently overwrites reported yield.
 
-- `forecast_id`
-- `run_id`
-- `county_code`
-- `crop_code`
-- `season_id`
-- `cutoff_date`
-- `point_t_ha`
-- `lower_t_ha`
-- `upper_t_ha`
-- `historical_anomaly_pct`
-- `risk_flag`
-- `confidence_class`
-- `data_quality_class`
-- `model_version`
-- `feature_snapshot_id`
-- `calendar_source`
+### Future forecast
+
+- run, county, crop, season, and cutoff identifiers;
+- point and interval values;
+- baseline comparison;
+- evidence-quality and abstention state;
+- model, feature, source, and calendar lineage.
 
 ## 5. Storage strategy
 
-- **Raw snapshots:** immutable object storage paths partitioned by source and retrieval date.
-- **Canonical and feature datasets:** Parquet with explicit schemas and partition manifests.
-- **Operational metadata:** PostgreSQL for sources, runs, model registry metadata, forecasts, and playbooks.
-- **Model artifacts:** object storage with checksum, code revision, training configuration, and evaluation link.
-- **Published query tables:** PostgreSQL materialisations optimised for maps and comparisons.
+- **Raw snapshots:** immutable, content-addressed logical paths; restricted bytes may remain external with protected references.
+- **Canonical and feature datasets:** Parquet or CSV with explicit schemas and manifests.
+- **Operational metadata:** PostgreSQL when operational slices justify it.
+- **Model/evaluation artifacts:** object storage with checksum and code revision.
 
-Apache Druid is not the source of truth. A later proof slice loads forecast and stress time-series into
-Druid only where slice acceptance tests demonstrate a useful analytical query or latency advantage.
+Druid is not a source of truth. It is considered only after one named query and representative-scale benchmark show an advantage over PostgreSQL/Parquet.
 
-## 6. Execution modes
+## 6. Testing architecture
 
-### Scheduled national refresh
+- Parser and adapter fixture tests.
+- Snapshot and canonical-schema contract tests.
+- County identity, unit, range, uniqueness, missingness, and continuity tests.
+- Rebuild and generated-clean-tree tests.
+- Leakage tests and frozen geographic/temporal evaluation folds.
+- API/OpenAPI/static/package smoke tests.
+- End-to-end slice tests from fixture snapshot to published artifact.
 
-The scheduler submits a run with crop, season, cutoff, and source policy. The pipeline creates or reuses
-source snapshots, validates evidence, materialises cutoff-safe features, runs inference, publishes a new
-version, and retains the previously published version if any stage fails.
+## 7. Security and governance
 
-### Analyst-triggered run
+Source access does not imply redistribution permission. Terms, attribution, licence decisions, checksums, and transformation lineage are retained. Secrets and local environment files never enter Git. Public output is limited to evidence that can legally be redistributed.
 
-An analyst chooses a historical season, cutoff, county set, and model configuration. The system writes a
-separate research run that cannot overwrite the current national publication without explicit promotion.
+## 8. AWS migration path — deferred
 
-## 7. Error handling
-
-- Source failures are isolated by adapter and recorded in the run manifest.
-- Schema drift fails ingestion before canonical tables are updated.
-- Missing evidence reduces data-quality class and can force abstention.
-- Model failure leaves the prior published forecast active.
-- Advisory failure never blocks forecast publication; it is a derived, separately versioned output.
-- Every error carries `run_id`, stage, source/model identifier, and a human-readable remediation hint.
-
-## 8. Testing architecture
-
-- Unit tests for parsing, unit conversion, calendar rules, feature windows, risk rules, and playbook gates.
-- Contract tests for external adapter fixtures and canonical schemas.
-- Data-quality tests for ranges, uniqueness, temporal order, geometry, and missingness.
-- Leakage tests proving post-cutoff observations cannot enter features.
-- Spatial and temporal validation tests for modelling workflows.
-- API tests for stable response schemas and publication selection.
-- End-to-end slice tests from fixture snapshot to displayed forecast.
-
-## 9. Security and governance
-
-Public data does not remove governance obligations. Source terms, redistribution rights, attribution,
-checksums, and transformation lineage are retained. Secrets never enter notebooks or Git. Production
-roles separate read-only public access, analyst run submission, playbook approval, and publication promotion.
-
-## 10. AWS migration path
-
-The local interfaces intentionally map to AWS after core product slices work:
-
-| Working component | AWS target | Reason |
-|---|---|---|
-| Local/static web assets | S3 + CloudFront or Amplify | public delivery and caching |
-| FastAPI container | App Runner or ECS Fargate | managed container runtime |
-| PostgreSQL | Amazon RDS for PostgreSQL | operational metadata and query model |
-| Object/Parquet store | Amazon S3 | raw, canonical, features, models, exports |
-| Scheduled runs | EventBridge Scheduler | national refresh trigger |
-| Pipeline/forecast jobs | AWS Batch or ECS tasks | isolated, retryable compute |
-| Run request queue | Amazon SQS | decoupled job submission |
-| Secrets | AWS Secrets Manager | managed rotation and access control |
-| Logs and metrics | CloudWatch | run-level operations and alarms |
-| Model metadata | PostgreSQL + S3 initially | avoid premature SageMaker dependency |
-| Optional mature registry | SageMaker Model Registry | approval workflow when justified |
-
-```mermaid
-flowchart LR
-    user[Researcher] --> cloudfront[CloudFront]
-    cloudfront --> web[S3 web assets]
-    cloudfront --> api[App Runner / ECS API]
-    api --> rds[(RDS PostgreSQL)]
-    api --> sqs[SQS run requests]
-    eventbridge[EventBridge Scheduler] --> sqs
-    sqs --> batch[AWS Batch / ECS workers]
-    batch --> s3[(S3 data and artifacts)]
-    batch --> rds
-    api --> s3
-    api --> secrets[Secrets Manager]
-    batch --> secrets
-    api --> cloudwatch[CloudWatch]
-    batch --> cloudwatch
-```
-
-### Migration rule
-
-AWS migration is accepted only after a completed product slice can be run locally, then reproduced on AWS
-with the same contracts, tests, run manifest, and forecast outputs within documented numerical tolerance.
+The local interfaces intentionally map later to S3, RDS, EventBridge, SQS, Batch/ECS, Secrets Manager, and CloudWatch. The first AWS exercise reproduces one already-completed local slice with unchanged contracts, documented cost and security evidence, and a rollback/teardown procedure. Cloud deployment is not model improvement.
