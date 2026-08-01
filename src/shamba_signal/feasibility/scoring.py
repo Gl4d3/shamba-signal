@@ -29,7 +29,10 @@ def score_candidate(profile: CandidateProfile, weights: ScoreWeights) -> float:
 def rank_candidates(
     profiles: Iterable[CandidateProfile], weights: ScoreWeights
 ) -> list[RankedCandidate]:
-    ranked = [RankedCandidate(profile=item, score=score_candidate(item, weights)) for item in profiles]
+    ranked = [
+        RankedCandidate(profile=item, score=score_candidate(item, weights))
+        for item in profiles
+    ]
     return sorted(ranked, key=lambda item: (-item.score, item.profile.candidate_id))
 
 
