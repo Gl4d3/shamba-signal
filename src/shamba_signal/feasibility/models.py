@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 from typing import Any, Literal, Mapping
 
@@ -11,22 +12,30 @@ DIMENSIONS = (
     "license_and_redistribution",
     "access_stability",
 )
+Weight = int | float
 
 
 @dataclass(frozen=True)
 class ScoreWeights:
-    yield_label_quality: int
-    historical_depth: int
-    spatial_resolution: int
-    satellite_usability: int
-    license_and_redistribution: int
-    access_stability: int
+    yield_label_quality: Weight
+    historical_depth: Weight
+    spatial_resolution: Weight
+    satellite_usability: Weight
+    license_and_redistribution: Weight
+    access_stability: Weight
 
     def __post_init__(self) -> None:
         values = self.as_dict()
-        if any(value < 0 for value in values.values()):
-            raise ValueError("score weights must be non-negative")
-        if sum(values.values()) != 100:
+        for name, value in values.items():
+            if (
+                isinstance(value, bool)
+                or not isinstance(value, (int, float))
+                or not math.isfinite(value)
+            ):
+                raise ValueError(f"score weight {name} must be a finite number")
+            if value < 0:
+                raise ValueError("score weights must be non-negative")
+        if not math.isclose(sum(values.values()), 100.0, rel_tol=0.0, abs_tol=1e-9):
             raise ValueError("score weights must sum to 100")
 
     @classmethod
@@ -35,10 +44,16 @@ class ScoreWeights:
 
     @classmethod
     def from_mapping(cls, values: Mapping[str, Any]) -> "ScoreWeights":
-        return cls(**{name: int(values[name]) for name in DIMENSIONS})
+        parsed: dict[str, Weight] = {}
+        for name in DIMENSIONS:
+            value = values[name]
+            if isinstance(value, bool) or not isinstance(value, (int, float)):
+                raise ValueError(f"score weight {name} must be numeric")
+            parsed[name] = value
+        return cls(**parsed)
 
-    def as_dict(self) -> dict[str, int]:
-        return {name: int(getattr(self, name)) for name in DIMENSIONS}
+    def as_dict(self) -> dict[str, Weight]:
+        return {name: getattr(self, name) for name in DIMENSIONS}
 
 
 @dataclass(frozen=True)
