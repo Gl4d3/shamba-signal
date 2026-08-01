@@ -39,10 +39,10 @@ def test_lockfile_matches_declared_project_dependencies() -> None:
     assert dev_metadata == set(project["optional-dependencies"]["dev"])
 
 
-def test_compiled_packages_have_portable_source_fallbacks() -> None:
+def test_lock_does_not_filter_registry_packages_to_one_platform() -> None:
     lock = tomllib.loads(Path("uv.lock").read_text(encoding="utf-8"))
-    packages = {package["name"]: package for package in lock["package"]}
-
-    for package_name in ("coverage", "pydantic-core", "ruff"):
-        assert "sdist" in packages[package_name]
-        assert packages[package_name]["sdist"]["url"].endswith(".tar.gz")
+    registry_packages = [
+        package for package in lock["package"] if package.get("source", {}).get("registry")
+    ]
+    assert registry_packages
+    assert all("wheels" not in package for package in registry_packages)
