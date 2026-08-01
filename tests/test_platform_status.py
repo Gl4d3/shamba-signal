@@ -9,20 +9,25 @@ def test_platform_status_exposes_approved_product_contract() -> None:
     assert response.status_code == 200
     body = response.json()
     assert body["product"] == "Shamba Signal"
+    assert body["release"] == "slice-1-feasibility-v0"
     assert body["primary_output"] == "county-season yield forecast"
     assert body["forecast_timing"] == "mid-season"
     assert body["architecture"] == "modular decision-intelligence platform"
     assert body["refresh_modes"] == ["scheduled", "analyst-triggered"]
+    assert "Busia" in body["geography"]
+    assert "Trans Nzoia" in body["geography"]
+    assert body["crop_scope"] == "maize selected by metadata-level data feasibility"
 
 
-def test_foundation_only_marks_data_feasibility_next() -> None:
+def test_slice_1_marks_only_target_dataset_next() -> None:
     client = TestClient(create_app())
     statuses = {
         item["id"]: item["status"]
         for item in client.get("/api/v1/platform/status").json()["capabilities"]
     }
     assert statuses == {
-        "data-feasibility": "next",
+        "data-feasibility": "ready",
+        "target-dataset": "next",
         "yield-forecasting": "planned",
         "stress-attribution": "planned",
         "guardrailed-advisory": "planned",

@@ -1,4 +1,4 @@
-.PHONY: install lint test validate compile smoke verify run
+.PHONY: install lint test validate compile smoke feasibility verify run
 
 install:
 	uv sync --locked --extra dev
@@ -17,6 +17,9 @@ compile:
 
 smoke:
 	uv run python scripts/smoke_api.py
+
+feasibility:
+	uv run python scripts/run_feasibility.py
 
 verify: lint test validate compile smoke
 

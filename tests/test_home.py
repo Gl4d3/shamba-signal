@@ -9,7 +9,12 @@ def test_home_page_describes_current_boundary_and_loads_dependencies() -> None:
     assert response.status_code == 200
     assert "Shamba Signal" in response.text
     assert "No farm-level yield prediction" in response.text
-    assert "no trained forecast model" in response.text.lower()
+    assert "Slice 1 feasibility completed" in response.text
+    assert "Maize is the metadata-selected crop" in response.text
+    assert "target-dataset evidence gate is next" in response.text
+    assert "Foundation shell implemented" not in response.text
+    assert "Data feasibility is next" not in response.text
+    assert "no downloaded canonical target dataset" in response.text.lower()
     assert client.get("/static/app.js").status_code == 200
     assert client.get("/static/styles.css").status_code == 200
     assert client.get("/api/v1/platform/status").status_code == 200

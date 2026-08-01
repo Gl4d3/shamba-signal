@@ -24,7 +24,7 @@ def create_app() -> FastAPI:
         return {
             "status": "ok",
             "service": "shamba-signal-api",
-            "release": "foundation-v0",
+            "release": get_platform_status().release,
         }
 
     @application.get(

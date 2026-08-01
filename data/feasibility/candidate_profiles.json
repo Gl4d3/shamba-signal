@@ -1,0 +1,112 @@
+{
+  "counties": [
+    {"candidate_id": "mombasa", "name": "Mombasa"},
+    {"candidate_id": "kwale", "name": "Kwale"},
+    {"candidate_id": "kilifi", "name": "Kilifi"},
+    {"candidate_id": "tana_river", "name": "Tana River"},
+    {"candidate_id": "lamu", "name": "Lamu"},
+    {"candidate_id": "taita_taveta", "name": "Taita-Taveta"},
+    {"candidate_id": "garissa", "name": "Garissa"},
+    {"candidate_id": "wajir", "name": "Wajir"},
+    {"candidate_id": "mandera", "name": "Mandera"},
+    {"candidate_id": "marsabit", "name": "Marsabit"},
+    {"candidate_id": "isiolo", "name": "Isiolo"},
+    {"candidate_id": "meru", "name": "Meru"},
+    {"candidate_id": "tharaka_nithi", "name": "Tharaka-Nithi"},
+    {"candidate_id": "embu", "name": "Embu"},
+    {"candidate_id": "kitui", "name": "Kitui"},
+    {"candidate_id": "machakos", "name": "Machakos"},
+    {"candidate_id": "makueni", "name": "Makueni"},
+    {"candidate_id": "nyandarua", "name": "Nyandarua"},
+    {"candidate_id": "nyeri", "name": "Nyeri"},
+    {"candidate_id": "kirinyaga", "name": "Kirinyaga"},
+    {"candidate_id": "muranga", "name": "Murang'a"},
+    {"candidate_id": "kiambu", "name": "Kiambu"},
+    {"candidate_id": "turkana", "name": "Turkana"},
+    {"candidate_id": "west_pokot", "name": "West Pokot"},
+    {"candidate_id": "samburu", "name": "Samburu"},
+    {"candidate_id": "trans_nzoia", "name": "Trans Nzoia"},
+    {"candidate_id": "uasin_gishu", "name": "Uasin Gishu"},
+    {"candidate_id": "elgeyo_marakwet", "name": "Elgeyo-Marakwet"},
+    {"candidate_id": "nandi", "name": "Nandi"},
+    {"candidate_id": "baringo", "name": "Baringo"},
+    {"candidate_id": "laikipia", "name": "Laikipia"},
+    {"candidate_id": "nakuru", "name": "Nakuru"},
+    {"candidate_id": "narok", "name": "Narok"},
+    {"candidate_id": "kajiado", "name": "Kajiado"},
+    {"candidate_id": "kericho", "name": "Kericho"},
+    {"candidate_id": "bomet", "name": "Bomet"},
+    {"candidate_id": "kakamega", "name": "Kakamega"},
+    {"candidate_id": "vihiga", "name": "Vihiga"},
+    {"candidate_id": "bungoma", "name": "Bungoma"},
+    {"candidate_id": "busia", "name": "Busia"},
+    {"candidate_id": "siaya", "name": "Siaya"},
+    {"candidate_id": "kisumu", "name": "Kisumu"},
+    {"candidate_id": "homa_bay", "name": "Homa Bay"},
+    {"candidate_id": "migori", "name": "Migori"},
+    {"candidate_id": "kisii", "name": "Kisii"},
+    {"candidate_id": "nyamira", "name": "Nyamira"},
+    {"candidate_id": "nairobi_city", "name": "Nairobi City"}
+  ],
+  "county_overrides": {
+    "busia": {
+      "dimensions": {"access_stability": 85, "historical_depth": 85, "license_and_redistribution": 90, "satellite_usability": 90, "spatial_resolution": 95, "yield_label_quality": 80},
+      "evidence_refs": ["kilimostat-county-crops", "nipfn-maize-2012-2020", "sentinel-2-l2a", "chirps-v3", "soilgrids", "icpac-admin1", "africultures-crop-calendar", "plantvillage-kenya", "nasa-busia-crop-map"],
+      "limitations": ["County-year label completeness is not yet measured from the source snapshot.", "Sentinel observation usability is not yet measured by forecast cutoff.", "The NASA Busia crop-map page does not specify a license; the CC BY PlantVillage layer is the redistributable anchor."]
+    },
+    "isiolo": {
+      "dimensions": {"access_stability": 76, "historical_depth": 95, "license_and_redistribution": 80, "satellite_usability": 82, "spatial_resolution": 60, "yield_label_quality": 78},
+      "evidence_refs": ["kilimostat-county-crops", "nipfn-maize-2012-2020", "sentinel-2-l2a", "chirps-v3", "soilgrids", "icpac-admin1", "africultures-crop-calendar", "isiolo-crops-2012-2023"],
+      "limitations": ["County-year label completeness is not yet measured from the source snapshot.", "Sentinel observation usability is not yet measured by forecast cutoff."]
+    },
+    "nakuru": {
+      "dimensions": {"access_stability": 78, "historical_depth": 85, "license_and_redistribution": 80, "satellite_usability": 82, "spatial_resolution": 70, "yield_label_quality": 80},
+      "evidence_refs": ["kilimostat-county-crops", "nipfn-maize-2012-2020", "sentinel-2-l2a", "chirps-v3", "soilgrids", "icpac-admin1", "africultures-crop-calendar"],
+      "limitations": ["County-year label completeness is not yet measured from the source snapshot.", "Sentinel observation usability is not yet measured by forecast cutoff."]
+    },
+    "narok": {
+      "dimensions": {"access_stability": 78, "historical_depth": 85, "license_and_redistribution": 80, "satellite_usability": 82, "spatial_resolution": 70, "yield_label_quality": 80},
+      "evidence_refs": ["kilimostat-county-crops", "nipfn-maize-2012-2020", "sentinel-2-l2a", "chirps-v3", "soilgrids", "icpac-admin1", "africultures-crop-calendar"],
+      "limitations": ["County-year label completeness is not yet measured from the source snapshot.", "Sentinel observation usability is not yet measured by forecast cutoff."]
+    },
+    "trans_nzoia": {
+      "dimensions": {"access_stability": 80, "historical_depth": 85, "license_and_redistribution": 80, "satellite_usability": 85, "spatial_resolution": 75, "yield_label_quality": 80},
+      "evidence_refs": ["kilimostat-county-crops", "nipfn-maize-2012-2020", "sentinel-2-l2a", "chirps-v3", "soilgrids", "icpac-admin1", "africultures-crop-calendar"],
+      "limitations": ["County-year label completeness is not yet measured from the source snapshot.", "Sentinel observation usability is not yet measured by forecast cutoff."]
+    }
+  },
+  "county_template": {
+    "dimensions": {"access_stability": 70, "historical_depth": 85, "license_and_redistribution": 75, "satellite_usability": 75, "spatial_resolution": 50, "yield_label_quality": 80},
+    "evidence_refs": ["kilimostat-county-crops", "nipfn-maize-2012-2020", "sentinel-2-l2a", "chirps-v3", "soilgrids", "icpac-admin1", "africultures-crop-calendar"],
+    "limitations": ["County-year label completeness is not yet measured from the source snapshot.", "Sentinel observation usability is not yet measured by forecast cutoff."]
+  },
+  "crops": [
+    {
+      "candidate_id": "maize", "candidate_type": "crop", "name": "Maize",
+      "dimensions": {"access_stability": 85, "historical_depth": 90, "license_and_redistribution": 90, "satellite_usability": 90, "spatial_resolution": 90, "yield_label_quality": 95},
+      "evidence_refs": ["kilimostat-county-crops", "nipfn-maize-2012-2020", "fsd-maize-yield", "africultures-crop-calendar", "plantvillage-kenya", "sentinel-2-l2a"],
+      "limitations": ["Exact county-year missingness and unit consistency require downloaded snapshots.", "The 2012-2020 source page does not itself expose redistribution terms."]
+    },
+    {
+      "candidate_id": "beans", "candidate_type": "crop", "name": "Beans",
+      "dimensions": {"access_stability": 72, "historical_depth": 50, "license_and_redistribution": 85, "satellite_usability": 82, "spatial_resolution": 75, "yield_label_quality": 68},
+      "evidence_refs": ["kilimostat-county-crops", "fsd-beans-yield", "africultures-crop-calendar", "plantvillage-kenya", "sentinel-2-l2a"],
+      "limitations": ["Long national county history was not independently located during this audit."]
+    },
+    {
+      "candidate_id": "sorghum", "candidate_type": "crop", "name": "Sorghum",
+      "dimensions": {"access_stability": 68, "historical_depth": 45, "license_and_redistribution": 80, "satellite_usability": 80, "spatial_resolution": 62, "yield_label_quality": 58},
+      "evidence_refs": ["kilimostat-county-crops", "africultures-crop-calendar", "plantvillage-kenya", "isiolo-crops-2012-2023", "sentinel-2-l2a"],
+      "limitations": ["County coverage and national historical continuity were not verified."]
+    },
+    {
+      "candidate_id": "cowpea", "candidate_type": "crop", "name": "Cowpea",
+      "dimensions": {"access_stability": 65, "historical_depth": 40, "license_and_redistribution": 80, "satellite_usability": 78, "spatial_resolution": 58, "yield_label_quality": 52},
+      "evidence_refs": ["kilimostat-county-crops", "africultures-crop-calendar", "isiolo-crops-2012-2023", "sentinel-2-l2a"],
+      "limitations": ["Evidence is strongest for isolated county series rather than a long national panel."]
+    }
+  ],
+  "profile_version": "0.1.0",
+  "score_scale": "0-100; heuristic feasibility scores backed by evidence records, not measured model performance",
+  "weights": {"access_stability": 10, "historical_depth": 20, "license_and_redistribution": 10, "satellite_usability": 10, "spatial_resolution": 15, "yield_label_quality": 35}
+}
