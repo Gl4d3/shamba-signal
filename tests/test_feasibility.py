@@ -199,3 +199,61 @@ def test_committed_artifacts_match_fresh_generation(tmp_path: Path) -> None:
             f"{committed.relative_to(ROOT)} is stale; regenerate it with "
             "scripts/run_feasibility.py"
         )
+
+
+def test_report_renders_registered_sensitivity_winners_dynamically(
+    tmp_path: Path,
+) -> None:
+    payload = json.loads(PROFILES_PATH.read_text(encoding="utf-8"))
+    crop_dimensions = {
+        "maize": {
+            "yield_label_quality": 100,
+            "historical_depth": 50,
+            "spatial_resolution": 0,
+            "satellite_usability": 50,
+            "license_and_redistribution": 50,
+            "access_stability": 50,
+        },
+        "beans": {
+            "yield_label_quality": 50,
+            "historical_depth": 50,
+            "spatial_resolution": 100,
+            "satellite_usability": 50,
+            "license_and_redistribution": 50,
+            "access_stability": 50,
+        },
+    }
+    for crop in payload["crops"]:
+        if crop["candidate_id"] in crop_dimensions:
+            crop["dimensions"] = crop_dimensions[crop["candidate_id"]]
+        else:
+            crop["dimensions"] = {name: 0 for name in DIMENSIONS}
+    profiles_path = tmp_path / "candidate_profiles.json"
+    profiles_path.write_text(json.dumps(payload), encoding="utf-8")
+    output_dir = tmp_path / "data"
+    report_path = tmp_path / "pilot-selection-decision.md"
+
+    generate_artifacts(
+        evidence_path=EVIDENCE_PATH,
+        profiles_path=profiles_path,
+        output_dir=output_dir,
+        report_path=report_path,
+    )
+
+    selection = json.loads((output_dir / "selection.json").read_text(encoding="utf-8"))
+    report = report_path.read_text(encoding="utf-8")
+    _, profiles = load_profiles(profiles_path)
+    names = {profile.candidate_id: profile.name for profile in profiles}
+    labels = {
+        "approved": "Approved weights",
+        "labels_heavy": "Labels-heavy",
+        "spatial_heavy": "Spatial-heavy",
+        "governance_heavy": "Governance-heavy",
+    }
+
+    assert selection["sensitivity"]["crop_winner_stable"] is False
+    assert "At least one registered sensitivity scenario changes" in report
+    for scenario, crop_id in selection["sensitivity"]["crop_winners"].items():
+        county_id = selection["sensitivity"]["county_winners"][scenario]
+        expected = f"- {labels[scenario]}: {names[crop_id].lower()} + {names[county_id]}"
+        assert expected in report
