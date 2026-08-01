@@ -62,6 +62,8 @@ def _human_join(values: list[str]) -> str:
         return ""
     if len(values) == 1:
         return values[0]
+    if len(values) == 2:
+        return f"{values[0]} and {values[1]}"
     return f"{', '.join(values[:-1])}, and {values[-1]}"
 
 
