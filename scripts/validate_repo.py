@@ -104,7 +104,9 @@ def validate_catalog(path: Path = CATALOG_RELATIVE_PATH) -> list[str]:
                     f"pilot-selection weights must be finite non-negative numbers: {key}={value!r}"
                 )
                 values_are_valid = False
-        if values_are_valid and sum(weights.values()) != 100:
+        if values_are_valid and not math.isclose(
+            sum(weights.values()), 100.0, rel_tol=0.0, abs_tol=1e-9
+        ):
             errors.append("pilot-selection weights must total 100")
 
     sources = catalog.get("sources")
