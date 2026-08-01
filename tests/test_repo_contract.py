@@ -1,3 +1,4 @@
+import subprocess
 from pathlib import Path
 
 REQUIRED_FILES = (
@@ -35,3 +36,15 @@ def test_environment_variants_are_ignored_but_example_is_retained() -> None:
     assert ".env" in lines
     assert ".env.*" in lines
     assert "!.env.example" in lines
+    assert lines.index(".env.*") < lines.index("!.env.example")
+
+    ignored = subprocess.run(
+        ["git", "check-ignore", "--no-index", "--quiet", ".env.local"],
+        check=False,
+    )
+    example = subprocess.run(
+        ["git", "check-ignore", "--no-index", "--quiet", ".env.example"],
+        check=False,
+    )
+    assert ignored.returncode == 0
+    assert example.returncode == 1

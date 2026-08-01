@@ -25,6 +25,14 @@ REQUIRED_SOURCE_KEYS = {
     "temporal_coverage",
     "license_status",
 }
+REQUIRED_SOURCE_TEXT_FIELDS = {
+    "id",
+    "publisher",
+    "dataset_title",
+    "access_method",
+    "spatial_coverage",
+    "temporal_coverage",
+}
 REQUIRED_FILES = (
     Path("README.md"),
     Path("docs/product/PRD.md"),
@@ -110,7 +118,9 @@ def validate_catalog(path: Path = CATALOG_RELATIVE_PATH) -> list[str]:
             errors.append(f"{label} must be an object")
             continue
         source_id = source.get("id")
-        if isinstance(source_id, str) and source_id:
+        valid_source_id = isinstance(source_id, str) and bool(source_id.strip())
+        if valid_source_id:
+            source_id = source_id.strip()
             label = f"source {source_id}"
             if source_id in seen_ids:
                 errors.append(f"duplicate source id: {source_id}")
@@ -118,6 +128,10 @@ def validate_catalog(path: Path = CATALOG_RELATIVE_PATH) -> list[str]:
         missing_keys = sorted(REQUIRED_SOURCE_KEYS - set(source))
         if missing_keys:
             errors.append(f"{label} missing required keys: {missing_keys}")
+        for field in sorted(REQUIRED_SOURCE_TEXT_FIELDS & set(source)):
+            value = source.get(field)
+            if not isinstance(value, str) or not value.strip():
+                errors.append(f"{label} {field} must be a non-empty string")
         access_url = source.get("access_url")
         if not isinstance(access_url, str) or not access_url.startswith("https://"):
             errors.append(f"{label} access_url must use HTTPS")

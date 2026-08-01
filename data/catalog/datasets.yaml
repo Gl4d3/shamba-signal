@@ -82,7 +82,7 @@
       "temporal_coverage": "reference year 2015",
       "access_url": "https://geoportal.icpac.net/layers/geonode%3Akenya_croplands_2015",
       "access_method": "download and OGC services",
-      "license_status": "review-required",
+      "license_status": "blocked",
       "license_note": "Metadata reports no specified licence; do not redistribute or make it the sole crop mask without permission."
     }
   ]

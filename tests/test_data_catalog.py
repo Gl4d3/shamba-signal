@@ -16,9 +16,15 @@ def test_dataset_catalog_has_selection_criteria_and_candidate_sources() -> None:
         "icpac-admin1",
     }.issubset(source_ids)
     for source in catalog["sources"]:
-        assert source["license_status"] in {"verified", "review-required"}
+        assert source["license_status"] in {"verified", "review-required", "blocked"}
         assert source["access_url"].startswith("https://")
         assert source["publisher"]
         assert source["dataset_title"]
         assert source["spatial_coverage"]
         assert source["temporal_coverage"]
+
+
+def test_unlicensed_cropland_source_is_blocked() -> None:
+    catalog = json.loads(Path("data/catalog/datasets.yaml").read_text())
+    statuses = {source["id"]: source["license_status"] for source in catalog["sources"]}
+    assert statuses["icpac-cropland-2015"] == "blocked"

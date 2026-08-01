@@ -27,6 +27,17 @@ def test_lockfile_matches_declared_project_dependencies() -> None:
         for item in locked_project["metadata"]["requires-extra"]["dev"]
     )
 
+    runtime_metadata = {
+        f'{item["name"]}{item["specifier"]}'
+        for item in locked_project["metadata"]["requires-dist"]
+    }
+    dev_metadata = {
+        f'{item["name"]}{item["specifier"]}'
+        for item in locked_project["metadata"]["requires-extra"]["dev"]
+    }
+    assert runtime_metadata == set(project["dependencies"])
+    assert dev_metadata == set(project["optional-dependencies"]["dev"])
+
 
 def test_compiled_packages_have_portable_source_fallbacks() -> None:
     lock = tomllib.loads(Path("uv.lock").read_text(encoding="utf-8"))

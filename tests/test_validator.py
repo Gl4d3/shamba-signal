@@ -89,3 +89,23 @@ def test_source_required_fields_url_and_license_are_validated(tmp_path: Path) ->
 def test_repository_validation_does_not_parse_missing_catalog(tmp_path: Path) -> None:
     errors = validate_repository(root=tmp_path)
     assert "missing required file: data/catalog/datasets.yaml" in errors
+
+
+@pytest.mark.parametrize(
+    "field,value",
+    [
+        ("id", ""),
+        ("publisher", "   "),
+        ("dataset_title", ""),
+        ("access_method", "\t"),
+        ("spatial_coverage", ""),
+        ("temporal_coverage", "   "),
+    ],
+)
+def test_required_source_text_fields_reject_empty_values(
+    tmp_path: Path, field: str, value: str
+) -> None:
+    payload = valid_catalog()
+    payload["sources"][0][field] = value
+    errors = validate_catalog(write_catalog(tmp_path, payload))
+    assert any(f"{field} must be a non-empty string" in error for error in errors)

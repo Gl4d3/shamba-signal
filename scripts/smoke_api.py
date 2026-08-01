@@ -1,3 +1,5 @@
+import sys
+
 from fastapi.testclient import TestClient
 
 from shamba_signal.api.app import create_app
@@ -16,9 +18,17 @@ def main() -> None:
     for path, content_type in expected.items():
         response = client.get(path)
         if response.status_code != 200:
-            raise SystemExit(f"smoke test failed: {path} returned {response.status_code}")
+            print(
+                f"smoke test failed: {path} returned {response.status_code}",
+                file=sys.stderr,
+            )
+            raise SystemExit(1)
         if content_type not in response.headers.get("content-type", ""):
-            raise SystemExit(f"smoke test failed: {path} has unexpected content type")
+            print(
+                f"smoke test failed: {path} has unexpected content type",
+                file=sys.stderr,
+            )
+            raise SystemExit(1)
     print("Application/API smoke test passed")
 
 
