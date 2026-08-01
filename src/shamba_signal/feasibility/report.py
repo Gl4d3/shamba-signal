@@ -226,6 +226,10 @@ def generate_artifacts(
         sensitivity_intro = (
             "At least one registered sensitivity scenario changes the selected pair:"
         )
+    download_instruction = (
+        "1. Download and checksum the official "
+        f"{selected_crop.profile.name.lower()} county records."
+    )
     switch_instruction = (
         f"5. Switch to {fallback_county.profile.name} if "
         f"{selected_county.profile.name} fails label completeness, geographic overlap "
@@ -289,7 +293,7 @@ The audit records twelve public sources, including:
 
 ## Required validation before modelling
 
-1. Download and checksum the official maize county records.
+{download_instruction}
 2. Profile county-year completeness, flags, units and reported-versus-derived yield.
 3. Measure Sentinel-2 and Sentinel-1 observation availability by forecast cutoff.
 4. Confirm the exact spatial overlap and class distribution of the western Kenya crop-type labels.
