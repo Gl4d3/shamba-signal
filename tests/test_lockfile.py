@@ -83,3 +83,15 @@ def test_lock_contains_no_local_registry_artifact_paths() -> None:
                 assert artifact["url"].startswith("https://")
             elif isinstance(artifact, list):
                 assert all(item["url"].startswith("https://") for item in artifact)
+
+
+def test_lock_dependency_references_are_closed_and_pytest_keeps_pygments() -> None:
+    packages = {package["name"]: package for package in load_lock()["package"]}
+    for package in packages.values():
+        for dependency in package.get("dependencies", []):
+            assert dependency["name"] in packages
+
+    pytest_dependencies = {
+        dependency["name"] for dependency in packages["pytest"]["dependencies"]
+    }
+    assert "pygments" in pytest_dependencies
