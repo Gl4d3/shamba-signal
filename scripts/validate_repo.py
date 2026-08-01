@@ -84,6 +84,8 @@ def _load_json(path: Path, label: str) -> tuple[dict[str, Any] | None, list[str]
 
 
 def _load_catalog(path: Path) -> tuple[dict[str, Any] | None, list[str]]:
+    if not path.is_file():
+        return None, [f"missing required file: {CATALOG_RELATIVE_PATH.as_posix()}"]
     return _load_json(path, "data catalog")
 
 
