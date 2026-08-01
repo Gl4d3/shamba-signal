@@ -257,3 +257,39 @@ def test_report_renders_registered_sensitivity_winners_dynamically(
         county_id = selection["sensitivity"]["county_winners"][scenario]
         expected = f"- {labels[scenario]}: {names[crop_id].lower()} + {names[county_id]}"
         assert expected in report
+
+
+def test_profile_loader_rejects_boolean_candidate_scores(tmp_path: Path) -> None:
+    payload = json.loads(PROFILES_PATH.read_text(encoding="utf-8"))
+    payload["crops"][0]["dimensions"]["yield_label_quality"] = True
+    profiles_path = tmp_path / "candidate_profiles.json"
+    profiles_path.write_text(json.dumps(payload), encoding="utf-8")
+
+    with pytest.raises(ValueError, match="candidate score yield_label_quality must be numeric"):
+        load_profiles(profiles_path)
+
+
+def test_county_rationale_uses_selected_county_evidence(tmp_path: Path) -> None:
+    payload = json.loads(PROFILES_PATH.read_text(encoding="utf-8"))
+    payload["county_overrides"]["isiolo"]["dimensions"] = {
+        name: 100 for name in DIMENSIONS
+    }
+    payload["county_overrides"]["busia"]["dimensions"] = {
+        name: 0 for name in DIMENSIONS
+    }
+    profiles_path = tmp_path / "candidate_profiles.json"
+    profiles_path.write_text(json.dumps(payload), encoding="utf-8")
+    output_dir = tmp_path / "data"
+    report_path = tmp_path / "pilot-selection-decision.md"
+
+    result = generate_artifacts(
+        evidence_path=EVIDENCE_PATH,
+        profiles_path=profiles_path,
+        output_dir=output_dir,
+        report_path=report_path,
+    )
+
+    report = report_path.read_text(encoding="utf-8")
+    assert result.selected_county == "isiolo"
+    assert "Crops Data 2012-2023" in report
+    assert "Busia-specific" not in report
