@@ -168,6 +168,22 @@ def validate_catalog(path: Path = CATALOG_RELATIVE_PATH) -> list[str]:
     return errors
 
 
+def _selection_candidate_id(
+    selection: dict[str, Any], field: str, errors: list[str]
+) -> str | None:
+    record = selection.get(field)
+    if not isinstance(record, dict):
+        errors.append(f"selection record {field} must be an object")
+        return None
+    candidate_id = record.get("candidate_id")
+    if not isinstance(candidate_id, str) or not candidate_id.strip():
+        errors.append(
+            f"selection record {field}.candidate_id must be a non-empty string"
+        )
+        return None
+    return candidate_id.strip()
+
+
 def validate_feasibility(root: Path = Path(".")) -> list[str]:
     errors: list[str] = []
     catalog, catalog_errors = _load_catalog(root / CATALOG_RELATIVE_PATH)
@@ -203,9 +219,9 @@ def validate_feasibility(root: Path = Path(".")) -> list[str]:
     if not evidence_ids or None in evidence_ids or len(evidence_ids) != len(evidence_rows or []):
         errors.append("evidence register IDs must be non-empty and unique")
 
-    selected_crop = selection.get("selected_crop", {}).get("candidate_id")
-    selected_county = selection.get("selected_county", {}).get("candidate_id")
-    fallback_county = selection.get("runner_up_county", {}).get("candidate_id")
+    selected_crop = _selection_candidate_id(selection, "selected_crop", errors)
+    selected_county = _selection_candidate_id(selection, "selected_county", errors)
+    fallback_county = _selection_candidate_id(selection, "runner_up_county", errors)
     if selected_crop != pilot.get("selected_crop"):
         errors.append("catalog and selection record disagree on selected crop")
     if selected_county != pilot.get("selected_county"):
