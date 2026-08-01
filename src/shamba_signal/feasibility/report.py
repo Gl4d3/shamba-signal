@@ -178,6 +178,29 @@ def generate_artifacts(
         "The machine-readable evidence register records publisher, URL, coverage, access "
         "method, licensing status and unresolved work."
     )
+    scenario_labels = {
+        "approved": "Approved weights",
+        "labels_heavy": "Labels-heavy",
+        "spatial_heavy": "Spatial-heavy",
+        "governance_heavy": "Governance-heavy",
+    }
+    profile_names = {profile.candidate_id: profile.name for profile in profiles}
+    sensitivity_rows = "\n".join(
+        (
+            f"- {scenario_labels[scenario]}: "
+            f"{profile_names[crop_sensitivity.winners[scenario]].lower()} + "
+            f"{profile_names[county_sensitivity.winners[scenario]]}"
+        )
+        for scenario in scenarios
+    )
+    if crop_sensitivity.stable and county_sensitivity.stable:
+        sensitivity_intro = (
+            "The winner remains unchanged in all four registered scenarios:"
+        )
+    else:
+        sensitivity_intro = (
+            "At least one registered sensitivity scenario changes the selected pair:"
+        )
     switch_instruction = (
         f"5. Switch to {fallback_county.profile.name} if "
         f"{selected_county.profile.name} fails label completeness, geographic overlap "
@@ -216,12 +239,9 @@ def generate_artifacts(
 
 ## Sensitivity
 
-The winner remains unchanged in all four registered scenarios:
+{sensitivity_intro}
 
-- Approved weights: {selected_crop.profile.name.lower()} + {selected_county.profile.name}
-- Labels-heavy: {selected_crop.profile.name.lower()} + {selected_county.profile.name}
-- Spatial-heavy: {selected_crop.profile.name.lower()} + {selected_county.profile.name}
-- Governance-heavy: {selected_crop.profile.name.lower()} + {selected_county.profile.name}
+{sensitivity_rows}
 
 The exact profiles and scenario weights are versioned in `data/feasibility/`.
 
