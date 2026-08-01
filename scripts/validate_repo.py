@@ -6,14 +6,15 @@ from pathlib import Path
 from typing import Any
 
 CATALOG_RELATIVE_PATH = Path("data/catalog/datasets.yaml")
-EXPECTED_WEIGHT_KEYS = {
-    "yield_label_quality",
-    "historical_depth",
-    "spatial_resolution",
-    "satellite_usability",
-    "license_and_redistribution",
-    "access_stability",
+APPROVED_WEIGHTS = {
+    "yield_label_quality": 35,
+    "historical_depth": 20,
+    "spatial_resolution": 15,
+    "satellite_usability": 10,
+    "license_and_redistribution": 10,
+    "access_stability": 10,
 }
+EXPECTED_WEIGHT_KEYS = set(APPROVED_WEIGHTS)
 ALLOWED_LICENSE_STATES = {"verified", "review-required", "restricted", "unknown", "blocked"}
 REQUIRED_SOURCE_KEYS = {
     "id",
@@ -108,6 +109,12 @@ def validate_catalog(path: Path = CATALOG_RELATIVE_PATH) -> list[str]:
             sum(weights.values()), 100.0, rel_tol=0.0, abs_tol=1e-9
         ):
             errors.append("pilot-selection weights must total 100")
+        if (
+            values_are_valid
+            and actual_keys == EXPECTED_WEIGHT_KEYS
+            and weights != APPROVED_WEIGHTS
+        ):
+            errors.append("pilot-selection weights must match approved values")
 
     sources = catalog.get("sources")
     if not isinstance(sources, list):
