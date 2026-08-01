@@ -150,6 +150,39 @@ def generate_artifacts(
         f"| {index} | {item.profile.name} | {item.score:.2f} |"
         for index, item in enumerate(crop_ranking, start=1)
     )
+    score_sentence = (
+        f"The approved weighted score selects {selected_crop.profile.name} at "
+        f"**{selected_crop.score:.2f}/100** and {selected_county.profile.name} at "
+        f"**{selected_county.score:.2f}/100**."
+    )
+    crop_reason = (
+        f"{selected_crop.profile.name} has the strongest combination of county-level "
+        "yield history, current official dashboard coverage, crop-calendar support, "
+        "and compatibility with open satellite and crop-mask evidence."
+    )
+    county_reason = (
+        f"{selected_county.profile.name} adds unusually strong spatial evidence. The "
+        "PlantVillage Kenya collection provides open **10 m crop-type and crop-density "
+        "labels** in western Kenya under **CC BY 4.0**, and NASA Harvest publishes a "
+        "Busia-specific 2020 cropland raster. "
+        f"{selected_county.profile.name} still uses the same national county-yield "
+        "evidence available to the other counties."
+    )
+    fallback_reason = (
+        f"{fallback_county.profile.name} remains the first fallback because AfriCultuReS "
+        "publishes a dedicated Trans-Nzoia crop-calendar layer and the county is well "
+        "suited to maize monitoring, but this audit did not locate comparably open "
+        "field-level crop-type evidence there."
+    )
+    evidence_sentence = (
+        "The machine-readable evidence register records publisher, URL, coverage, access "
+        "method, licensing status and unresolved work."
+    )
+    switch_instruction = (
+        f"5. Switch to {fallback_county.profile.name} if "
+        f"{selected_county.profile.name} fails label completeness, geographic overlap "
+        "or observation thresholds."
+    )
     report = f"""# Pilot Selection Decision
 
 ## Decision
@@ -159,7 +192,7 @@ def generate_artifacts(
 - **Fallback county:** {fallback_county.profile.name}
 - **Decision status:** selected for Slice 2, subject to snapshot-level completeness checks
 
-The approved weighted score selects {selected_crop.profile.name} at **{selected_crop.score:.2f}/100** and {selected_county.profile.name} at **{selected_county.score:.2f}/100**.
+{score_sentence}
 
 ## Crop ranking
 
@@ -175,11 +208,11 @@ The approved weighted score selects {selected_crop.profile.name} at **{selected_
 
 ## Why this pair
 
-{selected_crop.profile.name} has the strongest combination of county-level yield history, current official dashboard coverage, crop-calendar support, and compatibility with open satellite and crop-mask evidence.
+{crop_reason}
 
-{selected_county.profile.name} adds unusually strong spatial evidence. The PlantVillage Kenya collection provides open **10 m crop-type and crop-density labels** in western Kenya under **CC BY 4.0**, and NASA Harvest publishes a Busia-specific 2020 cropland raster. {selected_county.profile.name} still uses the same national county-yield evidence available to the other counties.
+{county_reason}
 
-{fallback_county.profile.name} remains the first fallback because AfriCultuReS publishes a dedicated Trans-Nzoia crop-calendar layer and the county is well suited to maize monitoring, but this audit did not locate comparably open field-level crop-type evidence there.
+{fallback_reason}
 
 ## Sensitivity
 
@@ -207,7 +240,7 @@ The audit records twelve public sources, including:
 - SoilGrids
 - ICPAC county boundaries
 
-The machine-readable evidence register records publisher, URL, coverage, access method, licensing status and unresolved work.
+{evidence_sentence}
 
 ## Required validation before modelling
 
@@ -215,7 +248,7 @@ The machine-readable evidence register records publisher, URL, coverage, access 
 2. Profile county-year completeness, flags, units and reported-versus-derived yield.
 3. Measure Sentinel-2 and Sentinel-1 observation availability by forecast cutoff.
 4. Confirm the exact spatial overlap and class distribution of the western Kenya crop-type labels.
-5. Switch to {fallback_county.profile.name} if {selected_county.profile.name} fails label completeness, geographic overlap or observation thresholds.
+{switch_instruction}
 
 ## Scientific limits
 
