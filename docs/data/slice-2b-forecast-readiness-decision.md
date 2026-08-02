@@ -19,3 +19,14 @@ KilimoSTAT and the Food Systems Dashboard are removed from the critical path bec
 ## Required closure
 
 Slice 2B must preserve both private source vintages, establish an evidence-backed precedence/reconciliation policy, extend the annual county panel only after reconciliation, and then decide whether county-year baseline feasibility is supportable. It does not authorize season labels, forecasting, or decision support.
+
+## Closure outcome
+
+The private Slice 2B build now closes this gate. It extracts all 235 county-year
+records from the report, preserves the older 2020 vintage separately, and uses
+the report as the active series for 2019-2023. Combined with the workbook's
+2012-2018 records, this produces 564 county-year rows, 563 usable yield labels,
+and fixed train/validation/test years of 2012-2021, 2022, and provisional 2023.
+
+County-year baseline modelling is supportable and is the next implementation
+slice. This decision still does not authorize county-season labels.

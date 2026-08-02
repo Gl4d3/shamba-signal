@@ -12,6 +12,7 @@ license = { text = "MIT" }
 authors = [{ name = "Shamba Signal contributors" }]
 dependencies = [
   "fastapi==0.115.8",
+  "pdfplumber==0.11.9",
   "pydantic==2.10.6",
   "uvicorn==0.34.0",
 ]

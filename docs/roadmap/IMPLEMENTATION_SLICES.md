@@ -34,14 +34,21 @@ A slice is a testable end-to-end product or research outcome. Infrastructure set
 
 ## Slice 2B — Official annual label reconciliation and forecast readiness
 
-**Status:** next. No modelling work begins before conflicting official annual vintages are reconciled and the annual panel is extended.
+**Status:** complete locally. The private modelling panel contains 564 county-year rows for 2012-2023, with 563 usable labels.
 
 **Outcome:** reconcile source vintages, establish evidence-backed source precedence, and decide whether county-year baseline feasibility is supportable. County-season is an evidence-insufficiency result.
 
 **Acceptance:** private source audit, reconciliation policy, annual-panel extension, terms review, and a documented modelling go/no-go. No crop calendar may disaggregate annual totals.
 
+## Slice 3 — Temporal yield baselines
+
+**Status:** next.
+
+**Outcome:** train leakage-safe county-year baselines on 2012-2021, tune or select on 2022, and report untouched provisional-2023 performance.
+
+**Acceptance:** previous-year and county-mean references, at least one regularized model, county/year error analysis, and a clear beat-or-no-beat decision against the naive references.
+
 ## Out-of-scope history
 
-Earlier planning mentioned forecasting, crop-stress, and advisory work. They are not current
-release capabilities or promised slices. The only post-Slice-2B consideration is a county-year
-baseline feasibility/no-go study, if its reconciliation gate closes.
+Earlier planning mentioned crop-stress and advisory work. They are not current release
+capabilities or promised slices. The active work is the bounded county-year baseline study.

@@ -13,7 +13,8 @@
 | 2026-08-02 | Visual proof | Desktop and narrow-mobile browser checks show the Slice 2A ready / Slice 2B next boundary without console errors. The previous acquisition-blocked screenshot is retained only under a historical filename. |
 | 2026-08-02 | Feasibility artifact reproducibility | The feasibility generator writes JSON and Markdown with explicit LF newlines on Windows. Its canonical report is a historical Slice 1 selection artifact carrying the current Slice 2A/2B boundary. |
 | 2026-08-02 | Acquisition review follow-up | A direct CSV source may parse an explicitly accepted `application/octet-stream` payload as CSV, but still fails its schema gate. Manual verified fields are only for supplied download-manager payloads: they are rejected before network acquisition without `--input-file`, for any non-download-manager source, and by the validation layer itself. |
-| 2026-08-02 | Publication receipt | `slice/2-target-dataset` is pushed to draft PR #14. Issue #3 now owns Slice 2A, issue #16 owns Slice 2B reconciliation, issue #4 is the blocked county-year baseline study, and issue #11 reflects the same delivery order. GitHub Actions still fails before any job step under issue #12. |
+| 2026-08-02 | Publication receipt | PR #14 is merged to `main` at `755e70a`. Issue #3 owns Slice 2A, issue #16 owns Slice 2B reconciliation, and issue #4 owns the county-year baseline study. GitHub Actions still fails before any job step under issue #12. |
+| 2026-08-02 | Slice 2B modelling panel | The verified KNBS report annex supplies 235 rows for 2019-2023. The active private panel uses the NIPFN workbook for 2012-2018 and the report for 2019-2023, preserving the superseded 2020 vintage separately. Result: 564 rows, 563 usable labels, 47 counties, train 2012-2021, validation 2022, provisional test 2023. Slice 3 temporal baselines are now unblocked. |
 
 ## Current Slice 2 state
 
@@ -23,6 +24,7 @@
 - The Slice 2A annual snapshot is ready but explicitly source-bound and not model-ready. Slice 2B is the annual-source reconciliation gate; no county-season mapping or forecast model exists.
 - Public status release `slice-2a-annual-snapshot-v1` exposes the ready Slice 2A package, the next conflicting-2020-vintage reconciliation gate, and only planned county-year baseline feasibility.
 - `refresh_modes` is intentionally empty: scheduled and analyst-triggered operations are unavailable.
+- Private modelling package: `derived/county-year-maize-modelling-v1` under the adjacent private snapshot root. It contains the fixed panel, 2020 comparison, manifest, and dataset card; source-derived rows remain outside Git.
 
 ## 2026-08-02 baseline reproducibility repair
 
