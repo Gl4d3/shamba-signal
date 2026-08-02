@@ -50,6 +50,13 @@ def main() -> None:
         raise SystemExit(1)
     registry = load_source_registry(args.registry)
     source = registry.source(args.source_id)
+    if args.verified_field and source.acquisition_mode != "download_manager":
+        print(
+            "snapshot acquisition failed: --verified-field is only supported for "
+            "download-manager sources",
+            file=sys.stderr,
+        )
+        raise SystemExit(1)
     if source.terms_status == "blocked" or source.redistribution_status == "blocked":
         print(f"source {source.source_id} is blocked", file=sys.stderr)
         raise SystemExit(1)

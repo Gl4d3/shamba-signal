@@ -12,7 +12,7 @@
 | 2026-08-02 | Release boundary correction | The public/repository contract ends at Slice 2B and only plans a county-year baseline feasibility/no-go study. Forecast, crop-stress, advisory, and season-label work are out of scope. |
 | 2026-08-02 | Visual proof | Desktop and narrow-mobile browser checks show the Slice 2A ready / Slice 2B next boundary without console errors. The previous acquisition-blocked screenshot is retained only under a historical filename. |
 | 2026-08-02 | Feasibility artifact reproducibility | The feasibility generator writes JSON and Markdown with explicit LF newlines on Windows. Its canonical report is a historical Slice 1 selection artifact carrying the current Slice 2A/2B boundary. |
-| 2026-08-02 | Acquisition review follow-up | A direct CSV source may parse an explicitly accepted `application/octet-stream` payload as CSV, but still fails its schema gate. `--verified-field` is manual-file-only and is rejected before network acquisition without `--input-file`. |
+| 2026-08-02 | Acquisition review follow-up | A direct CSV source may parse an explicitly accepted `application/octet-stream` payload as CSV, but still fails its schema gate. Manual verified fields are only for supplied download-manager payloads: they are rejected before network acquisition without `--input-file`, for any non-download-manager source, and by the validation layer itself. |
 | 2026-08-02 | Publication receipt | `slice/2-target-dataset` is pushed to draft PR #14. Issue #3 now owns Slice 2A, issue #16 owns Slice 2B reconciliation, issue #4 is the blocked county-year baseline study, and issue #11 reflects the same delivery order. GitHub Actions still fails before any job step under issue #12. |
 
 ## Current Slice 2 state

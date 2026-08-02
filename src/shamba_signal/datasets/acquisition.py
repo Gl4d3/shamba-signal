@@ -125,6 +125,10 @@ def validate_response(
         raise AcquisitionError("dataset request redirected to the landing page")
 
     if manual_verified_fields is not None:
+        if source.acquisition_mode != "download_manager":
+            raise AcquisitionError(
+                "manual verified fields are only supported for download-manager sources"
+            )
         if not manual_verified_fields or any(
             not item.strip() for item in manual_verified_fields
         ):

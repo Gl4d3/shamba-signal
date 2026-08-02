@@ -107,6 +107,15 @@ def test_direct_csv_octet_stream_still_rejects_a_malformed_schema() -> None:
         )
 
 
+def test_manual_verified_fields_cannot_bypass_direct_csv_schema_validation() -> None:
+    with pytest.raises(AcquisitionError, match="download-manager"):
+        validate_response(
+            source(),
+            response(b"arbitrary local bytes"),
+            manual_verified_fields=("county", "year", "yield"),
+        )
+
+
 def test_validate_response_rejects_redirect_to_landing_page() -> None:
     with pytest.raises(AcquisitionError, match="landing page"):
         validate_response(
