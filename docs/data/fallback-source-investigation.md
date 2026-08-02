@@ -2,7 +2,7 @@
 
 ## Decision rule
 
-Fallback research must not silently replace the selected official county-season target. A candidate is recorded here only to show why it was rejected or what separate research question it could support.
+Fallback research must not silently replace the selected official county-year target. A candidate is recorded here only to show why it was rejected or what separate research question it could support.
 
 ## KCHSP 2020 Q1-Q2 Crop Output
 
@@ -20,10 +20,10 @@ The official Agriculture Output module contains crop code, total crop area in ac
 
 It is not a replacement for the current target because:
 
-- it is a 2005-2006 household survey rather than a continuing county-season statistics panel;
+- it is a 2005-2006 household survey rather than a continuing county-year statistics panel;
 - the catalog describes representativeness at national, urban/rural, provincial, and district levels, not current counties;
 - parcel/crop linkage, survey weighting, anonymization, harvested-unit conversion, and access restrictions require separate validation;
-- even a successful historical microdata experiment would not validate a current mid-season county forecast.
+- even a successful historical microdata experiment would not establish county-year baseline feasibility.
 
 Any use requires a separate approved research artifact and must preserve the archive's access, confidentiality, citation, and copyright conditions.
 

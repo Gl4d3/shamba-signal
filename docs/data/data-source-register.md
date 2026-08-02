@@ -4,6 +4,11 @@
 **Slice 1 review date:** 2026-08-01  
 **Rule:** a landing page or valid download does not by itself prove completeness, model suitability, or redistribution permission.
 
+> **Superseded for the current release:** this is historical Slice 1 discovery evidence. Slice 2B
+> reconciles the accepted NIPFN workbook with the private KNBS annual-report candidate; KilimoSTAT
+> and Food Systems Dashboard are off the critical path because no current verified response contract
+> is accessible.
+
 ## Slice 1 decision
 
 The metadata-level feasibility scorecard selects **maize** and **Busia**, with **Trans Nzoia** as the first fallback. This decision ranks acquisition prospects; it does not assert that the target labels, satellite observations, or crop-mask overlap have passed Slice 2 acceptance.

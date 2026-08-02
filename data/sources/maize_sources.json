@@ -29,8 +29,8 @@
         "Source",
         "Flag"
       ],
-      "access_state": "parameters-and-endpoint-discovery-required",
-      "role": "primary production, harvested-area, yield, source, and flag records"
+      "access_state": "off-critical-path-no-current-verified-response-contract",
+      "role": "off-critical-path candidate pending a current verified response contract"
     },
     {
       "source_id": "fsd-maize-yield",
@@ -53,8 +53,8 @@
       "network_acquisition_ready": false,
       "expected_fields": ["county", "year", "value"],
       "schema_contract_state": "provisional-pending-first-valid-response",
-      "access_state": "endpoint-verified-schema-and-response-validation-required",
-      "role": "reported county maize yield cross-check"
+      "access_state": "off-critical-path-no-current-verified-response-contract",
+      "role": "off-critical-path candidate pending a current verified response contract"
     },
     {
       "source_id": "fsd-maize-production",
@@ -77,8 +77,8 @@
       "network_acquisition_ready": false,
       "expected_fields": ["county", "year", "value"],
       "schema_contract_state": "provisional-pending-first-valid-response",
-      "access_state": "endpoint-verified-schema-and-response-validation-required",
-      "role": "recent county maize production cross-check"
+      "access_state": "off-critical-path-no-current-verified-response-contract",
+      "role": "off-critical-path candidate pending a current verified response contract"
     },
     {
       "source_id": "fsd-maize-area",
@@ -101,8 +101,8 @@
       "network_acquisition_ready": false,
       "expected_fields": ["county", "year", "value"],
       "schema_contract_state": "provisional-pending-first-valid-response",
-      "access_state": "endpoint-verified-schema-and-response-validation-required",
-      "role": "recent county maize harvested-area cross-check"
+      "access_state": "off-critical-path-no-current-verified-response-contract",
+      "role": "off-critical-path candidate pending a current verified response contract"
     },
     {
       "source_id": "nipfn-maize-2012-2020",

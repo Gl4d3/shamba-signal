@@ -5,7 +5,7 @@ def get_platform_status() -> PlatformStatus:
     return PlatformStatus(
         product="Shamba Signal",
         release="slice-2a-annual-snapshot-v1",
-        architecture="modular decision-intelligence platform",
+        architecture="county-year label readiness",
         primary_output="county-year baseline feasibility",
         forecast_timing="not scheduled",
         geography=(
@@ -46,20 +46,6 @@ def get_platform_status() -> PlatformStatus:
                 outcome=(
                     "Assess whether reconciled annual labels support a baseline feasibility study."
                 ),
-            ),
-            Capability(
-                id="stress-attribution",
-                name="Crop-stress attribution",
-                status=CapabilityStatus.PLANNED,
-                outcome=(
-                    "Explain rainfall, heat, moisture, and vegetation signals behind forecasts."
-                ),
-            ),
-            Capability(
-                id="guardrailed-advisory",
-                name="Guardrailed decision support",
-                status=CapabilityStatus.PLANNED,
-                outcome="Select evidence-linked actions from approved agricultural playbooks.",
             ),
         ],
     )

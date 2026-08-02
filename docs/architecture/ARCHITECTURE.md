@@ -1,5 +1,8 @@
 # Shamba Signal Architecture
 
+> **Historical architecture direction:** forecast and advisory components below are not current
+> release capabilities. The current release stops at Slice 2B annual-label reconciliation.
+
 ## 1. Architectural stance and implementation status
 
 Shamba Signal is designed as a **modular monolith with independent workers where justified**, not a premature microservice fleet.

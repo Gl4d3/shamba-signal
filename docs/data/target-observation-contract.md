@@ -53,14 +53,17 @@ Quality classes are explicit source-adapter decisions. The generic target layer 
 
 ## Source adapter boundary
 
-The KilimoSTAT adapter now maps its documented fields—County, Domain, Subdomain, Element, Item, Value, Unit, Year, Source, and Flag—into canonical observations.
+An unactivated KilimoSTAT adapter maps its documented fields—County, Domain, Subdomain, Element,
+Item, Value, Unit, Year, Source, and Flag—into canonical observations. KilimoSTAT is off the
+critical path because no current verified response contract is accessible.
 
 - Non-maize rows fail for the current selected-crop build.
 - Unsupported elements and placeholder/non-numeric values fail.
 - Original fields are retained.
 - Unknown flags remain `review-required`; an explicit source-flag policy is required before a flag may be treated as accepted or merely flagged.
 
-The Food Systems Dashboard adapters remain pending until one valid response schema is inspected.
+Food Systems Dashboard adapters are off the critical path because no current verified response
+contract is accessible.
 The KNBS/NIPFN workbook adapter is verified against its tidy `County`, `Year`, `Indicator`, and
 `Value` sheet. Its three observed indicators map to harvested area (`ha`), production (`t`), and
 reported yield (`t/ha`); workbook-specific aliases resolve `Homabay` and `Tharaka-Nthi` without

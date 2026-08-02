@@ -1,11 +1,15 @@
 # Pilot Selection Decision
 
+> **Historical Slice 1 evidence:** this selection record predates the Slice 2A/2B source-vintage
+> decision. It does not authorize forecast, crop-stress, advisory, or season-label work.
+
 ## Decision
 
 - **MVP crop:** Maize
 - **Deep-dive county:** Busia
 - **Fallback county:** Trans Nzoia
-- **Decision status:** selected for Slice 2, subject to snapshot-level completeness checks
+- **Decision status:** Busia confirmed for accepted annual-label validation; Slice 2B source-vintage
+  reconciliation remains required before county-year baseline feasibility is considered.
 
 The approved weighted score selects Maize at **91.25/100** and Busia at **85.75/100**.
 

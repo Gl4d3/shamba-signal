@@ -19,7 +19,6 @@ Slice 2A is complete: retain the accepted private annual county-year snapshot. S
 - canonical county/crop/period observations with original values, units, flags, quality class, and snapshot lineage;
 - approved unit conversion for tonnes, kilograms, hectares, acres, and yield units;
 - safe derived-yield and reported-versus-derived reconciliation contracts;
-- KilimoSTAT documented-field adapter with conservative source-flag handling;
 - duplicate target-key/element rejection;
 - deterministic target CSV and quality JSON renderers;
 - quality reporting for county/period coverage, missingness, reported/derived yield, reconciliation, quality classes, source flags, canonical units, and duplicate policy;
@@ -29,8 +28,10 @@ Slice 2A is complete: retain the accepted private annual county-year snapshot. S
 
 **Not yet implemented or claimed:**
 
-- a county-season mapping or season-specific target table;
-- Food Systems Dashboard row adapters;
+- season mapping or a season-specific target table; county-season is evidence-insufficient and
+  annual totals must not be crop-calendar disaggregated;
+- KilimoSTAT and Food Systems Dashboard row adapters; both are off the critical path because no
+  current verified response contract is accessible;
 - source redistribution approval or Git publication of the source-derived rows;
 - Parquet publication;
 - a trained model, forecast, or production decision-support workflow.
@@ -59,10 +60,10 @@ decision only, not a seasonal continuity claim or model-readiness result.
 
 | Source | Acquisition pattern | Measured state | Next action |
 |---|---|---|---|
-| KilimoSTAT crops | Parameterized JSON/data endpoint | Official schema, county coverage, monthly update policy, and CC BY-NC-SA 3.0 IGO portal terms are visible; valid maize request parameters still need resolution | Discover and freeze the exact domain/subdomain/element/item/year request, then acquire the first immutable response |
-| FSD maize yield | Indicator `16` CSV endpoint | Download link resolves to indicator 16; page identifies tonnes per hectare and 2021; CSV retrieval times out in the available web environment and the header contract remains provisional | Run `make probe-sources` from a networked environment after the schema is inspected and explicitly enabled |
-| FSD maize production | Indicator `277` CSV endpoint | Download link resolves to indicator 277; page identifies tonnes and 2022-2024; generic retrieval returns an anomalous error response | Inspect one valid response, freeze exact headers, enable the source, then probe and acquire |
-| FSD maize area | Indicator `133` CSV endpoint | Download link resolves to indicator 133; page identifies hectares and currently displays 2026; generic retrieval returns an anomalous error response | Inspect one valid response, verify period coverage, freeze exact headers, enable the source, then probe and acquire |
+| KilimoSTAT crops | Historical candidate endpoint | No current verified response contract is accessible | Off the critical path; do not use for Slice 2B reconciliation |
+| FSD maize yield | Historical candidate endpoint | No current verified response contract is accessible | Off the critical path; do not use for Slice 2B reconciliation |
+| FSD maize production | Historical candidate endpoint | No current verified response contract is accessible | Off the critical path; do not use for Slice 2B reconciliation |
+| FSD maize area | Historical candidate endpoint | No current verified response contract is accessible | Off the critical path; do not use for Slice 2B reconciliation |
 | KNBS/NIPFN maize 2012-2020 | WordPress download manager | Landing metadata confirms one 67.13 KB file, 2012-2020 scope, and Kilimodata source; stable asset URL remains hidden | Resolve the asset request or use the manual verified-file path after the workbook schema is inspected |
 
 All three FSD entries remain `network_acquisition_ready: false`. Discovering an endpoint is not equivalent to verifying its response schema. The probe deliberately reports those sources as `not-ready` and does not make a request; the NIPFN download-manager entry reports `manual-required` until its file path is resolved.
@@ -83,14 +84,13 @@ download. This is retained as access evidence, not the current Slice 2 state.
 1. In a normal browser connection, download the KNBS/NIPFN **Maize Production by County 2012-2020** workbook from its official landing page.
 2. Do not open, save, edit, rename, or convert the file after download. Place the original file outside the repository, for example under `D:\proj-d\side-projects\shamba-signal-private-snapshots\nipfn-maize-2012-2020\`.
 3. Provide the exact local file path to the implementation worker. The worker will inspect the workbook before declaring actual verified fields or selecting the `.xls`/`.xlsx` media type.
-4. If the KNBS workbook cannot be obtained, provide a successful KilimoSTAT browser request with its visible county, item, element, year, and download parameters. Do not provide cookies, bearer tokens, signed URLs, or credentials.
 
 This historical checkpoint predates the accepted workbook. It is retained as recovery evidence only: Busia and Trans Nzoia have since been evaluated against accepted annual records.
 
 ## Public fallback decisions
 
 - **KCHSP 2020 Q1-Q2 Crop Output:** rejected for the yield target. Its official 20-field data dictionary covers crop sales and prices but exposes neither total production nor harvested area.
-- **KIHBS 2005-2006 Agriculture:** research-only candidate. It exposes crop area, crop code, harvested quantity, and unit, but it is old household microdata with district-era geography, linkage/unit/weighting questions, and access constraints. It may not replace the current county-season target.
+- **KIHBS 2005-2006 Agriculture:** research-only candidate. It exposes crop area, crop code, harvested quantity, and unit, but it is old household microdata with district-era geography, linkage/unit/weighting questions, and access constraints. It may not replace the current county-year target.
 
 ## Canonical target gates
 

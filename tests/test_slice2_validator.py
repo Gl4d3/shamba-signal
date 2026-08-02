@@ -1,6 +1,8 @@
 import json
 from pathlib import Path
 
+import pytest
+
 from scripts.validate_slice2 import validate_slice2
 
 REQUIRED_PATHS = (
@@ -70,7 +72,7 @@ def test_slice2_validator_rejects_missing_primary_source(tmp_path: Path) -> None
     path = tmp_path / "data/sources/maize_sources.json"
     payload = json.loads(path.read_text(encoding="utf-8"))
     payload["sources"] = [
-        item for item in payload["sources"] if item["source_id"] != "fsd-maize-yield"
+        item for item in payload["sources"] if item["source_id"] != "nipfn-maize-2012-2020"
     ]
     path.write_text(json.dumps(payload), encoding="utf-8")
 
@@ -118,3 +120,84 @@ def test_slice2_validator_rejects_pre_split_or_contradictory_slice_2_docs(
     assert "roadmap must define Slice 2A annual snapshot and Slice 2B reconciliation" in errors
     assert "acquisition status must not present the accepted annual snapshot as blocked" in errors
     assert "acquisition status must not state that Busia has never been evaluated" in errors
+
+
+@pytest.mark.parametrize(
+    ("path", "value", "expected"),
+    [
+        ("accepted_snapshot.sha256", "bad", "accepted snapshot SHA-256 is incorrect"),
+        ("accepted_snapshot.status", "accepted", "accepted snapshot status is incorrect"),
+        ("accepted_snapshot.coverage", "unknown", "accepted snapshot coverage is incorrect"),
+        (
+            "candidate_revision.direct_url",
+            "https://example.com",
+            "candidate direct URL is incorrect",
+        ),
+        ("candidate_revision.byte_size", 1, "candidate byte size is incorrect"),
+        ("candidate_revision.sha256", "bad", "candidate SHA-256 is incorrect"),
+        ("candidate_revision.status", "accepted", "candidate status is incorrect"),
+        (
+            "candidate_revision.terms_and_redistribution",
+            "accepted",
+            "candidate terms are incorrect",
+        ),
+        ("candidate_revision.coverage", "unknown", "candidate coverage is incorrect"),
+        ("overlap_comparison.relative_difference_threshold", 0.1, "overlap threshold is incorrect"),
+        (
+            "overlap_comparison.materially_different_counties",
+            1,
+            "material overlap count is incorrect",
+        ),
+        ("overlap_comparison.overlapping_counties", 1, "overlap county count is incorrect"),
+        ("overlap_comparison.Busia", "untested", "Busia overlap finding is incorrect"),
+        (
+            "overlap_comparison.Trans Nzoia.accepted_workbook",
+            "unknown",
+            "Trans Nzoia workbook finding is incorrect",
+        ),
+        (
+            "overlap_comparison.Trans Nzoia.candidate_report",
+            "unknown",
+            "Trans Nzoia report finding is incorrect",
+        ),
+        ("source_contracts.KilimoSTAT", "active", "KilimoSTAT critical-path decision is incorrect"),
+        (
+            "source_contracts.Food Systems Dashboard",
+            "active",
+            "Food Systems Dashboard critical-path decision is incorrect",
+        ),
+        ("decision.supported_target_grain", "county-season", "supported target grain is incorrect"),
+        ("decision.county_season", "supported", "county-season decision is incorrect"),
+        (
+            "decision.annual_disaggregation",
+            "allowed",
+            "annual disaggregation decision is incorrect",
+        ),
+        ("decision.next_gate", "model", "next gate decision is incorrect"),
+    ],
+)
+def test_slice2_validator_rejects_corrupted_source_audit_facts(
+    tmp_path: Path, path: str, value: object, expected: str
+) -> None:
+    copy_required_tree(tmp_path)
+    audit_path = tmp_path / "data/sources/slice2b_source_audit.json"
+    payload = json.loads(audit_path.read_text(encoding="utf-8"))
+    target = payload
+    *parents, leaf = path.split(".")
+    for parent in parents:
+        target = target[parent]
+    target[leaf] = value
+    audit_path.write_text(json.dumps(payload), encoding="utf-8")
+
+    assert expected in validate_slice2(tmp_path)
+
+
+def test_slice2_validator_requires_decision_document_boundary_phrases(tmp_path: Path) -> None:
+    copy_required_tree(tmp_path)
+    decision_path = tmp_path / "docs/data/slice-2b-forecast-readiness-decision.md"
+    decision_path.write_text("# Decision\n", encoding="utf-8")
+
+    assert (
+        "forecast-readiness decision document is missing required boundary phrases"
+        in validate_slice2(tmp_path)
+    )

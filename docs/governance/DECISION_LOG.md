@@ -1,5 +1,8 @@
 # Decision Log
 
+> **Historical decisions:** entries describing county-season forecasts, crop-stress, or advisory
+> reflect the pre-Slice-2B product vision and do not override the current county-year release boundary.
+
 ## ADR-001 — Modular decision-intelligence platform
 
 **Decision:** build a modular monolith plus independent workers before considering microservices.

@@ -32,15 +32,15 @@ vintages, extend the annual panel, and assess county-year baseline feasibility. 
 forecast, decision support, or resolved source precedence is claimed. See
 [`docs/data/slice-2-acquisition-status.md`](docs/data/slice-2-acquisition-status.md).
 
-**Not implemented:** a county-season target, trained model, calibrated forecast, stress
-attribution, research dashboard, advisory engine, scheduler, AWS deployment, or Druid benchmark.
-The annual local-only target is not a redistribution approval and must not be inferred as a model.
+**Out of scope for this release:** season labels, a trained model, forecast, crop-stress analysis,
+decision support, dashboards, scheduling, AWS deployment, and Druid. The annual local-only target
+is not a redistribution approval and must not be inferred as a model.
 
-## Resolution boundary
+## Release boundary
 
-- **Future validated output:** county × crop × season yield forecast, only where evidence gates pass.
-- **Possible explanatory output:** relative yield potential and crop-stress indicators.
-- **Never implied:** measured ward yield or farm-level yield prediction without matching labels.
+The release stops with Slice 2B official annual-label reconciliation. Its only planned modelling
+outcome is a county-year baseline feasibility or no-go study after reconciliation; it does not
+promise a forecast, season labels, or decision support.
 
 ## Reproducible local setup
 

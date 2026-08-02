@@ -1,5 +1,9 @@
 # Product Requirements Document — Shamba Signal
 
+> **Historical product vision:** this document is not the current release contract. The current
+> release ends at Slice 2B; county-season, forecasting, crop-stress, and advisory claims are out
+> of scope pending a county-year reconciliation and baseline-feasibility/no-go decision.
+
 **Status:** Approved programme; foundation implementation only
 **Product direction:** Modular decision-intelligence platform
 **Primary geography:** Kenya

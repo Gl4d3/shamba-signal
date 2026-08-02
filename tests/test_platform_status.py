@@ -12,7 +12,7 @@ def test_platform_status_exposes_approved_product_contract() -> None:
     assert body["release"] == "slice-2a-annual-snapshot-v1"
     assert body["primary_output"] == "county-year baseline feasibility"
     assert body["forecast_timing"] == "not scheduled"
-    assert body["architecture"] == "modular decision-intelligence platform"
+    assert body["architecture"] == "county-year label readiness"
     assert body["refresh_modes"] == ["scheduled", "analyst-triggered"]
     assert "Busia" in body["geography"]
     assert "Trans Nzoia" in body["geography"]
@@ -30,8 +30,6 @@ def test_platform_status_reports_verified_annual_target_without_seasonal_model_c
         "annual-snapshot": "ready",
         "annual-label-reconciliation": "next",
         "county-year-baseline": "planned",
-        "stress-attribution": "planned",
-        "guardrailed-advisory": "planned",
     }
     target_dataset = next(
         item
@@ -51,10 +49,9 @@ def test_platform_status_reports_verified_annual_target_without_seasonal_model_c
 def test_openapi_declares_platform_status_response_schema_and_enums() -> None:
     client = TestClient(create_app())
     schema = client.get("/openapi.json").json()
-    response_schema = (
-        schema["paths"]["/api/v1/platform/status"]["get"]["responses"]["200"]
-        ["content"]["application/json"]["schema"]
-    )
+    response_schema = schema["paths"]["/api/v1/platform/status"]["get"]["responses"]["200"][
+        "content"
+    ]["application/json"]["schema"]
     assert response_schema == {"$ref": "#/components/schemas/PlatformStatus"}
     assert schema["components"]["schemas"]["CapabilityStatus"]["enum"] == [
         "ready",
@@ -62,3 +59,6 @@ def test_openapi_declares_platform_status_response_schema_and_enums() -> None:
         "next",
         "planned",
     ]
+    assert schema["info"]["description"] == (
+        "County-year annual-label readiness for Kenya; no forecast or decision support."
+    )
