@@ -129,6 +129,16 @@ def test_slice2_validator_rejects_pre_split_or_contradictory_slice_2_docs(
         ("accepted_snapshot.status", "accepted", "accepted snapshot status is incorrect"),
         ("accepted_snapshot.coverage", "unknown", "accepted snapshot coverage is incorrect"),
         (
+            "candidate_revision.publisher",
+            "Unknown publisher",
+            "candidate publisher is incorrect",
+        ),
+        (
+            "candidate_revision.title",
+            "Unknown report",
+            "candidate title is incorrect",
+        ),
+        (
             "candidate_revision.direct_url",
             "https://example.com",
             "candidate direct URL is incorrect",
@@ -143,6 +153,7 @@ def test_slice2_validator_rejects_pre_split_or_contradictory_slice_2_docs(
         ),
         ("candidate_revision.coverage", "unknown", "candidate coverage is incorrect"),
         ("overlap_comparison.relative_difference_threshold", 0.1, "overlap threshold is incorrect"),
+        ("overlap_comparison.year", 2021, "overlap year is incorrect"),
         (
             "overlap_comparison.materially_different_counties",
             1,

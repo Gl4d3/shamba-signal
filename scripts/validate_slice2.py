@@ -164,6 +164,14 @@ def _validate_source_audit(root: Path) -> list[str]:
             "https://www.knbs.or.ke/wp-content/uploads/2025/01/National-Agriculture-Production-Report-2024.pdf",
             "candidate direct URL is incorrect",
         ),
+        "candidate_revision.publisher": (
+            "Kenya National Bureau of Statistics",
+            "candidate publisher is incorrect",
+        ),
+        "candidate_revision.title": (
+            "National Agriculture Production Report 2024",
+            "candidate title is incorrect",
+        ),
         "candidate_revision.byte_size": (12398810, "candidate byte size is incorrect"),
         "candidate_revision.sha256": (
             "7d86dc4cbfa1d0b5204e2428fb8d84c3bada0fc1775bf0b7d557dfebcc4d70eb",
@@ -186,6 +194,7 @@ def _validate_source_audit(root: Path) -> list[str]:
             0.001,
             "overlap threshold is incorrect",
         ),
+        "overlap_comparison.year": (2020, "overlap year is incorrect"),
         "overlap_comparison.materially_different_counties": (
             24,
             "material overlap count is incorrect",
