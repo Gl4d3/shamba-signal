@@ -103,6 +103,13 @@ def test_build_target_dataset_groups_observations_and_reports_quality() -> None:
     assert result.report.rows_with_reported_yield == 2
     assert result.report.rows_with_derived_yield == 2
     assert result.report.rows_missing_yield == 1
+    assert result.report.source_flag_counts == {}
+    assert result.report.canonical_units == {
+        "production": "t",
+        "harvested_area": "ha",
+        "reported_yield": "t/ha",
+    }
+    assert result.report.duplicate_policy == "fail"
 
 
 def test_rendered_artifacts_are_deterministic_and_sorted() -> None:
