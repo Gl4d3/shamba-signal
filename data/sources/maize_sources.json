@@ -1,5 +1,5 @@
 {
-  "registry_version": "0.2.0",
+  "registry_version": "0.3.0",
   "selected_crop": "maize",
   "target_grain": "county x crop x season",
   "sources": [
@@ -35,13 +35,13 @@
     {
       "source_id": "fsd-maize-yield",
       "publisher": "Kenya Ministry of Agriculture and Livestock Development",
-      "dataset_title": "Maize volumes produced per hectare by county",
-      "landing_url": "https://fsd.kilimo.go.ke/indicators/food-supply-chains/production-systems-and-input-supply/maize-volumes-produced-per-ha/admin-1/table",
-      "acquisition_url": "https://fsd.kilimo.go.ke/api/indicators/278/countries/ken/csv?adminLevel=LEVEL_1",
+      "dataset_title": "Maize yield by county",
+      "landing_url": "https://fsd.kilimo.go.ke/indicators/food-supply-chains/production-systems-and-input-supply/maize-yield/admin-1/table",
+      "acquisition_url": "https://fsd.kilimo.go.ke/api/indicators/16/countries/ken/csv?adminLevel=LEVEL_1",
       "acquisition_mode": "direct_csv",
-      "access_method": "HTTPS indicator CSV endpoint",
+      "access_method": "HTTPS indicator CSV endpoint discovered from the page download link",
       "spatial_coverage": "Kenya admin level 1 counties",
-      "temporal_coverage": "2022-2024 according to the indicator page; verify in snapshot",
+      "temporal_coverage": "Page currently identifies 2021; verify in accepted snapshot",
       "terms_status": "review-required",
       "redistribution_status": "review-required",
       "accepted_media_types": [
@@ -50,10 +50,59 @@
         "application/vnd.ms-excel",
         "application/octet-stream"
       ],
-      "network_acquisition_ready": true,
-      "expected_fields": ["county", "year", "yield"],
-      "access_state": "endpoint-located-response-validation-required",
-      "role": "recent county maize yield cross-check"
+      "network_acquisition_ready": false,
+      "expected_fields": ["county", "year", "value"],
+      "schema_contract_state": "provisional-pending-first-valid-response",
+      "access_state": "endpoint-verified-schema-and-response-validation-required",
+      "role": "reported county maize yield cross-check"
+    },
+    {
+      "source_id": "fsd-maize-production",
+      "publisher": "Kenya Ministry of Agriculture and Livestock Development",
+      "dataset_title": "Maize volumes produced by county",
+      "landing_url": "https://fsd.kilimo.go.ke/indicators/food-supply-chains/production-systems-and-input-supply/maize-volumes-produced/admin-1/table",
+      "acquisition_url": "https://fsd.kilimo.go.ke/api/indicators/277/countries/ken/csv?adminLevel=LEVEL_1",
+      "acquisition_mode": "direct_csv",
+      "access_method": "HTTPS indicator CSV endpoint discovered from the page download link",
+      "spatial_coverage": "Kenya admin level 1 counties",
+      "temporal_coverage": "Page currently identifies 2022-2024; verify in accepted snapshot",
+      "terms_status": "review-required",
+      "redistribution_status": "review-required",
+      "accepted_media_types": [
+        "text/csv",
+        "application/csv",
+        "application/vnd.ms-excel",
+        "application/octet-stream"
+      ],
+      "network_acquisition_ready": false,
+      "expected_fields": ["county", "year", "value"],
+      "schema_contract_state": "provisional-pending-first-valid-response",
+      "access_state": "endpoint-verified-schema-and-response-validation-required",
+      "role": "recent county maize production cross-check"
+    },
+    {
+      "source_id": "fsd-maize-area",
+      "publisher": "Kenya Ministry of Agriculture and Livestock Development",
+      "dataset_title": "Maize area by county",
+      "landing_url": "https://fsd.kilimo.go.ke/indicators/food-supply-chains/production-systems-and-input-supply/maize-area/admin-1/table",
+      "acquisition_url": "https://fsd.kilimo.go.ke/api/indicators/133/countries/ken/csv?adminLevel=LEVEL_1",
+      "acquisition_mode": "direct_csv",
+      "access_method": "HTTPS indicator CSV endpoint discovered from the page download link",
+      "spatial_coverage": "Kenya admin level 1 counties",
+      "temporal_coverage": "Page currently identifies 2026; verify in accepted snapshot",
+      "terms_status": "review-required",
+      "redistribution_status": "review-required",
+      "accepted_media_types": [
+        "text/csv",
+        "application/csv",
+        "application/vnd.ms-excel",
+        "application/octet-stream"
+      ],
+      "network_acquisition_ready": false,
+      "expected_fields": ["county", "year", "value"],
+      "schema_contract_state": "provisional-pending-first-valid-response",
+      "access_state": "endpoint-verified-schema-and-response-validation-required",
+      "role": "recent county maize harvested-area cross-check"
     },
     {
       "source_id": "nipfn-maize-2012-2020",
@@ -74,6 +123,7 @@
       ],
       "network_acquisition_ready": false,
       "expected_fields": ["county", "year", "production", "yield"],
+      "schema_contract_state": "provisional-pending-workbook-inspection",
       "access_state": "landing-page-verified-stable-asset-url-not-exposed",
       "role": "historical 2012-2020 county maize panel"
     }
