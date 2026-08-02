@@ -1,0 +1,81 @@
+# Slice 2 Target Dataset Implementation Plan
+
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+
+**Goal:** Build a reproducible county × maize × season target dataset from official public records, preserve reported and derived yield semantics, and confirm Busia or switch to Trans Nzoia from measured evidence.
+
+**Architecture:** Source-specific acquisition adapters write immutable raw bytes plus portable manifests. A canonicalization layer parses source-specific fields into typed observations, validates units and keys, separates reported from derived yield, produces a versioned target table, and publishes a quality report and dataset card. Any inaccessible, ambiguous, or licence-unclear source fails closed.
+
+**Tech Stack:** Python 3.12+, standard library first, JSON/CSV, Parquet only through an explicitly locked implementation, pytest, Ruff.
+
+## Global constraints
+
+- Target grain remains county × crop × season.
+- No source bytes are fabricated or silently transformed before manifesting.
+- No credentials, cookies, bearer headers, signed URLs, or local absolute paths enter canonical manifests.
+- Reported yield and derived yield remain distinguishable.
+- Derived yield requires positive harvested area, compatible period/grain, and compatible units.
+- Duplicate canonical keys, schema drift, invalid units, and ambiguous county mappings fail publication.
+- Busia remains provisional until measured label continuity and observation gates pass.
+- A rigorous no-go result is acceptable when public data is inaccessible or insufficient.
+
+---
+
+### Task 1: Source contracts and immutable manifests
+
+**Files:**
+- `data/sources/maize_sources.json`
+- `src/shamba_signal/datasets/manifest.py`
+- `src/shamba_signal/datasets/registry.py`
+- `tests/test_source_manifest.py`
+- `tests/test_registry.py`
+
+- [x] Validate non-empty identifiers and metadata, HTTPS URLs, allowed acquisition modes, allowed terms states, timezone-aware retrieval, non-empty payloads, and accepted media types.
+- [x] Store portable repository/object identifiers rather than local absolute file URIs.
+- [x] Record dataset title, access method, spatial/temporal coverage, schema fingerprint, licence/redistribution decision, and transformation revision.
+- [x] Reject embedded credentials and common token/signature query parameters from canonical URLs.
+
+### Task 2: Acquisition and response validation
+
+**Files:**
+- `src/shamba_signal/datasets/acquisition.py`
+- `scripts/acquire_source.py`
+- `tests/test_acquisition.py`
+
+- [x] Accept only expected status/media/schema combinations.
+- [x] Preserve raw bytes before parsing.
+- [x] Fail closed on HTML masquerading as CSV, empty payloads, redirects to landing pages, and unresolved download-manager pages.
+- [x] Support a documented manual verified snapshot path when an official download manager does not expose a stable asset URL.
+- [x] Use bounded timeout, explicit `Accept`, and a project-identifying user agent for live requests.
+- [ ] Acquire and checksum the first accepted official snapshot from a networked environment.
+
+### Task 3: Canonical observations and yield reconciliation
+
+**Files:**
+- Create canonical target domain/schema.
+- Add unit/county/element mapping.
+- Add fixture and property tests.
+
+- [ ] Canonicalize county code/name, crop, year/season, element, value, unit, source, flag, snapshot ID, and quality state.
+- [ ] Preserve original fields and source flags.
+- [ ] Keep reported yield separate from derived yield.
+- [ ] Derive tonnes per hectare only from positive, same-grain, period-compatible production and harvested-area observations.
+
+### Task 4: Target dataset and quality decision
+
+**Files:**
+- Create deterministic build command.
+- Create versioned table, manifest, quality report, data dictionary, and dataset card.
+- Create Busia-confirm/fallback decision record.
+
+- [ ] Enforce unique county/crop/season target keys.
+- [ ] Report county/year coverage, missingness, flags, duplicates, units, and reported-versus-derived counts.
+- [ ] Confirm Busia only when the documented thresholds pass; otherwise switch to Trans Nzoia or publish an evidence-insufficiency result.
+- [ ] Ensure a clean regeneration matches committed publishable artifacts byte-for-byte or value-for-value as specified.
+
+### Task 5: Integration and acceptance
+
+- [ ] Extend repository validation with target-data contracts.
+- [ ] Update platform status, README, roadmap, source register, and issue control surface truthfully.
+- [ ] Run the full available local gate and record unavailable infrastructure checks separately.
+- [ ] Resolve every review thread with evidence before merge.
