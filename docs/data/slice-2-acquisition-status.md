@@ -75,26 +75,28 @@ No source can enter the target table until:
 
 ## Verification receipt
 
-Focused target-data gate:
+The exact Slice 2 code/test surface was reconstructed from the branch files and verified locally:
 
 ```text
-PYTHONPATH=src python -m pytest -q \
+PYTHONPATH=src /opt/pyvenv/bin/python -m pytest -q \
   tests/test_source_manifest.py \
   tests/test_acquisition.py \
   tests/test_registry.py \
   tests/test_target_observations.py \
   tests/test_kilimostat_adapter.py \
   tests/test_target_build.py
-...........................................                              [100%]
-43 passed
+.........................................................                [100%]
+57 passed
 
-python -m compileall -q src scripts
+PYTHONPATH=src /opt/pyvenv/bin/python -m compileall -q src scripts
 exit 0
 
-100-character line and excessive-blank-line scan
+100-character line scan
 passed
 ```
 
 The target builder is deterministic under reordered fixture observations, and the pilot gate exercises primary-confirmed, fallback-selected, and insufficient-evidence outcomes.
+
+The complete inherited repository suite was not rerun in this sandbox because the GitHub branch cannot be cloned through the blocked DNS/network path. This receipt therefore claims the complete Slice 2 focused surface, not the full repository suite.
 
 A live FSD acquisition attempt failed before HTTP with temporary DNS resolution failure; no bytes or manifest were written. The available web fetcher also returned timeout or anomalous 400 responses for the three download URLs. These are environment/access findings, not accepted source evidence. The adapters remain fail-closed.
