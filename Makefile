@@ -11,6 +11,7 @@ test:
 
 validate:
 	uv run python scripts/validate_repo.py
+	uv run python scripts/validate_slice2.py
 
 compile:
 	uv run python -m compileall -q src scripts
