@@ -10,6 +10,7 @@
 | 2026-08-02 | Annual pilot gate | Local-only build has 376 county-year rows from 1,128 observations. Busia passes the eight-period annual gate; this does not authorize forecasting, season mapping, or source redistribution. |
 | 2026-08-02 | Slice 2A/2B split | Slice 2A is the completed, private source-bound annual snapshot. Slice 2B must reconcile conflicting official annual vintages and extend the county-year panel before baseline-feasibility modelling. County-season is evidence-insufficient; annual totals must not be crop-calendar disaggregated. |
 | 2026-08-02 | Release boundary correction | The public/repository contract ends at Slice 2B and only plans a county-year baseline feasibility/no-go study. Forecast, crop-stress, advisory, and season-label work are out of scope. |
+| 2026-08-02 | Visual proof | Desktop and narrow-mobile browser checks show the Slice 2A ready / Slice 2B next boundary without console errors. The previous acquisition-blocked screenshot is retained only under a historical filename. |
 | 2026-08-02 | Feasibility artifact reproducibility | The feasibility generator writes JSON and Markdown with explicit LF newlines on Windows. Its canonical report is a historical Slice 1 selection artifact carrying the current Slice 2A/2B boundary. |
 
 ## Current Slice 2 state
@@ -27,4 +28,4 @@
 - Added the repository root to Pytest's import path so tests importing `scripts.*` work on Windows.
 - Applied Python 3.12-safe Ruff modernization and corrected lockfile tests to validate the current UV extra-dependency format rather than an invalid manual Pytest-to-Pygments edge.
 - Enforced LF for deterministic feasibility artifacts through `.gitattributes`; the generated scorecard is byte-stable on this worktree.
-- Local verification used `uv run pytest -q --basetemp .pytest-tmp` because the shared Windows temp root is denied. The command passed 129 tests, followed by lint, repository and Slice 2 validators, compilation, and API smoke.
+- Local verification uses `uv run pytest -q --basetemp .pytest-tmp` because the shared Windows temp root is denied. The current split and visual-proof checkpoint passes 170 tests, followed by lint, repository and Slice 2 validators, compilation, API smoke, and desktop/mobile browser checks.

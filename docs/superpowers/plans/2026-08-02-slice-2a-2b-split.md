@@ -36,27 +36,27 @@
 - Consumes: accepted NIPFN snapshot digest `15a47b6fdc634fab7a69cd7576974d2f9eeb550218389d4a1526dd8123a92ab8` and candidate KNBS report digest `7d86dc4cbfa1d0b5204e2428fb8d84c3bada0fc1775bf0b7d557dfebcc4d70eb`.
 - Produces: a machine-readable source audit and repository validation requirements for the split.
 
-- [ ] **Step 1: Write failing validator tests**
+- [x] **Step 1: Write failing validator tests**
 
   Require the Slice 2B audit and decision document, the new roadmap headings, and removal of live statements that acquisition is still blocked or that Busia has never been evaluated.
 
-- [ ] **Step 2: Run the focused tests and confirm failure**
+- [x] **Step 2: Run the focused tests and confirm failure**
 
   Run: `uv run pytest -q tests/test_slice2_validator.py --basetemp .pytest-tmp`
 
-- [ ] **Step 3: Add the evidence artifacts and align documentation**
+- [x] **Step 3: Add the evidence artifacts and align documentation**
 
   Record that the direct KNBS report is 12,398,810 bytes, covers annual county area and production for 2019-2023, is marked provisional for 2023, and differs materially from the accepted workbook in 24 of 47 overlapping 2020 county rows under a 0.1 percent comparison threshold. Record Busia as matching within rounding and Trans Nzoia as materially divergent. Choose county-year as the supported target grain and publish county-season as evidence-insufficient.
 
-- [ ] **Step 4: Strengthen repository validation**
+- [x] **Step 4: Strengthen repository validation**
 
   Make `validate_slice2.py` fail if the audit/decision files disappear or the roadmap regresses to the pre-split boundary.
 
-- [ ] **Step 5: Run focused tests**
+- [x] **Step 5: Run focused tests**
 
   Run: `uv run pytest -q tests/test_slice2_validator.py --basetemp .pytest-tmp`
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
   Commit message: `docs: split annual target from forecast readiness`
 
@@ -74,49 +74,50 @@
 - Consumes: the Slice 2A / 2B decision from Task 1.
 - Produces: release `slice-2a-annual-snapshot-v1`, a ready Slice 2A capability, a next Slice 2B reconciliation capability, and planned county-year baseline modelling.
 
-- [ ] **Step 1: Write failing API and homepage tests**
+- [x] **Step 1: Write failing API and homepage tests**
 
   Assert that the public status distinguishes source-bound annual readiness from model readiness, exposes reconciliation as next, and no longer claims county-season forecasting as the validated primary output.
 
-- [ ] **Step 2: Run focused tests and confirm failure**
+- [x] **Step 2: Run focused tests and confirm failure**
 
   Run: `uv run pytest -q tests/test_platform_status.py tests/test_home.py --basetemp .pytest-tmp`
 
-- [ ] **Step 3: Implement the minimal truthful status update**
+- [x] **Step 3: Implement the minimal truthful status update**
 
   Keep the accepted annual package ready, add Slice 2B as next, state that official source vintages conflict, and make county-year baseline feasibility the planned modelling outcome. Do not claim a resolved source precedence policy.
 
-- [ ] **Step 4: Run focused tests**
+- [x] **Step 4: Run focused tests**
 
   Run: `uv run pytest -q tests/test_platform_status.py tests/test_home.py --basetemp .pytest-tmp`
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
   Commit message: `feat: expose annual label reconciliation gate`
 
 ### Task 3: Verify and publish the split
 
 **Files:**
-- Replace: `docs/assets/slice-2-target-dataset/acquisition-blocked-status.png`
+- Create: `docs/assets/slice-2-target-dataset/slice-2a-2b-status.png`
+- Rename: `docs/assets/slice-2-target-dataset/acquisition-blocked-status.png` to `docs/assets/slice-2-target-dataset/historical-acquisition-blocked-status.png`
 - Modify: GitHub PR #14 and issues #3, #4, and #11.
 
 **Interfaces:**
 - Consumes: the green repository from Tasks 1 and 2.
 - Produces: fresh visual evidence and aligned remote delivery state.
 
-- [ ] **Step 1: Run full local verification**
+- [x] **Step 1: Run full local verification**
 
   Run the full Pytest suite, Ruff, repository validator, Slice 2 validator, compilation, API smoke, and `git diff --check`.
 
-- [ ] **Step 2: Verify the homepage in a real browser**
+- [x] **Step 2: Verify the homepage in a real browser**
 
   Use agent-browser at desktop and mobile widths. Confirm the annual snapshot is ready, reconciliation is next, county-year modelling is planned, and no console errors occur.
 
-- [ ] **Step 3: Capture current evidence**
+- [x] **Step 3: Capture current evidence**
 
   Replace the historical blocker screenshot with a current, descriptive screenshot and ensure documentation calls the previous capture historical rather than current proof.
 
-- [ ] **Step 4: Commit visual proof**
+- [x] **Step 4: Commit visual proof**
 
   Commit message: `docs: refresh Slice 2 delivery proof`
 

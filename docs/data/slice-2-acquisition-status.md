@@ -4,6 +4,8 @@
 
 Slice 2A is complete: retain the accepted private annual county-year snapshot. Slice 2B is next: reconcile official annual source vintages and extend the annual panel before deciding county-year baseline feasibility.
 
+Current browser proof: [`slice-2a-2b-status.png`](../assets/slice-2-target-dataset/slice-2a-2b-status.png).
+
 ## Current implementation state
 
 **Implemented:**
@@ -72,6 +74,8 @@ All three FSD entries remain `network_acquisition_ready: false`. Discovering an 
 
 Before the manual workbook retrieval, the automated browser could not complete an official payload
 download. This is retained as access evidence, not the current Slice 2 state.
+
+Historical browser proof: [`historical-acquisition-blocked-status.png`](../assets/slice-2-target-dataset/historical-acquisition-blocked-status.png).
 
 | Source | Attempt | Observed result | Classification |
 | --- | --- | --- | --- |
