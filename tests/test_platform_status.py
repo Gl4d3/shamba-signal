@@ -13,7 +13,7 @@ def test_platform_status_exposes_approved_product_contract() -> None:
     assert body["primary_output"] == "county-year baseline feasibility"
     assert body["forecast_timing"] == "not scheduled"
     assert body["architecture"] == "county-year label readiness"
-    assert body["refresh_modes"] == ["scheduled", "analyst-triggered"]
+    assert body["refresh_modes"] == []
     assert "Busia" in body["geography"]
     assert "Trans Nzoia" in body["geography"]
     assert "source-bound" in body["crop_scope"]

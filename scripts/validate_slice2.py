@@ -148,6 +148,11 @@ def _validate_source_audit(root: Path) -> list[str]:
         return errors
 
     expected = {
+        "audit_version": ("1.0", "audit version is incorrect"),
+        "accepted_snapshot.source_id": (
+            "nipfn-maize-2012-2020",
+            "accepted snapshot source ID is incorrect",
+        ),
         "accepted_snapshot.sha256": (
             "15a47b6fdc634fab7a69cd7576974d2f9eeb550218389d4a1526dd8123a92ab8",
             "accepted snapshot SHA-256 is incorrect",

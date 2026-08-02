@@ -125,6 +125,12 @@ def test_slice2_validator_rejects_pre_split_or_contradictory_slice_2_docs(
 @pytest.mark.parametrize(
     ("path", "value", "expected"),
     [
+        ("audit_version", "2.0", "audit version is incorrect"),
+        (
+            "accepted_snapshot.source_id",
+            "unknown-source",
+            "accepted snapshot source ID is incorrect",
+        ),
         ("accepted_snapshot.sha256", "bad", "accepted snapshot SHA-256 is incorrect"),
         ("accepted_snapshot.status", "accepted", "accepted snapshot status is incorrect"),
         ("accepted_snapshot.coverage", "unknown", "accepted snapshot coverage is incorrect"),

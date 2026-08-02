@@ -13,7 +13,7 @@ def get_platform_status() -> PlatformStatus:
             "Trans Nzoia retained as fallback"
         ),
         crop_scope="maize in a source-bound annual snapshot; source precedence is unresolved",
-        refresh_modes=["scheduled", "analyst-triggered"],
+        refresh_modes=[],
         capabilities=[
             Capability(
                 id="data-feasibility",
