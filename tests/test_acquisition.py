@@ -1,3 +1,4 @@
+from dataclasses import replace
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -72,6 +73,38 @@ def test_validate_response_rejects_empty_payload() -> None:
 def test_validate_response_rejects_missing_expected_fields() -> None:
     with pytest.raises(AcquisitionError, match="missing expected fields"):
         validate_response(source(), response(b"county,year\nBusia,2023\n"))
+
+
+def test_direct_csv_accepts_octet_stream_when_the_source_explicitly_allows_it() -> None:
+    octet_stream_source = replace(
+        source(), accepted_media_types=("application/octet-stream",)
+    )
+
+    media_type, fingerprint = validate_response(
+        octet_stream_source,
+        response(
+            b"county,year,yield\nBusia,2023,2.4\n",
+            headers={"Content-Type": "application/octet-stream"},
+        ),
+    )
+
+    assert media_type == "application/octet-stream"
+    assert fingerprint
+
+
+def test_direct_csv_octet_stream_still_rejects_a_malformed_schema() -> None:
+    octet_stream_source = replace(
+        source(), accepted_media_types=("application/octet-stream",)
+    )
+
+    with pytest.raises(AcquisitionError, match="missing expected fields"):
+        validate_response(
+            octet_stream_source,
+            response(
+                b"county,year\nBusia,2023\n",
+                headers={"Content-Type": "application/octet-stream"},
+            ),
+        )
 
 
 def test_validate_response_rejects_redirect_to_landing_page() -> None:

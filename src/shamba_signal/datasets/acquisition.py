@@ -49,7 +49,17 @@ def _looks_like_html(payload: bytes) -> bool:
 def _schema_fields(source: SourceDefinition, payload: bytes, media_type: str) -> tuple[str, ...]:
     try:
         if source.acquisition_mode == "direct_csv":
-            if media_type not in {"text/csv", "application/csv", "application/vnd.ms-excel"}:
+            csv_media_types = {
+                "text/csv",
+                "application/csv",
+                "application/vnd.ms-excel",
+            }
+            if (
+                media_type == "application/octet-stream"
+                and media_type in source.accepted_media_types
+            ):
+                csv_media_types.add(media_type)
+            if media_type not in csv_media_types:
                 raise AcquisitionError("direct CSV source returned a non-CSV media type")
             text = payload.decode("utf-8-sig")
             reader = csv.DictReader(io.StringIO(text))

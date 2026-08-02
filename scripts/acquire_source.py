@@ -42,6 +42,12 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
+    if args.verified_field and not args.input_file:
+        print(
+            "snapshot acquisition failed: --verified-field requires --input-file",
+            file=sys.stderr,
+        )
+        raise SystemExit(1)
     registry = load_source_registry(args.registry)
     source = registry.source(args.source_id)
     if source.terms_status == "blocked" or source.redistribution_status == "blocked":
