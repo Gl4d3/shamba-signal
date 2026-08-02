@@ -53,7 +53,10 @@
 
 **Files:**
 - `src/shamba_signal/datasets/target.py`
+- `src/shamba_signal/datasets/adapters.py`
 - `tests/test_target_observations.py`
+- `tests/test_kilimostat_adapter.py`
+- `tests/fixtures/county_profiles.json`
 - `docs/data/target-observation-contract.md`
 
 - [x] Canonicalize county code/name, crop, period, element, value, unit, source, flag, snapshot ID, and quality state.
@@ -62,17 +65,23 @@
 - [x] Keep reported yield separate from derived yield and expose reconciliation status without silently selecting a target.
 - [x] Derive tonnes per hectare only from positive, same-grain, period-compatible production and harvested-area observations.
 - [x] Reject duplicate target-key/element observations rather than averaging or overwriting them.
+- [x] Map the documented KilimoSTAT record fields into canonical observations with conservative flag handling.
 
 ### Task 4: Target dataset and quality decision
 
 **Files:**
-- Create deterministic build command.
+- `src/shamba_signal/datasets/target_build.py`
+- `tests/test_target_build.py`
+- Create deterministic publication command.
 - Create versioned table, manifest, quality report, data dictionary, and dataset card.
 - Create Busia-confirm/fallback decision record.
 
-- [ ] Enforce unique county/crop/season target keys.
-- [ ] Report county/year coverage, missingness, flags, duplicates, units, and reported-versus-derived counts.
-- [ ] Confirm Busia only when the documented thresholds pass; otherwise switch to Trans Nzoia or publish an evidence-insufficiency result.
+- [x] Enforce unique county/crop/period target keys and fail on duplicate elements.
+- [x] Produce deterministic CSV/JSON renderers for target rows and quality metadata.
+- [x] Report county/period coverage, missing labels, quality classes, source-flag counts, canonical units, duplicate policy, and reported-versus-derived counts.
+- [x] Implement an explicit, configurable Busia → Trans Nzoia → insufficient-evidence gate without hidden threshold defaults.
+- [ ] Run the pilot gate on accepted official records and confirm Busia, switch to Trans Nzoia, or publish an insufficiency result.
+- [ ] Publish the versioned target table, manifest, quality report, data dictionary, and dataset card from accepted official snapshots.
 - [ ] Ensure a clean regeneration matches committed publishable artifacts byte-for-byte or value-for-value as specified.
 
 ### Task 5: Integration and acceptance
