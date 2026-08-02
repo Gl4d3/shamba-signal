@@ -5,13 +5,11 @@ async function loadStatus() {
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const payload = await response.json();
     const activeCapability = payload.capabilities.find(
-      (capability) => capability.status === 'blocked',
-    ) || payload.capabilities.find(
-      (capability) => capability.status === 'next',
-    ) || payload.capabilities.find(
-      (capability) => capability.id === 'target-dataset',
+      (capability) => capability.id === 'annual-snapshot',
     ) || payload.capabilities.find(
       (capability) => capability.status === 'ready',
+    ) || payload.capabilities.find(
+      (capability) => capability.status === 'next',
     );
     if (!activeCapability) throw new Error('No active capability in platform status');
     const stateText = activeCapability.status === 'blocked'

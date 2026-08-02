@@ -16,6 +16,7 @@
 - The accepted KNBS workbook is byte-preserved outside Git. A standard-library XLSX reader binds the annual target to the accepted manifest digest and fails on source/schema drift.
 - The local-only package contains `target.csv`, quality report, pilot decision, provenance manifest, and dataset card. It must not be committed while source redistribution remains review-required.
 - The Slice 2A annual snapshot is ready but explicitly source-bound and not model-ready. Slice 2B is the annual-source reconciliation gate; no county-season mapping or forecast model exists.
+- Public status release `slice-2a-annual-snapshot-v1` exposes the ready Slice 2A package, the next conflicting-2020-vintage reconciliation gate, and only planned county-year baseline feasibility.
 
 ## 2026-08-02 baseline reproducibility repair
 
