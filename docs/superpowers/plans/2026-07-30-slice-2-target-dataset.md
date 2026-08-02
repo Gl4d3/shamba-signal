@@ -35,19 +35,24 @@
 - [x] Record dataset title, access method, spatial/temporal coverage, schema fingerprint, licence/redistribution decision, and transformation revision.
 - [x] Reject embedded credentials and common token/signature query parameters from canonical URLs.
 
-### Task 2: Acquisition and response validation
+### Task 2: Acquisition, response validation, and access diagnostics
 
 **Files:**
 - `src/shamba_signal/datasets/acquisition.py`
+- `src/shamba_signal/datasets/probe.py`
 - `scripts/acquire_source.py`
+- `scripts/probe_sources.py`
 - `tests/test_acquisition.py`
+- `tests/test_probe.py`
+- `tests/test_probe_cli.py`
 
 - [x] Accept only expected status/media/schema combinations.
 - [x] Preserve raw bytes before parsing.
 - [x] Fail closed on HTML masquerading as CSV, empty payloads, redirects to landing pages, and unresolved download-manager pages.
 - [x] Support a documented manual verified snapshot path when an official download manager does not expose a stable asset URL.
 - [x] Use bounded timeout, explicit `Accept`, and a project-identifying user agent for live requests.
-- [ ] Acquire and checksum the first accepted official snapshot from a networked environment.
+- [x] Provide a non-persisting machine-readable probe that classifies ready, blocked, not-ready, manual-required, unreachable, and invalid-response states without returning response bodies.
+- [ ] Run the probe from a networked environment and acquire/checksum the first accepted official snapshot.
 
 ### Task 3: Canonical observations and yield reconciliation
 
@@ -67,11 +72,14 @@
 - [x] Reject duplicate target-key/element observations rather than averaging or overwriting them.
 - [x] Map the documented KilimoSTAT record fields into canonical observations with conservative flag handling.
 
-### Task 4: Target dataset and quality decision
+### Task 4: Target dataset, quality decision, and bounded fallbacks
 
 **Files:**
 - `src/shamba_signal/datasets/target_build.py`
 - `tests/test_target_build.py`
+- `data/sources/fallback_candidates.json`
+- `docs/data/fallback-source-investigation.md`
+- `tests/test_fallback_candidates.py`
 - Create deterministic publication command.
 - Create versioned table, manifest, quality report, data dictionary, and dataset card.
 - Create Busia-confirm/fallback decision record.
@@ -80,13 +88,15 @@
 - [x] Produce deterministic CSV/JSON renderers for target rows and quality metadata.
 - [x] Report county/period coverage, missing labels, quality classes, source-flag counts, canonical units, duplicate policy, and reported-versus-derived counts.
 - [x] Implement an explicit, configurable Busia → Trans Nzoia → insufficient-evidence gate without hidden threshold defaults.
+- [x] Record KCHSP 2020 crop-output data as unsuitable for yield because it lacks total production and harvested area.
+- [x] Record KIHBS 2005-2006 agriculture microdata as a separate research-only candidate that may not replace the selected county target.
 - [ ] Run the pilot gate on accepted official records and confirm Busia, switch to Trans Nzoia, or publish an insufficiency result.
 - [ ] Publish the versioned target table, manifest, quality report, data dictionary, and dataset card from accepted official snapshots.
 - [ ] Ensure a clean regeneration matches committed publishable artifacts byte-for-byte or value-for-value as specified.
 
 ### Task 5: Integration and acceptance
 
-- [ ] Extend repository validation with target-data contracts.
+- [ ] Extend repository validation with source-probe and target-data contracts.
 - [ ] Update platform status, README, roadmap, source register, and issue control surface truthfully.
 - [ ] Run the full available local gate and record unavailable infrastructure checks separately.
 - [ ] Resolve every review thread with evidence before merge.
