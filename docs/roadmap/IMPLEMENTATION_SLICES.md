@@ -14,7 +14,7 @@ A slice is a testable end-to-end product or research outcome. Infrastructure set
 
 ## Slice 1 — Metadata-level data feasibility and provisional pilot selection
 
-**Status:** complete when PR #13 is merged. The selected pair remains conditional on Slice 2 measurements.
+**Status:** complete. The selected pair was provisional pending Slice 2 annual-label evidence.
 
 **Outcome:** one crop and deep-dive county are provisionally ranked from documented metadata and expert-judgement scores, with limitations and tested sensitivity scenarios disclosed.
 
@@ -24,42 +24,24 @@ A slice is a testable end-to-end product or research outcome. Infrastructure set
 
 **Acceptance:** the generation command writes canonical paths, is byte-stable, matches committed artifacts, regenerates scores from registered weights/evidence, and clearly transfers downloaded-record validation to Slice 2.
 
-## Slice 2 — Reproducible county-season target dataset
+## Slice 2A — Source-bound annual snapshot
 
-**Status:** next. No modelling work begins before this gate closes.
+**Status:** complete locally. The accepted NIPFN workbook is private, source-bound, and not model-ready.
 
-**Outcome:** official production, harvested area, and yield evidence becomes a versioned modelling table, or the slice publishes a rigorous evidence-insufficiency result.
+**Outcome:** a deterministic annual county-year maize snapshot package validates the accepted workbook without publishing source-derived rows.
 
-**Artifacts:** immutable snapshots or protected references, manifests, canonical schema, unit and county mappings, Parquet/CSV target data, data dictionary, dataset card, quality report, and Busia-confirm or fallback decision.
+**Acceptance:** accepted-workbook SHA-256 lineage, deterministic private build, documented annual coverage and gaps, and an annual-label pilot result. It makes no season, forecast, or decision-support claim.
 
-**Acceptance:** unique county/crop/season keys; deterministic rebuild; schema-drift failure; licence-aware publication; missingness and continuity profiles; reported-versus-derived reconciliation; positive-area and unit checks; snapshot-to-output lineage.
+## Slice 2B — Official annual label reconciliation and forecast readiness
 
-## Slice 3 — Defensible baseline yield model
+**Status:** next. No modelling work begins before conflicting official annual vintages are reconciled and the annual panel is extended.
 
-**Outcome:** answer whether public data supports a useful mid-season forecast.
+**Outcome:** reconcile source vintages, establish evidence-backed source precedence, and decide whether county-year baseline feasibility is supportable. County-season is an evidence-insufficiency result.
 
-**Artifacts:** frozen cutoff and feature contracts, historical mean and previous-season baselines, regularised regression, one tree model, geographic and temporal evaluation, prediction intervals, error analysis, model card, and real forecast fixture.
+**Acceptance:** private source audit, reconciliation policy, annual-panel extension, terms review, and a documented modelling go/no-go. No crop calendar may disaggregate annual totals.
 
-**Acceptance:** no post-cutoff leakage; MAE, RMSE, interval coverage, and width are reported; the model beats mandatory naïve baselines under frozen holdouts **or** the slice publishes a documented no-go/insufficiency result and abstains.
+## Out-of-scope history
 
-## Slice 4 — Minimal evidence UI
-
-**Outcome:** a user can inspect the actual baseline fixture without a notebook.
-
-**Artifacts:** county outlook, selected-county deep dive, actual-versus-predicted history, interval, evidence quality, cutoff, lineage, and visible abstention state.
-
-**Acceptance:** every displayed value reconciles with the fixture/API; missing counties are not fabricated; relative indicators are not labelled measured yield.
-
-## Deferred programme slices
-
-The following remain valid long-term work but are deferred until the target dataset and baseline are complete:
-
-- Remote-sensing temporal model.
-- Rich stress attribution.
-- Full national dashboard.
-- Guardrailed advisory.
-- Scheduled operations and forecast versioning.
-- AWS portability exercise.
-- Druid proof with one concrete benchmark.
-
-A negative benchmark or decision to reject a technology is an acceptable outcome.
+Earlier planning mentioned forecasting, crop-stress, and advisory work. They are not current
+release capabilities or promised slices. The only post-Slice-2B consideration is a county-year
+baseline feasibility/no-go study, if its reconciliation gate closes.

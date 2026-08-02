@@ -1,0 +1,69 @@
+{
+  "registry_version": "0.1.0",
+  "purpose": "Document public fallback investigations without silently replacing the selected official county-year target sources.",
+  "candidates": [
+    {
+      "candidate_id": "kenada-kchsp-2020-q1-q2-crop-output",
+      "publisher": "Kenya National Bureau of Statistics",
+      "dataset_title": "Kenya Continuous Household Survey Programme 2020 Quarters 1 and 2 - Crop Output Data",
+      "landing_url": "https://statistics.knbs.or.ke/nada/index.php/catalog/19/data-dictionary/F3",
+      "status": "rejected-for-yield-target",
+      "target_role": "none; may inform market-output or crop-sales research only",
+      "geographic_resolution": "household records with county code 1-47",
+      "temporal_coverage": "2020 quarters 1 and 2",
+      "observed_fields": [
+        "county",
+        "sub_county",
+        "period",
+        "crop_id",
+        "quantity_sold",
+        "unit_of_sale",
+        "price_per_unit"
+      ],
+      "blocking_gaps": [
+        "The published Crop Output file records crop sales, not total crop production.",
+        "The published file has no harvested area field, so a defensible yield label cannot be derived.",
+        "The survey is a household sample, not an official county-year crop statistics panel."
+      ],
+      "may_replace_selected_target": false,
+      "next_action": "Do not build a yield adapter. Retain only as a possible future market-intelligence source.",
+      "evidence_urls": [
+        "https://statistics.knbs.or.ke/nada/index.php/catalog/19/data-dictionary/F3?file_name=2020+KCHSP+Q1_Q2+Crop+Output+Data",
+        "https://statistics.knbs.or.ke/nada/index.php/catalog/19/variable/F3/V126?name=crop_id",
+        "https://statistics.knbs.or.ke/nada/index.php/catalog/19/variable/F3/V133?name=q05"
+      ]
+    },
+    {
+      "candidate_id": "kenada-kihbs-2005-2006-agriculture",
+      "publisher": "Kenya National Bureau of Statistics",
+      "dataset_title": "Kenya Integrated Household Budget Survey 2005-2006 - Agriculture Holding and Agriculture Output",
+      "landing_url": "https://statistics.knbs.or.ke/nada/index.php/catalog/2",
+      "status": "research-only-candidate",
+      "target_role": "historical microdata experiment for linkage and unit-reconciliation research",
+      "geographic_resolution": "household and parcel records; representative at national, urban/rural, provincial, and district levels",
+      "temporal_coverage": "2005-2006 survey with a 12-month agriculture reference period",
+      "observed_fields": [
+        "household_id",
+        "parcel_id",
+        "crop_code",
+        "crop_area_acres",
+        "quantity_harvested",
+        "unit_harvested"
+      ],
+      "blocking_gaps": [
+        "The data are from 2005-2006 and cannot establish current county-year baseline feasibility.",
+        "The survey is not an official county-year yield panel and its published representativeness is district-level rather than current county boundaries.",
+        "Parcel-to-crop linkage, maize-code aggregation, harvested-unit conversion, survey weights, anonymization, and access conditions require validation before use.",
+        "Household microdata cannot silently replace the feasibility-selected county statistics target."
+      ],
+      "may_replace_selected_target": false,
+      "next_action": "Use only for a separately approved research notebook after access, linkage, unit, weighting, and licensing review.",
+      "evidence_urls": [
+        "https://statistics.knbs.or.ke/nada/index.php/catalog/2",
+        "https://statistics.knbs.or.ke/nada/index.php/catalog/2/data-dictionary/F55",
+        "https://statistics.knbs.or.ke/nada/index.php/catalog/2/data-dictionary/F54",
+        "https://statistics.knbs.or.ke/nada/index.php/catalog/2/variable/F55/V1629?name=o02"
+      ]
+    }
+  ]
+}

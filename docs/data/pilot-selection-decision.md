@@ -1,11 +1,15 @@
 # Pilot Selection Decision
 
+> **Historical Slice 1 selection artifact:** this deterministic scorecard preserves the original
+> feasibility ranking. It is not the current release contract.
+
 ## Decision
 
 - **MVP crop:** Maize
 - **Deep-dive county:** Busia
 - **Fallback county:** Trans Nzoia
-- **Decision status:** selected for Slice 2, subject to snapshot-level completeness checks
+- **Decision status:** Busia is confirmed for accepted annual-label validation; Slice 2B source-
+  vintage reconciliation remains required before county-year baseline feasibility is considered.
 
 The approved weighted score selects Maize at **91.25/100** and Busia at **85.75/100**.
 
@@ -64,18 +68,17 @@ The audit records twelve public sources, including:
 
 The machine-readable evidence register records publisher, URL, coverage, access method, licensing status and unresolved work.
 
-## Required validation before modelling
+## Current boundary
 
-1. Download and checksum the official maize county records.
-2. Profile county-year completeness, flags, units and reported-versus-derived yield.
-3. Measure Sentinel-2 and Sentinel-1 observation availability by forecast cutoff.
-4. Confirm the exact spatial overlap and class distribution of the western Kenya crop-type labels.
-5. Switch to Trans Nzoia if Busia fails label completeness, geographic overlap or observation thresholds.
+Slice 2A accepted annual snapshot exists and remains private, source-bound, and not model-ready.
+Slice 2B must reconcile official annual source vintages before extending the annual panel.
+County-year is the supported target grain. County-season is evidence-insufficient.
+No calendar may disaggregate annual totals.
 
 ## Scientific limits
 
 - The scorecard ranks **data feasibility**, not expected model accuracy.
-- The validated target remains **county × crop × season**.
-- Pixel and ward products remain **relative yield potential** and **crop-stress indicators**.
+- The Slice 1 ranking does not resolve official source precedence.
+- It does not authorize a model, forecast, or advisory.
 - No source with unresolved redistribution terms is bundled into the repository.
-- County label scores are metadata-level estimates until Slice 2 profiles the downloaded records.
+- The feasibility scores retain their historical metadata-level purpose.

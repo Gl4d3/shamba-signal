@@ -1,5 +1,9 @@
 # Shamba Signal MVP Definition
 
+> **Historical product vision:** this document predates the Slice 2A/2B evidence decision. It is
+> not the current release contract; the release ends at Slice 2B and only contemplates a
+> county-year baseline feasibility/no-go study after reconciliation.
+
 ## Single sentence
 
 Investigate whether one data-selected crop can support a defensible mid-season county-season yield forecast across Kenya, with one county deep dive, uncertainty, lineage, and explicit abstention when evidence is insufficient.

@@ -152,6 +152,12 @@ def test_generate_artifacts_selects_current_data_ranked_pair(tmp_path: Path) -> 
     assert "maize,crop" in scorecard
     assert "busia,county" in scorecard
     assert "Maize" in report and "Busia" in report
+    assert "Historical Slice 1 selection artifact" in report
+    assert "Slice 2A accepted annual snapshot exists" in report
+    assert "County-year is the supported target grain" in report
+    assert "County-season is evidence-insufficient" in report
+    assert "No calendar may disaggregate annual totals" in report
+    assert "does not authorize a model, forecast, or advisory" in report
     assert not (tmp_path / "data/pilot-selection-decision.md").exists()
 
 
@@ -177,6 +183,7 @@ def test_artifact_generation_is_byte_stable(tmp_path: Path) -> None:
         "pilot-selection-decision.md": report_path.read_bytes(),
     }
     assert first == second
+    assert all(not artifact.endswith(b"\r\n") for artifact in first.values())
 
 
 def test_committed_artifacts_match_fresh_generation(tmp_path: Path) -> None:

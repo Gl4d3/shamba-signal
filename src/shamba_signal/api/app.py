@@ -15,7 +15,9 @@ def create_app() -> FastAPI:
     application = FastAPI(
         title="Shamba Signal API",
         version="0.1.0",
-        description="County-season crop yield decision intelligence for Kenya.",
+        description=(
+            "County-year annual-label readiness for Kenya; no forecast or decision support."
+        ),
     )
     application.mount("/static", StaticFiles(directory=WEB_ROOT / "static"), name="static")
 

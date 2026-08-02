@@ -1,0 +1,4 @@
+# Generated evidence must retain byte-stable LF line endings on every platform.
+data/feasibility/*.csv text eol=lf
+data/feasibility/*.json text eol=lf
+docs/data/pilot-selection-decision.md text eol=lf

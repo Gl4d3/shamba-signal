@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 import math
+from collections.abc import Mapping
 from dataclasses import dataclass
-from typing import Any, Literal, Mapping
+from typing import Any, Literal
 
 DIMENSIONS = (
     "yield_label_quality",
@@ -29,7 +30,7 @@ class ScoreWeights:
         for name, value in values.items():
             if (
                 isinstance(value, bool)
-                or not isinstance(value, (int, float))
+                or not isinstance(value, int | float)
                 or not math.isfinite(value)
             ):
                 raise ValueError(f"score weight {name} must be a finite number")
@@ -39,15 +40,15 @@ class ScoreWeights:
             raise ValueError("score weights must sum to 100")
 
     @classmethod
-    def approved(cls) -> "ScoreWeights":
+    def approved(cls) -> ScoreWeights:
         return cls(35, 20, 15, 10, 10, 10)
 
     @classmethod
-    def from_mapping(cls, values: Mapping[str, Any]) -> "ScoreWeights":
+    def from_mapping(cls, values: Mapping[str, Any]) -> ScoreWeights:
         parsed: dict[str, Weight] = {}
         for name in DIMENSIONS:
             value = values[name]
-            if isinstance(value, bool) or not isinstance(value, (int, float)):
+            if isinstance(value, bool) or not isinstance(value, int | float):
                 raise ValueError(f"score weight {name} must be numeric")
             parsed[name] = value
         return cls(**parsed)
@@ -72,7 +73,7 @@ class CandidateProfile:
         for name, value in self.dimensions.items():
             if (
                 isinstance(value, bool)
-                or not isinstance(value, (int, float))
+                or not isinstance(value, int | float)
                 or not math.isfinite(value)
             ):
                 raise ValueError(f"candidate score {name} must be a finite number")
@@ -84,7 +85,7 @@ class CandidateProfile:
             raise ValueError("candidate rationales must cover every score dimension")
 
     @classmethod
-    def from_mapping(cls, values: Mapping[str, Any]) -> "CandidateProfile":
+    def from_mapping(cls, values: Mapping[str, Any]) -> CandidateProfile:
         return cls(
             candidate_id=str(values["candidate_id"]),
             candidate_type=values["candidate_type"],
@@ -102,7 +103,7 @@ class CandidateProfile:
         dimensions: dict[str, float] = {}
         for name in DIMENSIONS:
             value = values[name]
-            if isinstance(value, bool) or not isinstance(value, (int, float)):
+            if isinstance(value, bool) or not isinstance(value, int | float):
                 raise ValueError(f"candidate score {name} must be numeric")
             dimensions[name] = float(value)
         return dimensions
