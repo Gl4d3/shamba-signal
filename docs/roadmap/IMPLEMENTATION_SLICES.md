@@ -42,13 +42,21 @@ A slice is a testable end-to-end product or research outcome. Infrastructure set
 
 ## Slice 3 — Temporal yield baselines
 
-**Status:** next.
+**Status:** complete locally. Ridge improves on the previous-year reference but does not beat the county historical mean on provisional 2023.
 
 **Outcome:** train leakage-safe county-year baselines on 2012-2021, tune or select on 2022, and report untouched provisional-2023 performance.
 
 **Acceptance:** previous-year and county-mean references, at least one regularized model, county/year error analysis, and a clear beat-or-no-beat decision against the naive references.
 
+## Slice 4 — Weather feature value test
+
+**Status:** next.
+
+**Outcome:** add one reproducible county-year weather feature source and measure whether it improves the provisional-2023 result.
+
+**Acceptance:** the same temporal split, no same-year target leakage, comparison against the 0.2998 t/ha county-mean MAE, and an explicit keep-or-drop decision for the weather features.
+
 ## Out-of-scope history
 
 Earlier planning mentioned crop-stress and advisory work. They are not current release
-capabilities or promised slices. The active work is the bounded county-year baseline study.
+capabilities or promised slices. The active work is the bounded weather-feature value test.
