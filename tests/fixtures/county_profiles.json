@@ -1,0 +1,6 @@
+{
+  "counties": [
+    {"candidate_id": "busia", "name": "Busia"},
+    {"candidate_id": "trans_nzoia", "name": "Trans Nzoia"}
+  ]
+}
