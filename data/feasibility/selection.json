@@ -1,9 +1,9 @@
 {
-  "decision_status": "selected-for-slice-2-with-source-snapshot-validation",
+  "decision_status": "historical-slice-1-selection-superseded-by-slice-2a",
   "non_claims": [
     "This scorecard does not prove model skill.",
-    "County yield-label completeness must be re-measured from downloaded source snapshots.",
-    "Optical observation usability must be measured before feature production."
+    "Slice 2A accepts a source-bound annual snapshot; it is not model-ready.",
+    "County-season is evidence-insufficient and annual totals cannot be disaggregated."
   ],
   "runner_up_county": {
     "candidate_id": "trans_nzoia",

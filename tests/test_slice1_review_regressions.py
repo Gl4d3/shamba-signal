@@ -15,7 +15,9 @@ EVIDENCE_PATH = ROOT / "data/feasibility/evidence.json"
 PROFILES_PATH = ROOT / "data/feasibility/candidate_profiles.json"
 
 
-def test_validation_checklist_uses_selected_crop(tmp_path: Path) -> None:
+def test_historical_selection_artifact_keeps_the_selected_crop_without_stale_gates(
+    tmp_path: Path,
+) -> None:
     payload = json.loads(PROFILES_PATH.read_text(encoding="utf-8"))
     for crop in payload["crops"]:
         score = 100 if crop["candidate_id"] == "beans" else 0
@@ -33,8 +35,10 @@ def test_validation_checklist_uses_selected_crop(tmp_path: Path) -> None:
 
     report = report_path.read_text(encoding="utf-8")
     assert result.selected_crop == "beans"
-    assert "Download and checksum the official beans county records" in report
-    assert "official maize county records" not in report
+    assert "**MVP crop:** Beans" in report
+    assert "Slice 2A accepted annual snapshot exists" in report
+    assert "does not authorize a model, forecast, or advisory" in report
+    assert "Download and checksum" not in report
 
 
 @pytest.mark.parametrize(

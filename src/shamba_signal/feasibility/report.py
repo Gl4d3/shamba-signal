@@ -142,15 +142,17 @@ def generate_artifacts(
             "crop_winner_stable": crop_sensitivity.stable,
             "county_winner_stable": county_sensitivity.stable,
         },
-        "decision_status": "selected-for-slice-2-with-source-snapshot-validation",
+        "decision_status": "historical-slice-1-selection-superseded-by-slice-2a",
         "non_claims": [
             "This scorecard does not prove model skill.",
-            "County yield-label completeness must be re-measured from downloaded source snapshots.",
-            "Optical observation usability must be measured before feature production.",
+            "Slice 2A accepts a source-bound annual snapshot; it is not model-ready.",
+            "County-season is evidence-insufficient and annual totals cannot be disaggregated.",
         ],
     }
     (output_dir / "selection.json").write_text(
-        json.dumps(selection, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+        json.dumps(selection, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+        newline="\n",
     )
 
     top_counties = "\n".join(
@@ -226,23 +228,18 @@ def generate_artifacts(
         sensitivity_intro = (
             "At least one registered sensitivity scenario changes the selected pair:"
         )
-    download_instruction = (
-        "1. Download and checksum the official "
-        f"{selected_crop.profile.name.lower()} county records."
-    )
-    switch_instruction = (
-        f"5. Switch to {fallback_county.profile.name} if "
-        f"{selected_county.profile.name} fails label completeness, geographic overlap "
-        "or observation thresholds."
-    )
     report = f"""# Pilot Selection Decision
+
+> **Historical Slice 1 selection artifact:** this deterministic scorecard preserves the original
+> feasibility ranking. It is not the current release contract.
 
 ## Decision
 
 - **MVP crop:** {selected_crop.profile.name}
 - **Deep-dive county:** {selected_county.profile.name}
 - **Fallback county:** {fallback_county.profile.name}
-- **Decision status:** selected for Slice 2, subject to snapshot-level completeness checks
+- **Decision status:** Busia is confirmed for accepted annual-label validation; Slice 2B source-
+  vintage reconciliation remains required before county-year baseline feasibility is considered.
 
 {score_sentence}
 
@@ -291,25 +288,24 @@ The audit records twelve public sources, including:
 
 {evidence_sentence}
 
-## Required validation before modelling
+## Current boundary
 
-{download_instruction}
-2. Profile county-year completeness, flags, units and reported-versus-derived yield.
-3. Measure Sentinel-2 and Sentinel-1 observation availability by forecast cutoff.
-4. Confirm the exact spatial overlap and class distribution of the western Kenya crop-type labels.
-{switch_instruction}
+Slice 2A accepted annual snapshot exists and remains private, source-bound, and not model-ready.
+Slice 2B must reconcile official annual source vintages before extending the annual panel.
+County-year is the supported target grain. County-season is evidence-insufficient.
+No calendar may disaggregate annual totals.
 
 ## Scientific limits
 
 - The scorecard ranks **data feasibility**, not expected model accuracy.
-- The validated target remains **county × crop × season**.
-- Pixel and ward products remain **relative yield potential** and **crop-stress indicators**.
+- The Slice 1 ranking does not resolve official source precedence.
+- It does not authorize a model, forecast, or advisory.
 - No source with unresolved redistribution terms is bundled into the repository.
-- County label scores are metadata-level estimates until Slice 2 profiles the downloaded records.
+- The feasibility scores retain their historical metadata-level purpose.
 """
     destination = report_path or output_dir / "pilot-selection-decision.md"
     destination.parent.mkdir(parents=True, exist_ok=True)
-    destination.write_text(report, encoding="utf-8")
+    destination.write_text(report, encoding="utf-8", newline="\n")
     return SelectionResult(
         selected_crop=selected_crop.profile.candidate_id,
         selected_county=selected_county.profile.candidate_id,

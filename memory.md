@@ -4,12 +4,13 @@
 | --- | --- | --- |
 | 2026-08-02 | Slice 2 delivery | Deliver one official-source vertical slice before any model, satellite, AWS, or Druid work. The first accepted source determines the only adapter implemented in this phase. |
 | 2026-08-02 | Target grain | Preserve annual records as county x maize x year. County-season is evidence-insufficient; no crop calendar may disaggregate annual totals. |
-| 2026-08-02 | Pilot selection | Busia remains provisional; Trans Nzoia is the fallback. The published data-quality gate must select Busia, Trans Nzoia, or insufficient evidence from real observations. |
+| 2026-08-02 | Pilot selection | The historical Slice 1 scorecard selected Busia with Trans Nzoia as fallback. Slice 2A confirms Busia for accepted annual-label validation; Slice 2B reconciliation remains required before county-year baseline feasibility. |
 | 2026-08-02 | Source policy | Slice 2B reconciles the accepted NIPFN workbook with the private KNBS annual-report candidate. KilimoSTAT and Food Systems Dashboard are off the critical path because no current verified response contract is accessible. Preserve accepted source bytes outside Git where redistribution is unclear. |
 | 2026-08-02 | KNBS/NIPFN snapshot | Accepted the manually downloaded original XLSX under private storage, SHA-256 `15a47b6fdc634fab7a69cd7576974d2f9eeb550218389d4a1526dd8123a92ab8`. The verified table is annual (2012-2018 and 2020), not seasonal; 2019 is absent. |
 | 2026-08-02 | Annual pilot gate | Local-only build has 376 county-year rows from 1,128 observations. Busia passes the eight-period annual gate; this does not authorize forecasting, season mapping, or source redistribution. |
 | 2026-08-02 | Slice 2A/2B split | Slice 2A is the completed, private source-bound annual snapshot. Slice 2B must reconcile conflicting official annual vintages and extend the county-year panel before baseline-feasibility modelling. County-season is evidence-insufficient; annual totals must not be crop-calendar disaggregated. |
 | 2026-08-02 | Release boundary correction | The public/repository contract ends at Slice 2B and only plans a county-year baseline feasibility/no-go study. Forecast, crop-stress, advisory, and season-label work are out of scope. |
+| 2026-08-02 | Feasibility artifact reproducibility | The feasibility generator writes JSON and Markdown with explicit LF newlines on Windows. Its canonical report is a historical Slice 1 selection artifact carrying the current Slice 2A/2B boundary. |
 
 ## Current Slice 2 state
 
@@ -18,6 +19,7 @@
 - The local-only package contains `target.csv`, quality report, pilot decision, provenance manifest, and dataset card. It must not be committed while source redistribution remains review-required.
 - The Slice 2A annual snapshot is ready but explicitly source-bound and not model-ready. Slice 2B is the annual-source reconciliation gate; no county-season mapping or forecast model exists.
 - Public status release `slice-2a-annual-snapshot-v1` exposes the ready Slice 2A package, the next conflicting-2020-vintage reconciliation gate, and only planned county-year baseline feasibility.
+- `refresh_modes` is intentionally empty: scheduled and analyst-triggered operations are unavailable.
 
 ## 2026-08-02 baseline reproducibility repair
 
