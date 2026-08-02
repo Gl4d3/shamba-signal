@@ -17,6 +17,7 @@ def test_lockfile_matches_declared_project_dependencies() -> None:
     assert lock["requires-python"] == project["requires-python"]
     assert {item["name"] for item in locked_project["dependencies"]} == {
         "fastapi",
+        "numpy",
         "pdfplumber",
         "pydantic",
         "uvicorn",

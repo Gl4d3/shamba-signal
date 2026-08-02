@@ -15,6 +15,7 @@
 | 2026-08-02 | Acquisition review follow-up | A direct CSV source may parse an explicitly accepted `application/octet-stream` payload as CSV, but still fails its schema gate. Manual verified fields are only for supplied download-manager payloads: they are rejected before network acquisition without `--input-file`, for any non-download-manager source, and by the validation layer itself. |
 | 2026-08-02 | Publication receipt | PR #14 is merged to `main` at `755e70a`. Issue #3 owns Slice 2A, issue #16 owns Slice 2B reconciliation, and issue #4 owns the county-year baseline study. GitHub Actions still fails before any job step under issue #12. |
 | 2026-08-02 | Slice 2B modelling panel | The verified KNBS report annex supplies 235 rows for 2019-2023. The active private panel uses the NIPFN workbook for 2012-2018 and the report for 2019-2023, preserving the superseded 2020 vintage separately. Result: 564 rows, 563 usable labels, 47 counties, train 2012-2021, validation 2022, provisional test 2023. Slice 3 temporal baselines are now unblocked. |
+| 2026-08-02 | Slice 3 temporal baseline | Actual modelling is complete on the private panel. Ridge alpha 100 beats previous-year MAE on provisional 2023 (0.3615 vs 0.4651 t/ha) but loses to county historical mean (0.2998). Same-year production and area are excluded as leakage. The evidence-backed next slice is one weather-feature value test with 0.2998 MAE as the threshold. |
 
 ## Current Slice 2 state
 
@@ -25,6 +26,7 @@
 - Public status release `slice-2a-annual-snapshot-v1` exposes the ready Slice 2A package, the next conflicting-2020-vintage reconciliation gate, and only planned county-year baseline feasibility.
 - `refresh_modes` is intentionally empty: scheduled and analyst-triggered operations are unavailable.
 - Private modelling package: `derived/county-year-maize-modelling-v1` under the adjacent private snapshot root. It contains the fixed panel, 2020 comparison, manifest, and dataset card; source-derived rows remain outside Git.
+- Private baseline package: `derived/temporal-baselines-v1`. `results.json` SHA-256 is `a0635e793f68631a2a39dcfc6a6f5e55a554dacfe3dba219ce8cc6d876d6c579`; `predictions.csv` SHA-256 is `b12615c74b7923833e1acfe87a5da265c33c63aa6e30703a953a963fa5d190d7`.
 
 ## 2026-08-02 baseline reproducibility repair
 
