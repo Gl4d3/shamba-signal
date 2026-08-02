@@ -5,6 +5,7 @@ from pydantic import BaseModel, ConfigDict
 
 class CapabilityStatus(StrEnum):
     READY = "ready"
+    BLOCKED = "blocked"
     NEXT = "next"
     PLANNED = "planned"
 

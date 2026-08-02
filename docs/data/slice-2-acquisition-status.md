@@ -47,6 +47,25 @@ Build an immutable, reproducible maize county-season target dataset and confirm 
 
 All three FSD entries remain `network_acquisition_ready: false`. Discovering an endpoint is not equivalent to verifying its response schema. The probe deliberately reports those sources as `not-ready` and does not make a request; the NIPFN download-manager entry reports `manual-required` until its file path is resolved.
 
+## 2026-08-02 live acquisition checkpoint
+
+No official payload was accepted, persisted, or added to Git during this checkpoint.
+
+| Source | Attempt | Observed result | Classification |
+| --- | --- | --- | --- |
+| KNBS/NIPFN maize 2012-2020 | Browser loaded the official landing page and resolved the download-manager asset in page state; browser-managed download then timed out. | Windows socket error `10060`; no file was created and the ephemeral asset URL was not recorded. | Manual file still required. |
+| KilimoSTAT county crops | Browser opened the official crop-statistics landing URL. | Connection timed out before the first document loaded; no request parameters were guessed and no response body was received. | Unreachable from this environment. |
+| FSD maize yield | Browser opened the official maize-yield indicator page. | Connection timed out before the first document loaded; production and area endpoints were not attempted because the same origin was unavailable. | Unreachable from this environment. |
+
+### Recovery checklist
+
+1. In a normal browser connection, download the KNBS/NIPFN **Maize Production by County 2012-2020** workbook from its official landing page.
+2. Do not open, save, edit, rename, or convert the file after download. Place the original file outside the repository, for example under `D:\proj-d\side-projects\shamba-signal-private-snapshots\nipfn-maize-2012-2020\`.
+3. Provide the exact local file path to the implementation worker. The worker will inspect the workbook before declaring actual verified fields or selecting the `.xls`/`.xlsx` media type.
+4. If the KNBS workbook cannot be obtained, provide a successful KilimoSTAT browser request with its visible county, item, element, year, and download parameters. Do not provide cookies, bearer tokens, signed URLs, or credentials.
+
+This checkpoint is an acquisition blocker, not an evidence-insufficiency pilot decision: Busia and Trans Nzoia have not been evaluated against real records.
+
 ## Public fallback decisions
 
 - **KCHSP 2020 Q1-Q2 Crop Output:** rejected for the yield target. Its official 20-field data dictionary covers crop sales and prices but exposes neither total production nor harvested area.
@@ -107,6 +126,4 @@ passed
 
 The source probe tests prove that response bodies are never returned or persisted by the diagnostic path. The target builder is deterministic under reordered fixture observations, and the pilot gate exercises primary-confirmed, fallback-selected, and insufficient-evidence outcomes.
 
-The complete inherited repository suite was not rerun in this sandbox because the GitHub branch cannot be cloned through the blocked DNS/network path. This receipt therefore claims the complete Slice 2 focused surface, not the full repository suite.
-
-A live FSD acquisition attempt failed before HTTP with temporary DNS resolution failure; no bytes or manifest were written. The available web fetcher also returned timeout or anomalous 400 responses for the three download URLs. These are environment/access findings, not accepted source evidence. The adapters remain fail-closed.
+The original focused verification receipt above is historical branch evidence. The current Windows checkpoint ran the complete local suite with a workspace-local Pytest temp directory after restoring the lock and import contracts; the 2026-08-02 live acquisition results are recorded separately above. No bytes or manifests were written. The adapters remain fail-closed.

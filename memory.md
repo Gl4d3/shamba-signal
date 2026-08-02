@@ -12,6 +12,8 @@
 - Branch: `slice/2-target-dataset` at `2872141` before local changes.
 - Source registry, immutable manifests, fail-closed acquisition, canonical observations, quality reports, and the pilot gate already exist.
 - No official snapshot, real target table, or model exists yet. Do not describe Slice 2 as complete until source bytes pass the registered terms, media, schema, and lineage gates.
+- Live browser checkpoint: KNBS/NIPFN resolved an ephemeral asset but its download timed out; KilimoSTAT and FSD were unreachable before their first document loaded. No source bytes or manifests were created. The exact recovery checklist is in `docs/data/slice-2-acquisition-status.md`.
+- The API and homepage expose `slice-2-acquisition-blocked-v0` and the `blocked` capability state; `docs/assets/slice-2-target-dataset/acquisition-blocked-status.png` is local browser proof of the rendered boundary.
 
 ## 2026-08-02 baseline reproducibility repair
 

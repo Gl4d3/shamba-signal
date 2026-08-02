@@ -24,6 +24,13 @@ mid-season yield forecast under geographic and temporal holdouts?
 Trans Nzoia is the fallback. This is a Slice 2 acquisition hypothesis, not proof of label
 completeness, satellite usability, or model skill.
 
+**Current Slice 2 checkpoint:** official-source acquisition is blocked in the current execution
+environment. The KNBS/NIPFN landing page resolves its download-manager asset but the asset request
+times out; KilimoSTAT and the Food Systems Dashboard are unreachable before their first document
+loads. No source bytes, target dataset, or pilot confirmation were created. See
+[`docs/data/slice-2-acquisition-status.md`](docs/data/slice-2-acquisition-status.md) for the
+recovery checklist.
+
 **Not implemented:** downloaded and checksummed target snapshots, a canonical target dataset,
 trained model, calibrated forecast, stress attribution, research dashboard, advisory engine,
 scheduler, AWS deployment, or Druid benchmark. Those remain planned and must not be inferred

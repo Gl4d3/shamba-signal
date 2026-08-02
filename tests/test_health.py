@@ -10,7 +10,7 @@ def test_health_endpoint_reports_service_identity() -> None:
     assert response.json() == {
         "status": "ok",
         "service": "shamba-signal-api",
-        "release": "slice-1-feasibility-v0",
+        "release": "slice-2-acquisition-blocked-v0",
     }
 
 

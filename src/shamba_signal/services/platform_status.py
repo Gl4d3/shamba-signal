@@ -4,7 +4,7 @@ from shamba_signal.domain.platform import Capability, CapabilityStatus, Platform
 def get_platform_status() -> PlatformStatus:
     return PlatformStatus(
         product="Shamba Signal",
-        release="slice-1-feasibility-v0",
+        release="slice-2-acquisition-blocked-v0",
         architecture="modular decision-intelligence platform",
         primary_output="county-season yield forecast",
         forecast_timing="mid-season",
@@ -24,10 +24,10 @@ def get_platform_status() -> PlatformStatus:
             Capability(
                 id="target-dataset",
                 name="Reproducible county-season target dataset",
-                status=CapabilityStatus.NEXT,
+                status=CapabilityStatus.BLOCKED,
                 outcome=(
-                    "Download and checksum official maize records, then confirm Busia or "
-                    "switch to Trans Nzoia from measured completeness."
+                    "No official maize source snapshot has passed the registered access, media, "
+                    "schema, terms, and lineage gates. Forecasting has not started."
                 ),
             ),
             Capability(

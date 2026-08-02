@@ -26,7 +26,7 @@ A slice is a testable end-to-end product or research outcome. Infrastructure set
 
 ## Slice 2 — Reproducible county-season target dataset
 
-**Status:** next. No modelling work begins before this gate closes.
+**Status:** acquisition blocked in the current execution environment. No modelling work begins before an official snapshot passes the registered access, media, schema, terms, and lineage gates.
 
 **Outcome:** official production, harvested area, and yield evidence becomes a versioned modelling table, or the slice publishes a rigorous evidence-insufficiency result.
 

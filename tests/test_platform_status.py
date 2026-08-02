@@ -9,7 +9,7 @@ def test_platform_status_exposes_approved_product_contract() -> None:
     assert response.status_code == 200
     body = response.json()
     assert body["product"] == "Shamba Signal"
-    assert body["release"] == "slice-1-feasibility-v0"
+    assert body["release"] == "slice-2-acquisition-blocked-v0"
     assert body["primary_output"] == "county-season yield forecast"
     assert body["forecast_timing"] == "mid-season"
     assert body["architecture"] == "modular decision-intelligence platform"
@@ -19,7 +19,7 @@ def test_platform_status_exposes_approved_product_contract() -> None:
     assert body["crop_scope"] == "maize selected by metadata-level data feasibility"
 
 
-def test_slice_1_marks_only_target_dataset_next() -> None:
+def test_platform_status_marks_target_dataset_blocked_until_an_official_snapshot_passes() -> None:
     client = TestClient(create_app())
     statuses = {
         item["id"]: item["status"]
@@ -27,11 +27,17 @@ def test_slice_1_marks_only_target_dataset_next() -> None:
     }
     assert statuses == {
         "data-feasibility": "ready",
-        "target-dataset": "next",
+        "target-dataset": "blocked",
         "yield-forecasting": "planned",
         "stress-attribution": "planned",
         "guardrailed-advisory": "planned",
     }
+    target_dataset = next(
+        item
+        for item in client.get("/api/v1/platform/status").json()["capabilities"]
+        if item["id"] == "target-dataset"
+    )
+    assert "No official maize source snapshot has passed" in target_dataset["outcome"]
 
 
 def test_openapi_declares_platform_status_response_schema_and_enums() -> None:
@@ -44,6 +50,7 @@ def test_openapi_declares_platform_status_response_schema_and_enums() -> None:
     assert response_schema == {"$ref": "#/components/schemas/PlatformStatus"}
     assert schema["components"]["schemas"]["CapabilityStatus"]["enum"] == [
         "ready",
+        "blocked",
         "next",
         "planned",
     ]

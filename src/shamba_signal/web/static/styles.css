@@ -7,6 +7,8 @@
   --line: #d7d5c9;
   --signal: #2e6b42;
   --signal-soft: #dce9dd;
+  --caution: #845d1d;
+  --caution-soft: #f5e8c5;
 }
 
 * { box-sizing: border-box; }
@@ -25,6 +27,7 @@ h1 { margin: .1em 0; font-size: clamp(4.5rem, 13vw, 10rem); line-height: .82; le
 .lede { max-width: 780px; font-size: clamp(1.35rem, 3vw, 2.35rem); line-height: 1.14; color: var(--muted); }
 .status { width: fit-content; margin-top: 20px; border: 1px solid var(--line); border-radius: 999px; padding: 10px 14px; background: var(--panel); font-size: .85rem; }
 .status[data-state="ready"] { background: var(--signal-soft); border-color: #a8c2ac; }
+.status[data-state="blocked"] { background: var(--caution-soft); border-color: #d5b671; color: var(--caution); }
 .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin: 42px 0; background: var(--line); border: 1px solid var(--line); }
 .grid article { background: var(--panel); padding: 30px; min-height: 260px; }
 .grid span { color: var(--signal); font-size: .72rem; text-transform: uppercase; letter-spacing: .12em; font-weight: 700; }
