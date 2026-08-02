@@ -114,7 +114,7 @@ def validate_catalog(path: Path = CATALOG_RELATIVE_PATH) -> list[str]:
         for key, value in weights.items():
             if (
                 isinstance(value, bool)
-                or not isinstance(value, (int, float))
+                or not isinstance(value, int | float)
                 or not math.isfinite(value)
                 or value < 0
             ):

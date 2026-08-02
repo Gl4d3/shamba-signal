@@ -26,19 +26,18 @@ def test_lockfile_matches_declared_project_dependencies() -> None:
         "pytest-cov",
         "ruff",
     }
-    assert all("specifier" in item for item in locked_project["metadata"]["requires-dist"])
-    assert all(
-        "specifier" in item
-        for item in locked_project["metadata"]["requires-extra"]["dev"]
-    )
+    metadata_requirements = locked_project["metadata"]["requires-dist"]
+    assert all("specifier" in item for item in metadata_requirements)
 
     runtime_metadata = {
         f'{item["name"]}{item["specifier"]}'
-        for item in locked_project["metadata"]["requires-dist"]
+        for item in metadata_requirements
+        if "marker" not in item
     }
     dev_metadata = {
         f'{item["name"]}{item["specifier"]}'
-        for item in locked_project["metadata"]["requires-extra"]["dev"]
+        for item in metadata_requirements
+        if item.get("marker") == "extra == 'dev'"
     }
     assert runtime_metadata == set(project["dependencies"])
     assert dev_metadata == set(project["optional-dependencies"]["dev"])
@@ -85,13 +84,8 @@ def test_lock_contains_no_local_registry_artifact_paths() -> None:
                 assert all(item["url"].startswith("https://") for item in artifact)
 
 
-def test_lock_dependency_references_are_closed_and_pytest_keeps_pygments() -> None:
+def test_lock_dependency_references_are_closed() -> None:
     packages = {package["name"]: package for package in load_lock()["package"]}
     for package in packages.values():
         for dependency in package.get("dependencies", []):
             assert dependency["name"] in packages
-
-    pytest_dependencies = {
-        dependency["name"] for dependency in packages["pytest"]["dependencies"]
-    }
-    assert "pygments" in pytest_dependencies

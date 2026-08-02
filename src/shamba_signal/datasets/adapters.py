@@ -3,7 +3,7 @@ from __future__ import annotations
 import math
 import re
 import unicodedata
-from typing import Mapping
+from collections.abc import Mapping
 
 from shamba_signal.datasets.target import (
     CanonicalObservation,
@@ -46,7 +46,7 @@ def _normalise_label(value: object, *, field_name: str) -> str:
 def _parse_numeric(value: object) -> float:
     if isinstance(value, bool):
         raise ValueError("KilimoSTAT Value must be numeric")
-    if isinstance(value, (int, float)):
+    if isinstance(value, int | float):
         parsed = float(value)
     elif isinstance(value, str):
         try:

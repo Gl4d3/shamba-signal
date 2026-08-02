@@ -4,8 +4,9 @@ import csv
 import io
 import json
 import math
+from collections.abc import Iterable, Sequence
 from dataclasses import asdict, dataclass
-from typing import Iterable, Literal, Sequence
+from typing import Literal
 
 from shamba_signal.datasets.target import (
     CanonicalObservation,
@@ -269,7 +270,7 @@ class PilotGatePolicy:
             value = getattr(self, name)
             if (
                 isinstance(value, bool)
-                or not isinstance(value, (int, float))
+                or not isinstance(value, int | float)
                 or not math.isfinite(value)
                 or not 0 <= value <= 1
             ):

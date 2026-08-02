@@ -3,7 +3,6 @@ from pathlib import Path
 
 from scripts.validate_slice2 import validate_slice2
 
-
 REQUIRED_PATHS = (
     "data/sources/maize_sources.json",
     "data/sources/fallback_candidates.json",

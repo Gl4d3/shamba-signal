@@ -4,9 +4,10 @@ import json
 import math
 import re
 import unicodedata
+from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable, Literal, Mapping, Sequence
+from typing import Literal
 
 ObservationElement = Literal["production", "harvested_area", "reported_yield"]
 ObservationQuality = Literal["accepted", "flagged", "review-required"]
@@ -154,7 +155,7 @@ class CanonicalObservation:
     ) -> CanonicalObservation:
         if element not in _ALLOWED_ELEMENTS:
             raise ValueError(f"unsupported observation element: {element}")
-        if isinstance(value, bool) or not isinstance(value, (int, float)):
+        if isinstance(value, bool) or not isinstance(value, int | float):
             raise ValueError("observation value must be numeric")
         numeric_value = float(value)
         if not math.isfinite(numeric_value):
@@ -307,7 +308,7 @@ def reconcile_yield(
     ):
         if (
             isinstance(value, bool)
-            or not isinstance(value, (int, float))
+            or not isinstance(value, int | float)
             or not math.isfinite(value)
         ):
             raise ValueError(f"{name} must be a finite number")

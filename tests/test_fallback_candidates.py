@@ -1,7 +1,6 @@
 import json
 from pathlib import Path
 
-
 ALLOWED_STATUSES = {
     "rejected-for-yield-target",
     "research-only-candidate",

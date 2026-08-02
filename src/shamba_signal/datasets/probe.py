@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Callable, Sequence
 from dataclasses import asdict, dataclass
-from typing import Callable, Literal, Sequence
+from typing import Literal
 
 from shamba_signal.datasets.acquisition import (
     AcquisitionError,
