@@ -51,6 +51,17 @@ Each observation retains:
 
 Quality classes are explicit source-adapter decisions. The generic target layer does not infer that a source flag is safe.
 
+## Source adapter boundary
+
+The KilimoSTAT adapter now maps its documented fields—County, Domain, Subdomain, Element, Item, Value, Unit, Year, Source, and Flag—into canonical observations.
+
+- Non-maize rows fail for the current selected-crop build.
+- Unsupported elements and placeholder/non-numeric values fail.
+- Original fields are retained.
+- Unknown flags remain `review-required`; an explicit source-flag policy is required before a flag may be treated as accepted or merely flagged.
+
+The Food Systems Dashboard and KNBS workbook adapters remain pending until one valid response/workbook schema is inspected. Endpoint discovery alone is not treated as a verified schema contract.
+
 ## Derived yield
 
 Derived yield is created only when production and harvested area:
@@ -81,11 +92,23 @@ The contract intentionally exposes no automatically selected yield value. Select
 
 Only one canonical observation may exist for each target key and element within a build input. Duplicate production, harvested-area, or reported-yield observations fail rather than being silently averaged or overwritten.
 
+## Deterministic quality build
+
+The target-build layer now produces deterministic target CSV and quality JSON representations. Its quality report records:
+
+- county and period coverage;
+- rows with reported, derived, missing, consistent, or divergent yield;
+- quality-class and source-flag counts;
+- canonical units;
+- the fail-on-duplicate policy.
+
+A pilot gate can return `confirmed`, `fallback`, or `insufficient` using explicitly supplied thresholds. No default threshold silently selects Busia or Trans Nzoia.
+
 ## Current boundary
 
-This contract has fixture-level tests. It does not yet mean:
+These contracts and the KilimoSTAT mapping have fixture-level tests. They do not yet mean:
 
 - an official source snapshot has passed acquisition gates;
 - annual records have been mapped to county-specific crop seasons;
 - Busia has passed continuity, flags, or missingness thresholds;
-- a publishable Parquet target dataset exists.
+- a publishable Parquet target dataset, dataset card, or real quality report exists.
