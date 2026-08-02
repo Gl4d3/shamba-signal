@@ -1,4 +1,4 @@
-.PHONY: install lint test validate compile smoke feasibility verify run
+.PHONY: install lint test validate compile smoke feasibility probe-sources verify run
 
 install:
 	uv sync --locked --extra dev
@@ -20,6 +20,9 @@ smoke:
 
 feasibility:
 	uv run python scripts/run_feasibility.py
+
+probe-sources:
+	uv run python scripts/probe_sources.py
 
 verify: lint test validate compile smoke
 
