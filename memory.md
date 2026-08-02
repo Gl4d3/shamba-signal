@@ -12,10 +12,11 @@
 | 2026-08-02 | Release boundary correction | The public/repository contract ends at Slice 2B and only plans a county-year baseline feasibility/no-go study. Forecast, crop-stress, advisory, and season-label work are out of scope. |
 | 2026-08-02 | Visual proof | Desktop and narrow-mobile browser checks show the Slice 2A ready / Slice 2B next boundary without console errors. The previous acquisition-blocked screenshot is retained only under a historical filename. |
 | 2026-08-02 | Feasibility artifact reproducibility | The feasibility generator writes JSON and Markdown with explicit LF newlines on Windows. Its canonical report is a historical Slice 1 selection artifact carrying the current Slice 2A/2B boundary. |
+| 2026-08-02 | Publication receipt | `slice/2-target-dataset` is pushed to draft PR #14. Issue #3 now owns Slice 2A, issue #16 owns Slice 2B reconciliation, issue #4 is the blocked county-year baseline study, and issue #11 reflects the same delivery order. GitHub Actions still fails before any job step under issue #12. |
 
 ## Current Slice 2 state
 
-- Branch: `slice/2-target-dataset` contains local Slice 2 implementation commits; check live Git state before publishing.
+- Branch: `slice/2-target-dataset` is published to draft PR #14; check live GitHub state before merging.
 - The accepted KNBS workbook is byte-preserved outside Git. A standard-library XLSX reader binds the annual target to the accepted manifest digest and fails on source/schema drift.
 - The local-only package contains `target.csv`, quality report, pilot decision, provenance manifest, and dataset card. It must not be committed while source redistribution remains review-required.
 - The Slice 2A annual snapshot is ready but explicitly source-bound and not model-ready. Slice 2B is the annual-source reconciliation gate; no county-season mapping or forecast model exists.

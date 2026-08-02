@@ -121,10 +121,10 @@
 
   Commit message: `docs: refresh Slice 2 delivery proof`
 
-- [ ] **Step 5: Push and align GitHub**
+- [x] **Step 5: Push and align GitHub**
 
   Push `slice/2-target-dataset`, retitle and update PR #14 for Slice 2A, update issue #3 as Slice 2A, create a Slice 2B issue, make issue #4 depend on Slice 2B, and update issue #11. Do not merge the PR.
 
-- [ ] **Step 6: Verify remote state**
+- [x] **Step 6: Verify remote state**
 
   Confirm the pushed head SHA, PR contents, issue links, and current CI status.
