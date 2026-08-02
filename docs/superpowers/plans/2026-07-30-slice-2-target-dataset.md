@@ -52,14 +52,16 @@
 ### Task 3: Canonical observations and yield reconciliation
 
 **Files:**
-- Create canonical target domain/schema.
-- Add unit/county/element mapping.
-- Add fixture and property tests.
+- `src/shamba_signal/datasets/target.py`
+- `tests/test_target_observations.py`
+- `docs/data/target-observation-contract.md`
 
-- [ ] Canonicalize county code/name, crop, year/season, element, value, unit, source, flag, snapshot ID, and quality state.
-- [ ] Preserve original fields and source flags.
-- [ ] Keep reported yield separate from derived yield.
-- [ ] Derive tonnes per hectare only from positive, same-grain, period-compatible production and harvested-area observations.
+- [x] Canonicalize county code/name, crop, period, element, value, unit, source, flag, snapshot ID, and quality state.
+- [x] Resolve county aliases against the existing 47-county registry and reject unknown or ambiguous mappings.
+- [x] Preserve original fields, original units, and source flags.
+- [x] Keep reported yield separate from derived yield and expose reconciliation status without silently selecting a target.
+- [x] Derive tonnes per hectare only from positive, same-grain, period-compatible production and harvested-area observations.
+- [x] Reject duplicate target-key/element observations rather than averaging or overwriting them.
 
 ### Task 4: Target dataset and quality decision
 
