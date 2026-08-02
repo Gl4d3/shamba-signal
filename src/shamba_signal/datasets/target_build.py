@@ -19,6 +19,11 @@ from shamba_signal.datasets.target import (
 
 TargetStatus = ReconciliationStatus | Literal["missing"]
 PilotStatus = Literal["confirmed", "fallback", "insufficient"]
+_CANONICAL_UNITS = {
+    "production": "t",
+    "harvested_area": "ha",
+    "reported_yield": "t/ha",
+}
 _QUALITY_ORDER: dict[ObservationQuality, int] = {
     "accepted": 0,
     "flagged": 1,
@@ -74,6 +79,9 @@ class QualityReport:
     rows_consistent: int
     rows_divergent: int
     quality_counts: dict[str, int]
+    source_flag_counts: dict[str, int]
+    canonical_units: dict[str, str]
+    duplicate_policy: str
     county_quality: tuple[CountyQuality, ...]
 
 
@@ -165,6 +173,12 @@ def _quality_report(
                 ),
             )
         )
+    source_flag_counts: dict[str, int] = {}
+    for item in observations:
+        if item.source_flag:
+            source_flag_counts[item.source_flag] = (
+                source_flag_counts.get(item.source_flag, 0) + 1
+            )
     return QualityReport(
         total_observations=len(observations),
         target_rows=len(rows),
@@ -178,6 +192,9 @@ def _quality_report(
         rows_consistent=sum(row.reconciliation_status == "consistent" for row in rows),
         rows_divergent=sum(row.reconciliation_status == "divergent" for row in rows),
         quality_counts=quality_counts,
+        source_flag_counts=dict(sorted(source_flag_counts.items())),
+        canonical_units=dict(_CANONICAL_UNITS),
+        duplicate_policy="fail",
         county_quality=tuple(counties),
     )
 
