@@ -83,7 +83,10 @@ def probe_source(
                 source,
                 status="manual-required",
                 category="configuration",
-                detail="official download manager requires a resolved asset or verified manual file",
+                detail=(
+                    "official download manager requires a resolved asset or "
+                    "verified manual file"
+                ),
             )
         return _result_without_attempt(
             source,
