@@ -32,10 +32,13 @@ REQUIRED_SLICE2_FILES = (
     Path("docs/data/target-observation-contract.md"),
     Path("docs/superpowers/plans/2026-07-30-slice-2-target-dataset.md"),
     Path("scripts/acquire_source.py"),
+    Path("scripts/build_nipfn_target.py"),
     Path("scripts/probe_sources.py"),
     Path("src/shamba_signal/datasets/acquisition.py"),
     Path("src/shamba_signal/datasets/adapters.py"),
     Path("src/shamba_signal/datasets/manifest.py"),
+    Path("src/shamba_signal/datasets/nipfn.py"),
+    Path("src/shamba_signal/datasets/nipfn_publication.py"),
     Path("src/shamba_signal/datasets/probe.py"),
     Path("src/shamba_signal/datasets/registry.py"),
     Path("src/shamba_signal/datasets/target.py"),
@@ -86,6 +89,11 @@ def _validate_primary_sources(root: Path) -> list[str]:
             errors.append(
                 f"{source_id} must remain network-disabled until a valid schema is frozen"
             )
+    nipfn = registry.source("nipfn-maize-2012-2020")
+    if nipfn.expected_fields != ("County", "Year", "Indicator", "Value"):
+        errors.append("NIPFN source must retain its verified tidy worksheet schema")
+    if "2019 is absent" not in nipfn.temporal_coverage:
+        errors.append("NIPFN source must disclose the missing 2019 annual observation")
     return errors
 
 

@@ -52,7 +52,7 @@
 - [x] Support a documented manual verified snapshot path when an official download manager does not expose a stable asset URL.
 - [x] Use bounded timeout, explicit `Accept`, and a project-identifying user agent for live requests.
 - [x] Provide a non-persisting machine-readable probe that classifies ready, blocked, not-ready, manual-required, unreachable, and invalid-response states without returning response bodies.
-- [ ] Run the probe from a networked environment and acquire/checksum the first accepted official snapshot.
+- [x] Accept and checksum the first official snapshot through the documented manual-workbook path.
 
 ### Task 3: Canonical observations and yield reconciliation
 
@@ -90,8 +90,8 @@
 - [x] Implement an explicit, configurable Busia → Trans Nzoia → insufficient-evidence gate without hidden threshold defaults.
 - [x] Record KCHSP 2020 crop-output data as unsuitable for yield because it lacks total production and harvested area.
 - [x] Record KIHBS 2005-2006 agriculture microdata as a separate research-only candidate that may not replace the selected county target.
-- [ ] Run the pilot gate on accepted official records and confirm Busia, switch to Trans Nzoia, or publish an insufficiency result.
-- [ ] Publish the versioned target table, manifest, quality report, data dictionary, and dataset card from accepted official snapshots.
+- [x] Run the pilot gate on accepted official annual records: Busia is confirmed for the eight observed annual years.
+- [x] Publish a local-only annual target table, manifest, quality report, and dataset card; source redistribution remains under review.
 - [ ] Ensure a clean regeneration matches committed publishable artifacts byte-for-byte or value-for-value as specified.
 
 ### Task 5: Integration and acceptance

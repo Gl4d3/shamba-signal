@@ -36,9 +36,9 @@
       "dataset_title": "Maize Production by County 2012-2020",
       "role": "historical maize production-by-county evidence",
       "spatial_coverage": "Kenya counties",
-      "temporal_coverage": "2012-2020",
+      "temporal_coverage": "annual 2012-2018 and 2020; 2019 absent in verified workbook",
       "access_url": "https://nipfn.knbs.or.ke/download/maize-production-by-county-2012-2020/",
-      "access_method": "downloadable file; stable asset URL and schema require capture",
+      "access_method": "manual verified XLSX from official download manager; schema captured",
       "license_status": "review-required",
       "license_note": "Capture file terms, checksum, schema, and source flags before redistribution."
     },

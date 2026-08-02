@@ -66,6 +66,21 @@ def test_county_registry_maps_official_names_and_safe_aliases(tmp_path: Path) ->
     assert registry.resolve("Nairobi").county_id == "nairobi_city"
 
 
+@pytest.mark.parametrize(
+    ("official_name", "county_id"),
+    [
+        ("Homabay", "homa_bay"),
+        ("Tharaka-Nthi", "tharaka_nithi"),
+    ],
+)
+def test_county_registry_maps_verified_nipfn_name_variants(
+    official_name: str, county_id: str
+) -> None:
+    registry = load_county_registry(Path("data/feasibility/candidate_profiles.json"))
+
+    assert registry.resolve(official_name).county_id == county_id
+
+
 def test_county_registry_rejects_unknown_county(tmp_path: Path) -> None:
     registry = load_county_registry(write_profiles(tmp_path))
 

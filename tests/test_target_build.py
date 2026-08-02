@@ -137,6 +137,39 @@ def test_build_target_dataset_rejects_duplicate_elements() -> None:
         build_target_dataset(observations)
 
 
+def test_build_target_dataset_keeps_reported_yield_when_area_is_zero() -> None:
+    result = build_target_dataset(
+        [
+            obs(
+                county="Busia",
+                period="2020",
+                element="production",
+                value=0,
+                unit="t",
+            ),
+            obs(
+                county="Busia",
+                period="2020",
+                element="harvested_area",
+                value=0,
+                unit="ha",
+            ),
+            obs(
+                county="Busia",
+                period="2020",
+                element="reported_yield",
+                value=0,
+                unit="t/ha",
+            ),
+        ]
+    )
+
+    row = result.rows[0]
+    assert row.reconciliation_status == "reported_only"
+    assert row.derived_yield_t_per_ha is None
+    assert result.report.rows_with_nonpositive_harvested_area == 1
+
+
 def test_pilot_gate_confirms_primary_only_when_explicit_policy_passes() -> None:
     observations = []
     for year in range(2019, 2024):

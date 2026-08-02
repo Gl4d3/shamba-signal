@@ -11,10 +11,13 @@ REQUIRED_PATHS = (
     "docs/data/target-observation-contract.md",
     "docs/superpowers/plans/2026-07-30-slice-2-target-dataset.md",
     "scripts/acquire_source.py",
+    "scripts/build_nipfn_target.py",
     "scripts/probe_sources.py",
     "src/shamba_signal/datasets/acquisition.py",
     "src/shamba_signal/datasets/adapters.py",
     "src/shamba_signal/datasets/manifest.py",
+    "src/shamba_signal/datasets/nipfn.py",
+    "src/shamba_signal/datasets/nipfn_publication.py",
     "src/shamba_signal/datasets/probe.py",
     "src/shamba_signal/datasets/registry.py",
     "src/shamba_signal/datasets/target.py",
@@ -42,6 +45,7 @@ def test_slice2_validator_reports_missing_artifacts(tmp_path: Path) -> None:
 
     assert "missing Slice 2 file: data/sources/maize_sources.json" in errors
     assert "missing Slice 2 file: scripts/probe_sources.py" in errors
+    assert "missing Slice 2 file: scripts/build_nipfn_target.py" in errors
 
 
 def test_slice2_validator_rejects_missing_primary_source(tmp_path: Path) -> None:

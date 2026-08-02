@@ -111,9 +111,9 @@
       "landing_url": "https://nipfn.knbs.or.ke/download/maize-production-by-county-2012-2020/",
       "acquisition_url": "https://nipfn.knbs.or.ke/download/maize-production-by-county-2012-2020/",
       "acquisition_mode": "download_manager",
-      "access_method": "WordPress download-manager landing page; resolved asset required",
+      "access_method": "Manual verified XLSX from the official WordPress download manager",
       "spatial_coverage": "Kenya counties",
-      "temporal_coverage": "2012-2020",
+      "temporal_coverage": "Annual observations for 2012-2018 and 2020; 2019 is absent",
       "terms_status": "review-required",
       "redistribution_status": "review-required",
       "accepted_media_types": [
@@ -122,9 +122,9 @@
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
       ],
       "network_acquisition_ready": false,
-      "expected_fields": ["county", "year", "production", "yield"],
-      "schema_contract_state": "provisional-pending-workbook-inspection",
-      "access_state": "landing-page-verified-stable-asset-url-not-exposed",
+      "expected_fields": ["County", "Year", "Indicator", "Value"],
+      "schema_contract_state": "verified-workbook-sheet4-tidy-schema",
+      "access_state": "manual-verified-snapshot-accepted",
       "role": "historical 2012-2020 county maize panel"
     }
   ]

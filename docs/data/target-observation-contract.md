@@ -60,7 +60,11 @@ The KilimoSTAT adapter now maps its documented fields—County, Domain, Subdomai
 - Original fields are retained.
 - Unknown flags remain `review-required`; an explicit source-flag policy is required before a flag may be treated as accepted or merely flagged.
 
-The Food Systems Dashboard and KNBS workbook adapters remain pending until one valid response/workbook schema is inspected. Endpoint discovery alone is not treated as a verified schema contract.
+The Food Systems Dashboard adapters remain pending until one valid response schema is inspected.
+The KNBS/NIPFN workbook adapter is verified against its tidy `County`, `Year`, `Indicator`, and
+`Value` sheet. Its three observed indicators map to harvested area (`ha`), production (`t`), and
+reported yield (`t/ha`); workbook-specific aliases resolve `Homabay` and `Tharaka-Nthi` without
+guessing other county names.
 
 ## Derived yield
 
@@ -106,9 +110,10 @@ A pilot gate can return `confirmed`, `fallback`, or `insufficient` using explici
 
 ## Current boundary
 
-These contracts and the KilimoSTAT mapping have fixture-level tests. They do not yet mean:
+These contracts, the KilimoSTAT mapping, and the KNBS/NIPFN annual-workbook mapping have tests.
+They do not mean:
 
-- an official source snapshot has passed acquisition gates;
 - annual records have been mapped to county-specific crop seasons;
-- Busia has passed continuity, flags, or missingness thresholds;
-- a publishable Parquet target dataset, dataset card, or real quality report exists.
+- source redistribution terms are resolved;
+- the annual target can support a forecasting model;
+- a publishable Parquet dataset exists.

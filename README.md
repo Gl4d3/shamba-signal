@@ -24,17 +24,17 @@ mid-season yield forecast under geographic and temporal holdouts?
 Trans Nzoia is the fallback. This is a Slice 2 acquisition hypothesis, not proof of label
 completeness, satellite usability, or model skill.
 
-**Current Slice 2 checkpoint:** official-source acquisition is blocked in the current execution
-environment. The KNBS/NIPFN landing page resolves its download-manager asset but the asset request
-times out; KilimoSTAT and the Food Systems Dashboard are unreachable before their first document
-loads. No source bytes, target dataset, or pilot confirmation were created. See
-[`docs/data/slice-2-acquisition-status.md`](docs/data/slice-2-acquisition-status.md) for the
-recovery checklist.
+**Current Slice 2 checkpoint:** an original KNBS/NIPFN workbook is accepted and preserved outside
+Git with SHA-256 lineage. Its verified tidy sheet has 1,128 observations: all 47 counties × three
+indicators × eight annual years (2012-2018 and 2020). A local-only target build produces 376
+county-year rows and confirms Busia under the explicit annual-data policy; 2019 is absent, two
+zero-area rows cannot produce derived yield, and Mandera 2012 has divergent reported/derived yield.
+No seasonal mapping, model, or forecast is claimed. See
+[`docs/data/slice-2-acquisition-status.md`](docs/data/slice-2-acquisition-status.md).
 
-**Not implemented:** downloaded and checksummed target snapshots, a canonical target dataset,
-trained model, calibrated forecast, stress attribution, research dashboard, advisory engine,
-scheduler, AWS deployment, or Druid benchmark. Those remain planned and must not be inferred
-from the logical architecture diagram.
+**Not implemented:** a county-season target, trained model, calibrated forecast, stress
+attribution, research dashboard, advisory engine, scheduler, AWS deployment, or Druid benchmark.
+The annual local-only target is not a redistribution approval and must not be inferred as a model.
 
 ## Resolution boundary
 

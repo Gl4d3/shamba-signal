@@ -80,3 +80,13 @@ def test_committed_registry_pins_verified_fsd_maize_download_links() -> None:
         assert f"/indicators/{indicator_id}/" in source.acquisition_url
         assert source.network_acquisition_ready is False
         assert source.terms_status == "review-required"
+
+
+def test_committed_registry_records_the_verified_nipfn_workbook_schema() -> None:
+    source = load_source_registry(Path("data/sources/maize_sources.json")).source(
+        "nipfn-maize-2012-2020"
+    )
+
+    assert source.expected_fields == ("County", "Year", "Indicator", "Value")
+    assert "2019 is absent" in source.temporal_coverage
+    assert source.network_acquisition_ready is False

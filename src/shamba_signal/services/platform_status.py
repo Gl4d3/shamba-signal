@@ -4,15 +4,15 @@ from shamba_signal.domain.platform import Capability, CapabilityStatus, Platform
 def get_platform_status() -> PlatformStatus:
     return PlatformStatus(
         product="Shamba Signal",
-        release="slice-2-acquisition-blocked-v0",
+        release="slice-2-annual-target-v1",
         architecture="modular decision-intelligence platform",
         primary_output="county-season yield forecast",
         forecast_timing="mid-season",
         geography=(
-            "Kenya-wide with Busia selected for snapshot-level validation and "
+            "Kenya-wide annual panel with Busia confirmed for annual-label validation and "
             "Trans Nzoia retained as fallback"
         ),
-        crop_scope="maize selected by metadata-level data feasibility",
+        crop_scope="maize selected by feasibility and verified in an annual KNBS snapshot",
         refresh_modes=["scheduled", "analyst-triggered"],
         capabilities=[
             Capability(
@@ -23,11 +23,12 @@ def get_platform_status() -> PlatformStatus:
             ),
             Capability(
                 id="target-dataset",
-                name="Reproducible county-season target dataset",
-                status=CapabilityStatus.BLOCKED,
+                name="Reproducible annual maize target dataset",
+                status=CapabilityStatus.READY,
                 outcome=(
-                    "No official maize source snapshot has passed the registered access, media, "
-                    "schema, terms, and lineage gates. Forecasting has not started."
+                    "KNBS/NIPFN snapshot accepted: 376 county-year rows for 47 counties across "
+                    "2012-2018 and 2020. 2019 is absent; season mapping and forecasting have "
+                    "not started."
                 ),
             ),
             Capability(

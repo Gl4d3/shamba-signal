@@ -76,6 +76,7 @@ class QualityReport:
     target_rows: int
     rows_with_reported_yield: int
     rows_with_derived_yield: int
+    rows_with_nonpositive_harvested_area: int
     rows_missing_yield: int
     rows_consistent: int
     rows_divergent: int
@@ -114,7 +115,11 @@ def build_target_dataset(
         production = indexed.get((key, "production"))
         area = indexed.get((key, "harvested_area"))
         reported = indexed.get((key, "reported_yield"))
-        derived = derive_yield(production, area) if production and area else None
+        derived = (
+            derive_yield(production, area)
+            if production and area and area.normalized_value > 0
+            else None
+        )
         if reported is None and derived is None:
             status: TargetStatus = "missing"
             reported_value = None
@@ -188,6 +193,10 @@ def _quality_report(
         ),
         rows_with_derived_yield=sum(
             row.derived_yield_t_per_ha is not None for row in rows
+        ),
+        rows_with_nonpositive_harvested_area=sum(
+            row.harvested_area_ha is not None and row.harvested_area_ha <= 0
+            for row in rows
         ),
         rows_missing_yield=sum(row.reconciliation_status == "missing" for row in rows),
         rows_consistent=sum(row.reconciliation_status == "consistent" for row in rows),

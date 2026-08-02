@@ -22,8 +22,10 @@ _ALLOWED_ELEMENTS = {"production", "harvested_area", "reported_yield"}
 _ALLOWED_QUALITY_CLASSES = {"accepted", "flagged", "review-required"}
 _ACRE_TO_HECTARE = 0.40468564224
 _EXPLICIT_ALIASES = {
+    "homabay": "homa_bay",
     "muranga": "muranga",
     "nairobi": "nairobi_city",
+    "tharaka nthi": "tharaka_nithi",
 }
 
 

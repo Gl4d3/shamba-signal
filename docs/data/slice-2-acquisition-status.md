@@ -29,11 +29,31 @@ Build an immutable, reproducible maize county-season target dataset and confirm 
 
 **Not yet implemented or claimed:**
 
-- an accepted official source snapshot;
-- county/year completeness and flag profiling from real records;
-- Food Systems Dashboard and KNBS workbook row adapters;
-- a published county-season target table;
-- Parquet publication, dataset card, real-data quality report, or Busia confirmation.
+- a county-season mapping or season-specific target table;
+- Food Systems Dashboard row adapters;
+- source redistribution approval or Git publication of the source-derived rows;
+- Parquet publication;
+- a trained model, forecast, or production decision-support workflow.
+
+## 2026-08-02 accepted KNBS/NIPFN snapshot
+
+The original workbook was manually obtained from the official NIPFN landing page and retained only
+outside Git. Its accepted snapshot identity is:
+
+- source SHA-256: `15a47b6fdc634fab7a69cd7576974d2f9eeb550218389d4a1526dd8123a92ab8`;
+- media type: XLSX;
+- source sheet: the single tidy worksheet with `County`, `Year`, `Indicator`, and `Value`;
+- verified data fields: `Area (HA)`, `Production (MT)`, and `Yield(MT/HA)`;
+- observed coverage: 47 counties × 8 annual years × 3 indicators = 1,128 observations;
+- observed years: 2012-2018 and 2020. The source title's 2012-2020 range is not continuous:
+  2019 is absent.
+
+The local-only annual build produces 376 county-year target rows. Reported and derived yield are
+consistent for 373 rows, divergent for Mandera 2012, and unavailable as a derived value for two
+zero-area rows (Nairobi 2020 and Wajir 2016). Both Busia and Trans Nzoia have all eight observed
+annual years; the explicit policy requiring eight periods, complete yield coverage, no
+review-required rows, and no divergent rows confirms **Busia**. This is an annual-label validation
+decision only, not a seasonal continuity claim or model-readiness result.
 
 ## Source paths and measured access state
 
@@ -47,9 +67,10 @@ Build an immutable, reproducible maize county-season target dataset and confirm 
 
 All three FSD entries remain `network_acquisition_ready: false`. Discovering an endpoint is not equivalent to verifying its response schema. The probe deliberately reports those sources as `not-ready` and does not make a request; the NIPFN download-manager entry reports `manual-required` until its file path is resolved.
 
-## 2026-08-02 live acquisition checkpoint
+## 2026-08-02 automated browser checkpoint (historical)
 
-No official payload was accepted, persisted, or added to Git during this checkpoint.
+Before the manual workbook retrieval, the automated browser could not complete an official payload
+download. This is retained as access evidence, not the current Slice 2 state.
 
 | Source | Attempt | Observed result | Classification |
 | --- | --- | --- | --- |

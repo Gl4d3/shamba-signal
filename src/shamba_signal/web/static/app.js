@@ -8,9 +8,17 @@ async function loadStatus() {
       (capability) => capability.status === 'blocked',
     ) || payload.capabilities.find(
       (capability) => capability.status === 'next',
+    ) || payload.capabilities.find(
+      (capability) => capability.id === 'target-dataset',
+    ) || payload.capabilities.find(
+      (capability) => capability.status === 'ready',
     );
     if (!activeCapability) throw new Error('No active capability in platform status');
-    const stateText = activeCapability.status === 'blocked' ? 'is blocked' : 'is next';
+    const stateText = activeCapability.status === 'blocked'
+      ? 'is blocked'
+      : activeCapability.status === 'next'
+        ? 'is next'
+        : 'is ready';
     statusNode.textContent = `${payload.release} · ${activeCapability.name} ${stateText}`;
     statusNode.dataset.state = activeCapability.status;
   } catch (error) {
