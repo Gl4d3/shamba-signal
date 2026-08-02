@@ -18,16 +18,20 @@ Build an immutable, reproducible maize county-season target dataset and confirm 
 - canonical county/crop/period observations with original values, units, flags, quality class, and snapshot lineage;
 - approved unit conversion for tonnes, kilograms, hectares, acres, and yield units;
 - safe derived-yield and reported-versus-derived reconciliation contracts;
+- KilimoSTAT documented-field adapter with conservative source-flag handling;
 - duplicate target-key/element rejection;
-- fixture coverage for acquisition failures, portable lineage, source registry, county aliases, units, grain matching, and reconciliation.
+- deterministic target CSV and quality JSON renderers;
+- quality reporting for county/period coverage, missingness, reported/derived yield, reconciliation, quality classes, source flags, canonical units, and duplicate policy;
+- an explicit Busia → Trans Nzoia → insufficient-evidence pilot gate with caller-supplied thresholds;
+- fixture coverage across acquisition, lineage, registry, county aliases, units, grain matching, source adaptation, reconciliation, target rendering, and pilot decisions.
 
 **Not yet implemented or claimed:**
 
 - an accepted official source snapshot;
 - county/year completeness and flag profiling from real records;
-- source-specific row-to-observation adapters;
+- Food Systems Dashboard and KNBS workbook row adapters;
 - a published county-season target table;
-- Parquet publication, dataset card, quality report, or Busia confirmation.
+- Parquet publication, dataset card, real-data quality report, or Busia confirmation.
 
 ## Source paths and measured access state
 
@@ -66,28 +70,31 @@ No source can enter the target table until:
 5. schema and row count are profiled;
 6. original values, units, source names, and flags are retained;
 7. duplicate target observations and ambiguous county mappings fail;
-8. no credential, signed URL, local absolute path, restricted byte payload, or fabricated record enters Git.
+8. the pilot gate is run on accepted records using versioned thresholds;
+9. no credential, signed URL, local absolute path, restricted byte payload, or fabricated record enters Git.
 
 ## Verification receipt
 
-Acquisition and manifest sub-slice:
+Focused target-data gate:
 
 ```text
-PYTHONPATH=src python -m pytest -q tests/test_source_manifest.py tests/test_acquisition.py tests/test_registry.py
-18 passed before the endpoint-registry correction
-```
+PYTHONPATH=src python -m pytest -q \
+  tests/test_source_manifest.py \
+  tests/test_acquisition.py \
+  tests/test_registry.py \
+  tests/test_target_observations.py \
+  tests/test_kilimostat_adapter.py \
+  tests/test_target_build.py
+...........................................                              [100%]
+43 passed
 
-Canonical target and corrected-registry sub-slice:
-
-```text
-PYTHONPATH=src python -m pytest -q tests/test_registry.py tests/test_target_observations.py
-27 passed
-
-python -m compileall -q src
+python -m compileall -q src scripts
 exit 0
 
 100-character line and excessive-blank-line scan
 passed
 ```
+
+The target builder is deterministic under reordered fixture observations, and the pilot gate exercises primary-confirmed, fallback-selected, and insufficient-evidence outcomes.
 
 A live FSD acquisition attempt failed before HTTP with temporary DNS resolution failure; no bytes or manifest were written. The available web fetcher also returned timeout or anomalous 400 responses for the three download URLs. These are environment/access findings, not accepted source evidence. The adapters remain fail-closed.
