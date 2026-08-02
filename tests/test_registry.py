@@ -65,3 +65,18 @@ def test_load_source_registry_rejects_missing_sources(tmp_path: Path) -> None:
 
     with pytest.raises(ValueError, match="non-empty sources"):
         load_source_registry(write_registry(tmp_path, payload))
+
+
+def test_committed_registry_pins_verified_fsd_maize_download_links() -> None:
+    registry = load_source_registry(Path("data/sources/maize_sources.json"))
+
+    expected_indicators = {
+        "fsd-maize-yield": "16",
+        "fsd-maize-production": "277",
+        "fsd-maize-area": "133",
+    }
+    for source_id, indicator_id in expected_indicators.items():
+        source = registry.source(source_id)
+        assert f"/indicators/{indicator_id}/" in source.acquisition_url
+        assert source.network_acquisition_ready is False
+        assert source.terms_status == "review-required"
