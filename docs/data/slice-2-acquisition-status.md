@@ -2,7 +2,7 @@
 
 ## Active outcome
 
-Build an immutable, reproducible maize county-season target dataset and confirm Busia or switch to Trans Nzoia through downloaded-data evidence.
+Slice 2A is complete: retain the accepted private annual county-year snapshot. Slice 2B is next: reconcile official annual source vintages and extend the annual panel before deciding county-year baseline feasibility.
 
 ## Current implementation state
 
@@ -55,7 +55,7 @@ annual years; the explicit policy requiring eight periods, complete yield covera
 review-required rows, and no divergent rows confirms **Busia**. This is an annual-label validation
 decision only, not a seasonal continuity claim or model-readiness result.
 
-## Source paths and measured access state
+## Source paths and historical access evidence
 
 | Source | Acquisition pattern | Measured state | Next action |
 |---|---|---|---|
@@ -85,7 +85,7 @@ download. This is retained as access evidence, not the current Slice 2 state.
 3. Provide the exact local file path to the implementation worker. The worker will inspect the workbook before declaring actual verified fields or selecting the `.xls`/`.xlsx` media type.
 4. If the KNBS workbook cannot be obtained, provide a successful KilimoSTAT browser request with its visible county, item, element, year, and download parameters. Do not provide cookies, bearer tokens, signed URLs, or credentials.
 
-This checkpoint is an acquisition blocker, not an evidence-insufficiency pilot decision: Busia and Trans Nzoia have not been evaluated against real records.
+This historical checkpoint predates the accepted workbook. It is retained as recovery evidence only: Busia and Trans Nzoia have since been evaluated against accepted annual records.
 
 ## Public fallback decisions
 

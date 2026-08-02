@@ -1,0 +1,40 @@
+{
+  "audit_version": "1.0",
+  "accepted_snapshot": {
+    "source_id": "nipfn-maize-2012-2020",
+    "sha256": "15a47b6fdc634fab7a69cd7576974d2f9eeb550218389d4a1526dd8123a92ab8",
+    "status": "accepted-source-bound-private",
+    "coverage": "annual county area, production, and reported yield for 2012-2018 and 2020"
+  },
+  "candidate_revision": {
+    "publisher": "Kenya National Bureau of Statistics",
+    "title": "National Agriculture Production Report 2024",
+    "direct_url": "https://www.knbs.or.ke/wp-content/uploads/2025/01/National-Agriculture-Production-Report-2024.pdf",
+    "byte_size": 12398810,
+    "sha256": "7d86dc4cbfa1d0b5204e2428fb8d84c3bada0fc1775bf0b7d557dfebcc4d70eb",
+    "status": "private-candidate-not-accepted-or-merged",
+    "terms_and_redistribution": "review-required",
+    "coverage": "annual county harvested area and production for 2019-2023; 2023 is provisional; no reported yield field"
+  },
+  "overlap_comparison": {
+    "year": 2020,
+    "relative_difference_threshold": 0.001,
+    "materially_different_counties": 24,
+    "overlapping_counties": 47,
+    "Busia": "matches within rounding",
+    "Trans Nzoia": {
+      "accepted_workbook": "area 18,591 ha / production 11,251.1 t",
+      "candidate_report": "area 104,850 ha / production 489,056 t"
+    }
+  },
+  "source_contracts": {
+    "KilimoSTAT": "removed from critical path: no current verified response contract is accessible",
+    "Food Systems Dashboard": "removed from critical path: no current verified response contract is accessible"
+  },
+  "decision": {
+    "supported_target_grain": "county-year",
+    "county_season": "evidence-insufficient",
+    "annual_disaggregation": "no crop calendar may disaggregate annual totals",
+    "next_gate": "reconcile source vintages and extend the annual panel before modelling"
+  }
+}

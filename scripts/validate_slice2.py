@@ -29,7 +29,10 @@ REQUIRED_SLICE2_FILES = (
     FALLBACK_REGISTRY_PATH,
     Path("docs/data/fallback-source-investigation.md"),
     Path("docs/data/slice-2-acquisition-status.md"),
+    Path("docs/data/slice-2b-forecast-readiness-decision.md"),
     Path("docs/data/target-observation-contract.md"),
+    Path("docs/roadmap/IMPLEMENTATION_SLICES.md"),
+    Path("data/sources/slice2b_source_audit.json"),
     Path("docs/superpowers/plans/2026-07-30-slice-2-target-dataset.md"),
     Path("scripts/acquire_source.py"),
     Path("scripts/build_nipfn_target.py"),
@@ -70,8 +73,8 @@ def _validate_primary_sources(root: Path) -> list[str]:
     errors: list[str] = []
     if registry.selected_crop != "maize":
         errors.append("source registry selected_crop must remain maize for Slice 2")
-    if registry.target_grain != "county x crop x season":
-        errors.append("source registry target_grain must be county x crop x season")
+    if registry.target_grain != "county x crop x year":
+        errors.append("source registry target_grain must remain county x crop x year")
     source_ids = {source.source_id for source in registry.sources}
     missing = sorted(REQUIRED_SOURCE_IDS - source_ids)
     unexpected = sorted(source_ids - REQUIRED_SOURCE_IDS)
@@ -136,6 +139,23 @@ def _validate_fallbacks(root: Path) -> list[str]:
     return errors
 
 
+def _validate_slice_split_docs(root: Path) -> list[str]:
+    errors: list[str] = []
+    roadmap = (root / "docs/roadmap/IMPLEMENTATION_SLICES.md").read_text(
+        encoding="utf-8"
+    ) if (root / "docs/roadmap/IMPLEMENTATION_SLICES.md").is_file() else ""
+    if "Slice 2A" not in roadmap or "Slice 2B" not in roadmap:
+        errors.append("roadmap must define Slice 2A annual snapshot and Slice 2B reconciliation")
+    status = (root / "docs/data/slice-2-acquisition-status.md").read_text(
+        encoding="utf-8"
+    ) if (root / "docs/data/slice-2-acquisition-status.md").is_file() else ""
+    if "acquisition blocked" in status.lower():
+        errors.append("acquisition status must not present the accepted annual snapshot as blocked")
+    if "busia has not been evaluated" in status.lower():
+        errors.append("acquisition status must not state that Busia has never been evaluated")
+    return errors
+
+
 def validate_slice2(root: Path = Path(".")) -> list[str]:
     errors = [
         f"missing Slice 2 file: {path.as_posix()}"
@@ -144,6 +164,7 @@ def validate_slice2(root: Path = Path(".")) -> list[str]:
     ]
     errors.extend(_validate_primary_sources(root))
     errors.extend(_validate_fallbacks(root))
+    errors.extend(_validate_slice_split_docs(root))
     return errors
 
 

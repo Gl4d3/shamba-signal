@@ -8,7 +8,10 @@ REQUIRED_PATHS = (
     "data/sources/fallback_candidates.json",
     "docs/data/fallback-source-investigation.md",
     "docs/data/slice-2-acquisition-status.md",
+    "docs/data/slice-2b-forecast-readiness-decision.md",
     "docs/data/target-observation-contract.md",
+    "docs/roadmap/IMPLEMENTATION_SLICES.md",
+    "data/sources/slice2b_source_audit.json",
     "docs/superpowers/plans/2026-07-30-slice-2-target-dataset.md",
     "scripts/acquire_source.py",
     "scripts/build_nipfn_target.py",
@@ -38,6 +41,20 @@ def test_slice2_validator_accepts_current_contract(tmp_path: Path) -> None:
     copy_required_tree(tmp_path)
 
     assert validate_slice2(tmp_path) == []
+
+
+def test_slice2_validator_requires_county_year_as_the_supported_target_grain(
+    tmp_path: Path,
+) -> None:
+    copy_required_tree(tmp_path)
+    path = tmp_path / "data/sources/maize_sources.json"
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    payload["target_grain"] = "county x crop x season"
+    path.write_text(json.dumps(payload), encoding="utf-8")
+
+    errors = validate_slice2(tmp_path)
+
+    assert "source registry target_grain must remain county x crop x year" in errors
 
 
 def test_slice2_validator_reports_missing_artifacts(tmp_path: Path) -> None:
@@ -72,3 +89,32 @@ def test_slice2_validator_rejects_silent_fallback_replacement(tmp_path: Path) ->
     errors = validate_slice2(tmp_path)
 
     assert any("must not replace the selected target" in error for error in errors)
+
+
+def test_slice2_validator_requires_slice_2a_2b_split_contract(tmp_path: Path) -> None:
+    copy_required_tree(tmp_path)
+    audit_path = tmp_path / "data/sources/slice2b_source_audit.json"
+    audit_path.unlink()
+
+    errors = validate_slice2(tmp_path)
+
+    assert "missing Slice 2 file: data/sources/slice2b_source_audit.json" in errors
+
+
+def test_slice2_validator_rejects_pre_split_or_contradictory_slice_2_docs(
+    tmp_path: Path,
+) -> None:
+    copy_required_tree(tmp_path)
+    roadmap_path = tmp_path / "docs/roadmap/IMPLEMENTATION_SLICES.md"
+    roadmap_path.write_text(
+        "## Slice 2 — Reproducible county-season target dataset\n",
+        encoding="utf-8",
+    )
+    status_path = tmp_path / "docs/data/slice-2-acquisition-status.md"
+    status_path.write_text("acquisition blocked\nBusia has not been evaluated\n", encoding="utf-8")
+
+    errors = validate_slice2(tmp_path)
+
+    assert "roadmap must define Slice 2A annual snapshot and Slice 2B reconciliation" in errors
+    assert "acquisition status must not present the accepted annual snapshot as blocked" in errors
+    assert "acquisition status must not state that Busia has never been evaluated" in errors

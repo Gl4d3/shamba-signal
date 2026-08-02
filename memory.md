@@ -8,13 +8,14 @@
 | 2026-08-02 | Source policy | Try KNBS/NIPFN first, KilimoSTAT second, then Food Systems Dashboard. Preserve accepted source bytes outside Git where redistribution is unclear. |
 | 2026-08-02 | KNBS/NIPFN snapshot | Accepted the manually downloaded original XLSX under private storage, SHA-256 `15a47b6fdc634fab7a69cd7576974d2f9eeb550218389d4a1526dd8123a92ab8`. The verified table is annual (2012-2018 and 2020), not seasonal; 2019 is absent. |
 | 2026-08-02 | Annual pilot gate | Local-only build has 376 county-year rows from 1,128 observations. Busia passes the eight-period annual gate; this does not authorize forecasting, season mapping, or source redistribution. |
+| 2026-08-02 | Slice 2A/2B split | Slice 2A is the completed, private source-bound annual snapshot. Slice 2B must reconcile conflicting official annual vintages and extend the county-year panel before baseline-feasibility modelling. County-season is evidence-insufficient; annual totals must not be crop-calendar disaggregated. |
 
 ## Current Slice 2 state
 
 - Branch: `slice/2-target-dataset` contains local Slice 2 implementation commits; check live Git state before publishing.
 - The accepted KNBS workbook is byte-preserved outside Git. A standard-library XLSX reader binds the annual target to the accepted manifest digest and fails on source/schema drift.
 - The local-only package contains `target.csv`, quality report, pilot decision, provenance manifest, and dataset card. It must not be committed while source redistribution remains review-required.
-- The API and homepage expose `slice-2-annual-target-v1` and accurately say that only annual target verification is ready. No county-season mapping or forecast model exists.
+- The Slice 2A annual snapshot is ready but explicitly source-bound and not model-ready. Slice 2B is the annual-source reconciliation gate; no county-season mapping or forecast model exists.
 
 ## 2026-08-02 baseline reproducibility repair
 

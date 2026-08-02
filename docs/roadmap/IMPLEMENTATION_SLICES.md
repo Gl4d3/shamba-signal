@@ -24,15 +24,21 @@ A slice is a testable end-to-end product or research outcome. Infrastructure set
 
 **Acceptance:** the generation command writes canonical paths, is byte-stable, matches committed artifacts, regenerates scores from registered weights/evidence, and clearly transfers downloaded-record validation to Slice 2.
 
-## Slice 2 — Reproducible county-season target dataset
+## Slice 2A — Source-bound annual snapshot
 
-**Status:** acquisition blocked in the current execution environment. No modelling work begins before an official snapshot passes the registered access, media, schema, terms, and lineage gates.
+**Status:** complete locally. The accepted NIPFN workbook is private, source-bound, and not model-ready.
 
-**Outcome:** official production, harvested area, and yield evidence becomes a versioned modelling table, or the slice publishes a rigorous evidence-insufficiency result.
+**Outcome:** a deterministic annual county-year maize snapshot package validates the accepted workbook without publishing source-derived rows.
 
-**Artifacts:** immutable snapshots or protected references, manifests, canonical schema, unit and county mappings, Parquet/CSV target data, data dictionary, dataset card, quality report, and Busia-confirm or fallback decision.
+**Acceptance:** accepted-workbook SHA-256 lineage, deterministic private build, documented annual coverage and gaps, and an annual-label pilot result. It makes no season, forecast, or decision-support claim.
 
-**Acceptance:** unique county/crop/season keys; deterministic rebuild; schema-drift failure; licence-aware publication; missingness and continuity profiles; reported-versus-derived reconciliation; positive-area and unit checks; snapshot-to-output lineage.
+## Slice 2B — Official annual label reconciliation and forecast readiness
+
+**Status:** next. No modelling work begins before conflicting official annual vintages are reconciled and the annual panel is extended.
+
+**Outcome:** reconcile source vintages, establish evidence-backed source precedence, and decide whether county-year baseline feasibility is supportable. County-season is an evidence-insufficiency result.
+
+**Acceptance:** private source audit, reconciliation policy, annual-panel extension, terms review, and a documented modelling go/no-go. No crop calendar may disaggregate annual totals.
 
 ## Slice 3 — Defensible baseline yield model
 

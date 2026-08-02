@@ -1,10 +1,9 @@
 # Shamba Signal
 
-**Crop-yield research infrastructure for Kenya**
+**County-year maize-label research infrastructure for Kenya**
 
 Shamba Signal is building a research-grade decision-intelligence workflow for a narrow question:
-can publicly obtainable county-season data for one feasibility-selected crop support a defensible
-mid-season yield forecast under geographic and temporal holdouts?
+can reconciled official county-year data for one feasibility-selected crop support a baseline-feasibility decision?
 
 ## Current implementation state
 
@@ -24,12 +23,13 @@ mid-season yield forecast under geographic and temporal holdouts?
 Trans Nzoia is the fallback. This is a Slice 2 acquisition hypothesis, not proof of label
 completeness, satellite usability, or model skill.
 
-**Current Slice 2 checkpoint:** an original KNBS/NIPFN workbook is accepted and preserved outside
-Git with SHA-256 lineage. Its verified tidy sheet has 1,128 observations: all 47 counties × three
-indicators × eight annual years (2012-2018 and 2020). A local-only target build produces 376
-county-year rows and confirms Busia under the explicit annual-data policy; 2019 is absent, two
-zero-area rows cannot produce derived yield, and Mandera 2012 has divergent reported/derived yield.
-No seasonal mapping, model, or forecast is claimed. See
+**Current Slice 2 checkpoint:** Slice 2A is complete: an original KNBS/NIPFN workbook is accepted
+and preserved outside Git with SHA-256 lineage. Its verified tidy sheet has 1,128 observations: all
+47 counties × three indicators × eight annual years (2012-2018 and 2020). A local-only package
+produces 376 county-year rows and confirms Busia under the explicit annual-data policy. It is
+source-bound, private, and not model-ready. Slice 2B is next: reconcile conflicting official 2020
+vintages, extend the annual panel, and assess county-year baseline feasibility. No season labels,
+forecast, decision support, or resolved source precedence is claimed. See
 [`docs/data/slice-2-acquisition-status.md`](docs/data/slice-2-acquisition-status.md).
 
 **Not implemented:** a county-season target, trained model, calibrated forecast, stress

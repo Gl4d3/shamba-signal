@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This contract converts source-specific agricultural records into a stable county × crop × period representation without erasing the original evidence. It is a prerequisite for the target dataset; it is not evidence that an official source snapshot has already been accepted.
+This contract converts source-specific agricultural records into a stable county × crop × period representation without erasing the original evidence. The currently supported target grain is county-year; annual totals must not be disaggregated into seasons by a crop calendar.
 
 ## County identity
 
@@ -21,7 +21,7 @@ Every canonical observation has one `TargetKey`:
 county_id × crop_id × period_id
 ```
 
-`period_id` is deliberately a string so annual records such as `2023` and later season-specific identifiers can coexist without pretending an annual label is already a crop season.
+`period_id` is deliberately a string. The accepted Slice 2A observations are annual years; no authoritative national county × season observed maize-yield panel has been found, so county-season is evidence-insufficient.
 
 ## Elements and units
 
@@ -110,7 +110,7 @@ A pilot gate can return `confirmed`, `fallback`, or `insufficient` using explici
 
 ## Current boundary
 
-These contracts, the KilimoSTAT mapping, and the KNBS/NIPFN annual-workbook mapping have tests.
+These contracts and the KNBS/NIPFN annual-workbook mapping have tests. KilimoSTAT and the Food Systems Dashboard are outside the critical path until a current verified response contract is accessible.
 They do not mean:
 
 - annual records have been mapped to county-specific crop seasons;

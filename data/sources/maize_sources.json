@@ -1,7 +1,7 @@
 {
   "registry_version": "0.3.0",
   "selected_crop": "maize",
-  "target_grain": "county x crop x season",
+  "target_grain": "county x crop x year",
   "sources": [
     {
       "source_id": "kilimostat-county-crops",
