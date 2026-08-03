@@ -60,5 +60,6 @@ def test_openapi_declares_platform_status_response_schema_and_enums() -> None:
         "planned",
     ]
     assert schema["info"]["description"] == (
-        "County-year annual-label readiness for Kenya; no forecast or decision support."
+        "Kenya county-year maize evidence and retrospective model evaluation; "
+        "no operational forecast or decision support."
     )

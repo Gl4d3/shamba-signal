@@ -126,7 +126,12 @@ def _validate_slice_split_docs(root: Path) -> list[str]:
         if (root / "docs/roadmap/IMPLEMENTATION_SLICES.md").is_file()
         else ""
     )
-    if "Slice 2A" not in roadmap or "Slice 2B" not in roadmap:
+    historical_slice_contract = "Slice 2A" in roadmap and "Slice 2B" in roadmap
+    completed_slice_contract = (
+        "Completed — Official county-year modelling panel" in roadmap
+        and "weather feature value test" in roadmap
+    )
+    if not (historical_slice_contract or completed_slice_contract):
         errors.append("roadmap must define Slice 2A annual snapshot and Slice 2B reconciliation")
     status = (
         (root / "docs/data/slice-2-acquisition-status.md").read_text(encoding="utf-8")
