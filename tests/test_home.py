@@ -24,9 +24,11 @@ def test_home_page_exposes_the_earthy_research_dashboard_shell() -> None:
     assert 'id="county-options"' in response.text
     assert 'id="export-county"' in response.text
     assert 'id="export-evaluation"' in response.text
+    assert "/static/search-state.js?v=1" in response.text
     assert "provisional" in response.text.lower()
     assert "operational forecast" in response.text.lower()
     assert client.get("/static/app.js").status_code == 200
+    assert client.get("/static/search-state.js").status_code == 200
     assert client.get("/static/styles.css").status_code == 200
     assert client.get("/api/v1/platform/status").status_code == 200
 
@@ -52,6 +54,15 @@ def test_dashboard_script_uses_real_apis_and_functional_controls() -> None:
     assert "weather_ridge" in script
     assert "IntersectionObserver" in script
     assert "private evaluation fixture" in script
+
+
+def test_global_search_query_does_not_become_stale_selected_county_state() -> None:
+    client = TestClient(create_app())
+    script = client.get("/static/search-state.js").text
+
+    assert "clearGlobalCountySearch" in script
+    assert "MutationObserver" in script
+    assert "event.key === 'Enter'" in script
 
 
 def test_dashboard_styles_cover_earthy_tokens_accessibility_and_responsiveness() -> None:
