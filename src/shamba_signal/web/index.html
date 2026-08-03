@@ -3,97 +3,293 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Shamba Signal Kenya maize yield evidence dashboard">
-  <title>Shamba Signal — Evidence dashboard</title>
-  <link rel="stylesheet" href="/static/styles.css">
+  <meta name="description" content="Shamba Signal Kenya maize county-year evidence dashboard">
+  <title>Shamba Signal — Research dashboard</title>
+  <link rel="stylesheet" href="/static/styles.css?v=5">
 </head>
-<body>
-  <main>
-    <header class="site-header">
-      <a class="wordmark" href="#top">Shamba<br><em>Signal</em></a>
-      <p>Kenya maize yield<br>evidence explorer</p>
-      <span class="header-state">2012–2023 · county × year</span>
-    </header>
+<body data-state="loading">
+  <a class="skip-link" href="#dashboard-content">Skip to dashboard content</a>
 
-    <section class="hero" id="top" aria-labelledby="hero-title">
-      <div>
-        <p class="eyebrow">The completed experiment</p>
-        <h1 id="hero-title">Weather adds signal.<br><em>Not enough to win.</em></h1>
-      </div>
-      <div class="hero-copy">
-        <p id="result-statement">Loading the private evaluation fixture…</p>
-        <p class="quiet">A disciplined county-year retrospective backtest, not an operational yield forecast.</p>
-      </div>
-    </section>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Primary navigation">
+      <a class="brand" href="#overview" aria-label="Shamba Signal overview">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span></span>
+        <span><strong>Shamba</strong><strong>Signal</strong></span>
+      </a>
 
-    <section class="metric-grid" aria-label="National provisional 2023 results">
-      <article class="metric metric--benchmark">
-        <p>Benchmark to beat</p><strong id="benchmark-mae">—</strong><span>MAE · county historical mean</span>
-      </article>
-      <article class="metric">
-        <p>Weather Ridge</p><strong id="weather-mae">—</strong><span id="weather-delta">MAE · provisional 2023</span>
-      </article>
-      <article class="metric">
-        <p>Model selected on</p><strong>2022</strong><span>Frozen validation year</span>
-      </article>
-      <article class="metric">
-        <p>Evaluation scope</p><strong>47</strong><span>Kenyan counties</span>
-      </article>
-    </section>
+      <nav class="sidebar-nav" aria-label="Dashboard sections">
+        <a class="nav-link is-active" href="#overview"><span>01</span>Overview</a>
+        <a class="nav-link" href="#models"><span>02</span>Models</a>
+        <a class="nav-link" href="#counties"><span>03</span>Counties</a>
+        <a class="nav-link" href="#method"><span>04</span>Method</a>
+        <a class="nav-link" href="#quality"><span>05</span>Data quality</a>
+      </nav>
 
-    <section class="comparison section-rule" aria-labelledby="comparison-title">
-      <div class="section-heading"><p class="eyebrow">The national result</p><h2 id="comparison-title">Transparent models, one final test.</h2></div>
-      <div class="model-list" id="data-model-metrics" aria-live="polite"></div>
-    </section>
+      <div class="sidebar-spacer"></div>
 
-    <section class="county section-rule" aria-labelledby="county-title">
-      <div class="section-heading county-heading">
-        <div><p class="eyebrow">County evidence</p><h2 id="county-title">History meets the final backtest.</h2></div>
-        <label for="county-selector">Explore a county
-          <select id="county-selector" disabled><option>Loading counties…</option></select>
-        </label>
-      </div>
-      <div class="county-grid">
-        <article class="chart-card">
-          <div class="chart-label"><span>Actual annual yield</span><span>t/ha</span></div>
-          <svg id="history-chart" viewBox="0 0 720 270" role="img" aria-label="County yield history"></svg>
-          <div class="chart-years"><span>2012</span><span>2023*</span></div>
-        </article>
-        <aside class="test-card">
-          <p class="eyebrow">Provisional 2023</p>
-          <h3 id="county-name">—</h3>
-          <dl>
-            <div><dt>Actual yield</dt><dd id="county-actual">—</dd></div>
-            <div><dt>County mean prediction</dt><dd id="county-baseline">—</dd></div>
-            <div><dt>Weather Ridge prediction</dt><dd id="county-weather">—</dd></div>
-            <div><dt>Weather Ridge error</dt><dd id="county-error">—</dd></div>
-          </dl>
-          <p class="provisional">* 2023 labels are provisional in the official source report.</p>
-        </aside>
-      </div>
-    </section>
+      <section class="scope-card" aria-labelledby="scope-title">
+        <p class="kicker" id="scope-title">Research scope</p>
+        <strong>Kenya maize</strong>
+        <span>47 counties · 2012–2023</span>
+        <span>County × year evidence</span>
+      </section>
 
-    <section class="method section-rule" aria-labelledby="method-title">
-      <div class="section-heading"><p class="eyebrow">What was tested</p><h2 id="method-title">Four weather features.<br>One regularized model.</h2></div>
-      <div class="method-content">
-        <ol id="feature-list" class="feature-list"></ol>
-        <div class="method-note">
-          <p>Weather features use annual ERA5 reanalysis at representative county points. The model saw 2012–2021 for training, chose regularization on 2022, and evaluated provisional 2023 once.</p>
-          <p>Same-year production and harvested area are excluded: yield is their ratio.</p>
+      <section class="service-card" aria-labelledby="service-title">
+        <span class="status-dot" id="service-status-dot" aria-hidden="true"></span>
+        <div>
+          <p id="service-title">Local evidence service</p>
+          <strong id="service-status">Checking API…</strong>
         </div>
-      </div>
-    </section>
+      </section>
+    </aside>
 
-    <section class="limits section-rule" aria-labelledby="limits-title">
-      <div class="section-heading"><p class="eyebrow">Read the evidence correctly</p><h2 id="limits-title">Retrospective county-year evidence only.</h2></div>
-      <ul id="limitation-list" class="limitation-list"></ul>
-    </section>
+    <div class="workspace">
+      <header class="topbar">
+        <a class="mobile-brand" href="#overview">Shamba Signal</a>
+        <label class="global-search" for="global-search">
+          <span class="visually-hidden">Search counties</span>
+          <span aria-hidden="true">⌕</span>
+          <input id="global-search" type="search" placeholder="Search a county…" autocomplete="off">
+        </label>
+        <div class="topbar-meta">
+          <span class="release-chip" id="release-chip">Release —</span>
+          <span class="health-chip" id="health-chip"><span aria-hidden="true"></span>Connecting</span>
+        </div>
+      </header>
 
-    <footer>
-      <p>Shamba Signal · official county-year labels + Open‑Meteo ERA5 reanalysis</p>
-      <p>The local evaluation fixture is generated from approved private source snapshots; source bytes and row-level artifacts are not redistributed.</p>
-    </footer>
-  </main>
-  <script src="/static/app.js?v=4" defer></script>
+      <nav class="mobile-nav" aria-label="Dashboard sections on small screens">
+        <a class="is-active" href="#overview">Overview</a>
+        <a href="#models">Models</a>
+        <a href="#counties">Counties</a>
+        <a href="#method">Method</a>
+        <a href="#quality">Quality</a>
+      </nav>
+
+      <main id="dashboard-content">
+        <div class="loading-state" id="loading-state" role="status" aria-live="polite">
+          <span class="loading-mark" aria-hidden="true"></span>
+          <p>Loading the private evaluation fixture and service status…</p>
+        </div>
+
+        <section class="error-state" id="error-state" hidden aria-labelledby="error-title">
+          <p class="kicker">Evidence unavailable</p>
+          <h1 id="error-title">The private evaluation fixture could not be loaded.</h1>
+          <p id="error-message">This checkout needs the locally generated evaluation artifact before county and model evidence can be shown.</p>
+          <button class="button button--primary" id="retry-button" type="button">Retry connection</button>
+        </section>
+
+        <div id="dashboard" hidden>
+          <section class="hero dashboard-section" id="overview" aria-labelledby="hero-title">
+            <div class="hero-landscape" aria-hidden="true">
+              <span class="sun"></span>
+              <span class="ridge ridge--far"></span>
+              <span class="ridge ridge--near"></span>
+              <span class="field-lines"></span>
+            </div>
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+              <div>
+                <p class="kicker kicker--light">The completed experiment</p>
+                <h1 id="hero-title">Weather added signal.<br><em>The benchmark still won.</em></h1>
+                <p id="result-statement">Loading the scientific result…</p>
+              </div>
+              <div class="hero-actions">
+                <span class="decision-badge" id="decision-badge">No-go</span>
+                <a class="button button--light" href="#counties">Explore county evidence</a>
+                <button class="button button--ghost-light" id="export-evaluation" type="button">Download evaluation JSON</button>
+              </div>
+            </div>
+            <p class="hero-boundary">Retrospective county-year evidence only · not an operational forecast or farmer advisory.</p>
+          </section>
+
+          <section class="kpi-grid" aria-label="National provisional 2023 evidence summary">
+            <article class="kpi-card kpi-card--featured">
+              <div><p>Benchmark to beat</p><span>County historical mean</span></div>
+              <strong id="benchmark-mae">—</strong>
+              <small>MAE · t/ha</small>
+            </article>
+            <article class="kpi-card">
+              <div><p>Weather Ridge</p><span>One bounded feature test</span></div>
+              <strong id="weather-mae">—</strong>
+              <small>MAE · t/ha</small>
+            </article>
+            <article class="kpi-card">
+              <div><p>Gap to benchmark</p><span id="weather-gap-label">Lower is better</span></div>
+              <strong id="weather-gap">—</strong>
+              <small>t/ha</small>
+            </article>
+            <article class="kpi-card">
+              <div><p>Evaluation coverage</p><span>National county panel</span></div>
+              <strong id="county-count">—</strong>
+              <small>Kenyan counties</small>
+            </article>
+          </section>
+
+          <section class="dashboard-section section-block" id="models" aria-labelledby="models-title">
+            <header class="section-header">
+              <div>
+                <p class="kicker">National model evidence</p>
+                <h2 id="models-title">The model battlecard</h2>
+                <p>Compare every reference and the weather-informed model on the untouched provisional 2023 test.</p>
+              </div>
+              <div class="segmented-control" role="group" aria-label="Model comparison metric">
+                <button class="is-selected" id="metric-mae" type="button" aria-pressed="true">MAE</button>
+                <button id="metric-rmse" type="button" aria-pressed="false">RMSE</button>
+              </div>
+            </header>
+
+            <div class="model-layout">
+              <article class="panel model-chart-panel" aria-labelledby="model-chart-title">
+                <div class="panel-heading">
+                  <div><p class="kicker">Lower is better</p><h3 id="model-chart-title">Provisional 2023 error</h3></div>
+                  <span class="unit-label">t/ha</span>
+                </div>
+                <div class="model-bars" id="model-bars" aria-live="polite"></div>
+              </article>
+
+              <aside class="panel interpretation-panel" aria-labelledby="interpretation-title">
+                <p class="kicker">Decision</p>
+                <h3 id="interpretation-title">Benchmark retained</h3>
+                <p id="model-interpretation">The county historical mean remains the strongest national model.</p>
+                <dl>
+                  <div><dt>Selection year</dt><dd id="selection-year">—</dd></div>
+                  <div><dt>Final test</dt><dd id="test-year">—</dd></div>
+                  <div><dt>Decision rule</dt><dd>Beat county mean MAE</dd></div>
+                </dl>
+              </aside>
+            </div>
+
+            <div class="battlecard-grid" id="model-battlecard" aria-label="Ranked model cards"></div>
+          </section>
+
+          <section class="dashboard-section section-block" id="counties" aria-labelledby="counties-title">
+            <header class="section-header county-header">
+              <div>
+                <p class="kicker">County explorer</p>
+                <h2 id="counties-title">Move from the national result to local evidence</h2>
+                <p>Inspect annual actuals, every provisional 2023 prediction, and the signed error for one county.</p>
+              </div>
+              <div class="county-picker">
+                <label for="county-search">Choose a county</label>
+                <input id="county-search" type="search" role="combobox" aria-autocomplete="list" aria-controls="county-options" aria-expanded="false" placeholder="Search 47 counties…" autocomplete="off">
+                <div class="county-options" id="county-options" role="listbox" hidden></div>
+              </div>
+            </header>
+
+            <div class="county-workspace">
+              <article class="panel history-panel" aria-labelledby="history-title">
+                <div class="panel-heading">
+                  <div><p class="kicker">Annual actuals + final test</p><h3 id="history-title"><span id="county-name">—</span> yield history</h3></div>
+                  <div class="chart-legend" aria-label="Chart legend">
+                    <span><i class="legend-actual"></i>Actual</span>
+                    <span><i class="legend-provisional"></i>2023 provisional</span>
+                    <span><i class="legend-model"></i>Model prediction</span>
+                  </div>
+                </div>
+                <svg id="history-chart" viewBox="0 0 760 300" role="img" aria-labelledby="history-title history-summary"></svg>
+                <p class="chart-summary" id="history-summary">Select a county to inspect its annual yield history.</p>
+              </article>
+
+              <aside class="panel county-summary-panel" aria-labelledby="county-summary-title">
+                <p class="kicker">Provisional <span id="county-test-year">2023</span></p>
+                <h3 id="county-summary-title">County evidence</h3>
+                <dl>
+                  <div><dt>Actual yield</dt><dd id="county-actual">—</dd></div>
+                  <div><dt>Closest model</dt><dd id="county-best-model">—</dd></div>
+                  <div><dt>Weather prediction</dt><dd id="county-weather">—</dd></div>
+                  <div><dt>Weather error</dt><dd id="county-weather-error">—</dd></div>
+                </dl>
+                <button class="button button--dark" id="export-county" type="button">Download county CSV</button>
+              </aside>
+            </div>
+
+            <div class="county-detail-grid">
+              <article class="panel" aria-labelledby="prediction-title">
+                <div class="panel-heading"><div><p class="kicker">Same scale comparison</p><h3 id="prediction-title">Actual vs predictions</h3></div><span class="unit-label">t/ha</span></div>
+                <div class="prediction-bars" id="county-predictions"></div>
+              </article>
+              <article class="panel" aria-labelledby="errors-title">
+                <div class="panel-heading"><div><p class="kicker">Signed difference</p><h3 id="errors-title">Model errors</h3></div><span class="unit-label">prediction − actual</span></div>
+                <div class="error-table-wrap"><table class="error-table"><thead><tr><th>Model</th><th>Error t/ha</th><th>Absolute</th></tr></thead><tbody id="county-errors"></tbody></table></div>
+              </article>
+            </div>
+          </section>
+
+          <section class="dashboard-section section-block" id="method" aria-labelledby="method-title">
+            <header class="section-header">
+              <div>
+                <p class="kicker">Method</p>
+                <h2 id="method-title">A deliberately bounded experiment</h2>
+                <p>The interface exposes the same feature contract, temporal split, and leakage boundary used by the modelling pipeline.</p>
+              </div>
+            </header>
+
+            <div class="method-layout">
+              <article class="panel" aria-labelledby="features-title">
+                <div class="panel-heading"><div><p class="kicker">Weather feature contract</p><h3 id="features-title">Four annual ERA5 features</h3></div><span class="count-badge" id="feature-count">—</span></div>
+                <ol class="feature-list" id="feature-list"></ol>
+              </article>
+              <article class="panel split-panel" aria-labelledby="split-title">
+                <div class="panel-heading"><div><p class="kicker">Leakage-safe chronology</p><h3 id="split-title">Frozen temporal split</h3></div></div>
+                <div class="split-timeline" id="split-timeline"></div>
+                <p>Regularization was selected on 2022. The provisional 2023 labels were evaluated once.</p>
+              </article>
+            </div>
+
+            <article class="panel lineage-panel" aria-labelledby="lineage-title">
+              <div class="panel-heading"><div><p class="kicker">Evidence lineage</p><h3 id="lineage-title">From source snapshots to a visible decision</h3></div></div>
+              <div class="lineage-flow" aria-label="Data lineage flow">
+                <div><span>01</span><strong>Official annual labels</strong><small>County maize production and area</small></div>
+                <b aria-hidden="true">→</b>
+                <div><span>02</span><strong>ERA5 weather</strong><small>Representative county points</small></div>
+                <b aria-hidden="true">→</b>
+                <div><span>03</span><strong>Frozen evaluation</strong><small>Train, select, final test</small></div>
+                <b aria-hidden="true">→</b>
+                <div><span>04</span><strong>Evidence API</strong><small>Versioned local fixture</small></div>
+                <b aria-hidden="true">→</b>
+                <div><span>05</span><strong>No-go decision</strong><small>Benchmark retained</small></div>
+              </div>
+            </article>
+          </section>
+
+          <section class="dashboard-section section-block" id="quality" aria-labelledby="quality-title">
+            <header class="section-header">
+              <div>
+                <p class="kicker">Data quality and system state</p>
+                <h2 id="quality-title">Know exactly what is live—and what the evidence cannot claim</h2>
+              </div>
+            </header>
+
+            <div class="quality-grid">
+              <article class="panel health-panel" aria-labelledby="health-title">
+                <div class="panel-heading"><div><p class="kicker">Runtime</p><h3 id="health-title">System health</h3></div><span class="status-pill" id="system-health-pill">Checking</span></div>
+                <dl class="health-list">
+                  <div><dt>FastAPI service</dt><dd id="api-health">Checking</dd></div>
+                  <div><dt>Evaluation fixture</dt><dd id="fixture-health">Checking</dd></div>
+                  <div><dt>Platform status</dt><dd id="platform-health">Checking</dd></div>
+                  <div><dt>Release</dt><dd id="platform-release">—</dd></div>
+                  <div><dt>Fixture version</dt><dd id="fixture-version">—</dd></div>
+                  <div><dt>County coverage</dt><dd id="coverage-value">—</dd></div>
+                </dl>
+              </article>
+
+              <article class="panel limitations-panel" aria-labelledby="limitations-title">
+                <div class="panel-heading"><div><p class="kicker">Read correctly</p><h3 id="limitations-title">Evidence limitations</h3></div></div>
+                <ul class="limitation-list" id="limitation-list"></ul>
+              </article>
+            </div>
+          </section>
+
+          <footer>
+            <p><strong>Shamba Signal</strong> · Kenya county-year maize research demo.</p>
+            <p>Official annual labels + Open-Meteo ERA5 reanalysis. Source-restricted row artifacts remain local.</p>
+          </footer>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="/static/app.js?v=5" defer></script>
+  <script src="/static/search-state.js?v=1" defer></script>
 </body>
 </html>
