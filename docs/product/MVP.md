@@ -14,13 +14,14 @@ one weather-informed model improves on transparent temporal baselines for Kenya.
 - Provisional-2023 county-mean benchmark: 0.2998 t/ha MAE and 0.3982 t/ha RMSE.
 - Ridge improves on previous year but does not beat county mean.
 
-## What remains
+## Delivered
 
-1. Add one small, reproducible county-year weather feature table.
-2. Run one weather-informed model against the frozen split and make a keep/no-go decision.
-3. Generate a safe evaluation fixture that powers a real-data evidence dashboard.
-4. Build and browser-verify the dashboard.
-5. Finish the README, screenshots, limitations, and concise AWS portability diagram.
+1. One reproducible Open-Meteo ERA5 county-year weather feature table, cached outside Git.
+2. One weather-informed Ridge experiment against the frozen split: a transparent no-go.
+3. A private generated evaluation fixture serving a real-data evidence dashboard.
+4. A desktop/mobile responsive dashboard implementation with national comparison, county history,
+   provisional 2023 prediction/error, feature definitions, lineage, and limitations.
+5. Portfolio README, method note, exact local commands, and concise unimplemented AWS mapping.
 
 ## Acceptance
 
