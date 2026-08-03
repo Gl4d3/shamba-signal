@@ -17,7 +17,8 @@ def create_app(evaluation_fixture_path: Path | None = None) -> FastAPI:
         title="Shamba Signal API",
         version="0.1.0",
         description=(
-            "County-year annual-label readiness for Kenya; no forecast or decision support."
+            "Kenya county-year maize evidence and retrospective model evaluation; "
+            "no operational forecast or decision support."
         ),
     )
     application.mount("/static", StaticFiles(directory=WEB_ROOT / "static"), name="static")

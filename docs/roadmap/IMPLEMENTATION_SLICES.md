@@ -49,7 +49,7 @@ backed by the generated private evaluation fixture.
 - county selector with historical actuals and 2023 prediction/error;
 - weather-feature and evidence/limitations panels;
 - explicit provisional/no-go states; and
-- desktop and mobile browser verification with committed screenshots.
+- desktop and mobile browser verification with aggregate-only committed overview screenshots.
 
 No maps, authentication, database, backend service split, or deployment is required unless the
 simple dashboard demonstrably cannot meet the journey without it.
@@ -63,7 +63,7 @@ finished project, its no-go result, and its evidence boundaries.
 
 - README rewritten around problem, data, method, result, UI, limitations, and local run commands;
 - one concise local-to-AWS portability diagram, clearly labelled unimplemented;
-- final screenshots and an honest CV-ready project summary; and
+- portfolio-safe screenshots and an honest CV-ready project summary; and
 - focused verification, commit, merge, and push to `main`.
 
 ## Completion rule

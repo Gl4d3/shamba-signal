@@ -60,6 +60,18 @@
 - Do not add infrastructure, validators, registries, governance, source hunts, speculative models,
   or further planning slices. Complete weather experiment, dashboard, README/screenshots, then stop.
 
+## PR #19 local closure verification (2026-08-03)
+
+- Reproduced the weather experiment from the private panel and a fresh Open-Meteo ERA5 download.
+  Weather Ridge exactly matches the reported no-go: alpha 10 selected on 2022, provisional-2023
+  MAE 0.336986 versus county historical mean 0.299836.
+- Verified the real private-fixture dashboard at 1440 x 900 and 390 x 844. All 47 counties loaded,
+  county selection updated the view, and the browser reported no console errors.
+- Committed screenshots contain aggregate evidence only. Full county-detail captures remain private
+  because they expose source-derived row values.
+- Cache retrieval metadata now preserves the original timestamp across replay instead of falsely
+  reporting each cached run as a new acquisition.
+
 ## 2026-08-03 completion receipt
 
 - The supplied private modelling panel and KNBS report matched their approved SHA-256 hashes.

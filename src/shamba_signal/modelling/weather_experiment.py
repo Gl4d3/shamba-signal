@@ -181,7 +181,7 @@ def features_from_open_meteo_batch(
 def fetch_open_meteo_features(
     *, county_ids: Sequence[str], raw_cache_dir: Path, start_year: int, end_year: int
 ) -> tuple[tuple[WeatherFeature, ...], dict[str, object]]:
-    """Fetch and cache one reproducible ERA5-Land daily payload per county."""
+    """Fetch and cache one reproducible ERA5 daily payload per county."""
     raw_cache_dir.mkdir(parents=True, exist_ok=True)
     requested_counties = sorted(set(county_ids))
     coordinates: list[tuple[float, float]] = []
@@ -191,8 +191,22 @@ def fetch_open_meteo_features(
             raise ValueError(f"no representative coordinate for county: {county_id}")
         coordinates.append(coordinate)
     cache_path = raw_cache_dir / f"open-meteo-era5-batch-{start_year}-{end_year}.json"
+    metadata_path = cache_path.with_suffix(".metadata.json")
     if cache_path.is_file():
         payload = json.loads(cache_path.read_text(encoding="utf-8"))
+        if metadata_path.is_file():
+            cache_metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+            retrieved_at_utc = cache_metadata.get("retrieved_at_utc")
+            if not isinstance(retrieved_at_utc, str) or not retrieved_at_utc:
+                raise ValueError("Open-Meteo cache metadata has no retrieval timestamp")
+        else:
+            retrieved_at_utc = datetime.fromtimestamp(
+                cache_path.stat().st_mtime, UTC
+            ).replace(microsecond=0).isoformat()
+            metadata_path.write_text(
+                json.dumps({"retrieved_at_utc": retrieved_at_utc}, sort_keys=True) + "\n",
+                encoding="utf-8",
+            )
     else:
         params = urllib.parse.urlencode(
             {
@@ -212,6 +226,11 @@ def fetch_open_meteo_features(
         with urllib.request.urlopen(request, timeout=120) as response:
             payload = json.loads(response.read().decode("utf-8"))
         cache_path.write_text(json.dumps(payload, sort_keys=True) + "\n", encoding="utf-8")
+        retrieved_at_utc = datetime.now(UTC).replace(microsecond=0).isoformat()
+        metadata_path.write_text(
+            json.dumps({"retrieved_at_utc": retrieved_at_utc}, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
     collected = features_from_open_meteo_batch(requested_counties, payload)
     return (
         collected,
@@ -219,7 +238,7 @@ def fetch_open_meteo_features(
             "source": "Open-Meteo Historical Weather API",
             "endpoint": OPEN_METEO_ARCHIVE_URL,
             "model": OPEN_METEO_DATASET,
-            "retrieved_at_utc": datetime.now(UTC).replace(microsecond=0).isoformat(),
+            "retrieved_at_utc": retrieved_at_utc,
             "feature_definitions": list(WEATHER_FEATURE_NAMES),
             "county_coordinate_note": (
                 "Representative county interior points; not farm or pixel data."

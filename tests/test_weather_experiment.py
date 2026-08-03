@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import json
 import math
+from pathlib import Path
 
 from shamba_signal.modelling.temporal_baselines import PanelExample
 from shamba_signal.modelling.weather_experiment import (
@@ -9,6 +11,7 @@ from shamba_signal.modelling.weather_experiment import (
     WeatherFeature,
     aggregate_annual_weather,
     features_from_open_meteo_batch,
+    fetch_open_meteo_features,
     run_weather_experiment,
 )
 
@@ -64,6 +67,33 @@ def test_open_meteo_batch_keeps_each_payload_bound_to_its_county() -> None:
         ("bungoma", 4.0),
         ("busia", 2.0),
     ]
+
+
+def test_cached_weather_keeps_the_original_retrieval_timestamp(tmp_path: Path) -> None:
+    payload = {
+        "daily": {
+            "time": ["2022-01-01"],
+            "precipitation_sum": [2.0],
+            "temperature_2m_mean": [20.0],
+            "temperature_2m_max": [30.0],
+        }
+    }
+    cache_path = tmp_path / "open-meteo-era5-batch-2022-2022.json"
+    cache_path.write_text(json.dumps(payload), encoding="utf-8")
+    cache_path.with_suffix(".metadata.json").write_text(
+        json.dumps({"retrieved_at_utc": "2026-08-03T10:21:34+00:00"}),
+        encoding="utf-8",
+    )
+
+    first = fetch_open_meteo_features(
+        county_ids=("busia",), raw_cache_dir=tmp_path, start_year=2022, end_year=2022
+    )
+    second = fetch_open_meteo_features(
+        county_ids=("busia",), raw_cache_dir=tmp_path, start_year=2022, end_year=2022
+    )
+
+    assert first == second
+    assert first[1]["retrieved_at_utc"] == "2026-08-03T10:21:34+00:00"
 
 def _panel() -> tuple[PanelExample, ...]:
     rows: list[PanelExample] = []

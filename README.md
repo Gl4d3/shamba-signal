@@ -30,6 +30,13 @@ The local dashboard turns this result into an evidence journey: national model c
 history, county-level provisional-2023 predictions/errors, feature definitions, lineage, and the
 limitations that govern interpretation.
 
+## Dashboard
+
+![Shamba Signal desktop evidence overview](docs/assets/weather-evidence-dashboard/desktop-overview.png)
+
+The committed overview contains aggregate evidence only. The private local fixture unlocks the
+interactive 47-county history and prediction view without redistributing source-derived rows.
+
 ## Current boundary
 
 - Output grain is county x year for maize; this is a retrospective end-of-year backtest.

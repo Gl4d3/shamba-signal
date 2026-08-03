@@ -53,3 +53,11 @@ The weather feature set adds measurable signal relative to the temporal Ridge ba
 0.3370 t/ha MAE remains 0.0372 t/ha behind the county historical mean. The correct portfolio claim
 is not that weather forecasting works; it is that a bounded, leakage-aware experiment produced an
 honest no-go and made the evidence visible.
+
+## Browser evidence
+
+The generated private fixture was verified in the real dashboard at 1440 x 900 and 390 x 844.
+County selection updated the displayed history and 2023 evidence without browser console errors.
+Portfolio-safe overview screenshots are stored under
+`docs/assets/weather-evidence-dashboard/`; full county-detail captures remain private because they
+contain source-derived row values.
