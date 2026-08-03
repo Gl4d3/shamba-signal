@@ -4,47 +4,50 @@ from shamba_signal.domain.platform import Capability, CapabilityStatus, Platform
 def get_platform_status() -> PlatformStatus:
     return PlatformStatus(
         product="Shamba Signal",
-        release="slice-2a-annual-snapshot-v1",
-        architecture="county-year label readiness",
-        primary_output="county-year baseline feasibility",
-        forecast_timing="not scheduled",
-        geography=(
-            "Kenya-wide annual panel with Busia confirmed for annual-label validation and "
-            "Trans Nzoia retained as fallback"
-        ),
-        crop_scope="maize in a source-bound annual snapshot; source precedence is unresolved",
-        refresh_modes=[],
+        release="county-year-weather-evidence-v1",
+        architecture="local FastAPI evidence dashboard backed by a versioned evaluation fixture",
+        primary_output="retrospective county-year maize model evidence",
+        forecast_timing="retrospective end-of-year backtest only",
+        geography="all 47 Kenya counties at county-year grain",
+        crop_scope="maize annual labels for 2012-2023; 2023 is provisional",
+        refresh_modes=["manual reproducible experiment run"],
         capabilities=[
             Capability(
-                id="data-feasibility",
-                name="Data feasibility and pilot selection",
-                status=CapabilityStatus.READY,
-                outcome="Selected maize and Busia through a reproducible 47-county scorecard.",
-            ),
-            Capability(
-                id="annual-snapshot",
-                name="Slice 2A annual snapshot package",
+                id="official-panel",
+                name="Official county-year modelling panel",
                 status=CapabilityStatus.READY,
                 outcome=(
-                    "Ready as a source-bound private annual snapshot package; it is not "
-                    "model-ready and does not resolve source precedence."
+                    "Reconciled 564 county-year rows across all 47 counties for 2012-2023, "
+                    "with 563 usable maize-yield labels."
                 ),
             ),
             Capability(
-                id="annual-label-reconciliation",
-                name="Slice 2B official annual label reconciliation",
-                status=CapabilityStatus.NEXT,
+                id="temporal-baselines",
+                name="Leakage-safe temporal baselines",
+                status=CapabilityStatus.READY,
                 outcome=(
-                    "Reconcile conflicting official 2020 vintages and extend the annual panel "
-                    "before modelling."
+                    "Compared previous year, county historical mean, and regularized temporal "
+                    "Ridge using a frozen 2012-2021 train, 2022 selection, and provisional "
+                    "2023 final test split."
                 ),
             ),
             Capability(
-                id="county-year-baseline",
-                name="County-year baseline feasibility",
-                status=CapabilityStatus.PLANNED,
+                id="weather-value-test",
+                name="Bounded ERA5 weather feature value test",
+                status=CapabilityStatus.READY,
                 outcome=(
-                    "Assess whether reconciled annual labels support a baseline feasibility study."
+                    "Weather Ridge improved on temporal Ridge but did not beat the county "
+                    "historical mean, producing an explicit no-go."
+                ),
+            ),
+            Capability(
+                id="evidence-dashboard",
+                name="Interactive evidence dashboard",
+                status=CapabilityStatus.READY,
+                outcome=(
+                    "Serves national model comparison, county history, provisional-2023 "
+                    "predictions and errors, method, lineage, downloads, and limitations from "
+                    "the generated local fixture."
                 ),
             ),
         ],
