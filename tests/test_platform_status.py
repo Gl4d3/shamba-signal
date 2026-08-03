@@ -3,47 +3,40 @@ from fastapi.testclient import TestClient
 from shamba_signal.api.app import create_app
 
 
-def test_platform_status_exposes_approved_product_contract() -> None:
+def test_platform_status_exposes_completed_evidence_product_contract() -> None:
     client = TestClient(create_app())
     response = client.get("/api/v1/platform/status")
+
     assert response.status_code == 200
     body = response.json()
     assert body["product"] == "Shamba Signal"
-    assert body["release"] == "slice-2a-annual-snapshot-v1"
-    assert body["primary_output"] == "county-year baseline feasibility"
-    assert body["forecast_timing"] == "not scheduled"
-    assert body["architecture"] == "county-year label readiness"
-    assert body["refresh_modes"] == []
-    assert "Busia" in body["geography"]
-    assert "Trans Nzoia" in body["geography"]
-    assert "source-bound" in body["crop_scope"]
+    assert body["release"] == "county-year-weather-evidence-v1"
+    assert body["primary_output"] == "retrospective county-year maize model evidence"
+    assert body["forecast_timing"] == "retrospective end-of-year backtest only"
+    assert body["architecture"] == (
+        "local FastAPI evidence dashboard backed by a versioned evaluation fixture"
+    )
+    assert body["refresh_modes"] == ["manual reproducible experiment run"]
+    assert "47 Kenya counties" in body["geography"]
+    assert "2023 is provisional" in body["crop_scope"]
 
 
-def test_platform_status_reports_verified_annual_target_without_seasonal_model_claim() -> None:
+def test_platform_status_reports_every_delivered_evidence_capability_as_ready() -> None:
     client = TestClient(create_app())
-    statuses = {
-        item["id"]: item["status"]
-        for item in client.get("/api/v1/platform/status").json()["capabilities"]
-    }
+    capabilities = client.get("/api/v1/platform/status").json()["capabilities"]
+    statuses = {item["id"]: item["status"] for item in capabilities}
+
     assert statuses == {
-        "data-feasibility": "ready",
-        "annual-snapshot": "ready",
-        "annual-label-reconciliation": "next",
-        "county-year-baseline": "planned",
+        "official-panel": "ready",
+        "temporal-baselines": "ready",
+        "weather-value-test": "ready",
+        "evidence-dashboard": "ready",
     }
-    target_dataset = next(
-        item
-        for item in client.get("/api/v1/platform/status").json()["capabilities"]
-        if item["id"] == "annual-snapshot"
-    )
-    assert "source-bound" in target_dataset["outcome"]
-    assert "not model-ready" in target_dataset["outcome"]
-    reconciliation = next(
-        item
-        for item in client.get("/api/v1/platform/status").json()["capabilities"]
-        if item["id"] == "annual-label-reconciliation"
-    )
-    assert "conflicting official 2020 vintages" in reconciliation["outcome"]
+    weather_test = next(item for item in capabilities if item["id"] == "weather-value-test")
+    assert "did not beat the county historical mean" in weather_test["outcome"]
+    dashboard = next(item for item in capabilities if item["id"] == "evidence-dashboard")
+    assert "predictions and errors" in dashboard["outcome"]
+    assert "limitations" in dashboard["outcome"]
 
 
 def test_openapi_declares_platform_status_response_schema_and_enums() -> None:
