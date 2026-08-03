@@ -8,6 +8,8 @@ function clearGlobalCountySearch() {
 }
 
 if (globalCountySearch && selectedCountyName) {
+  clearGlobalCountySearch();
+
   const selectedCountyObserver = new MutationObserver(clearGlobalCountySearch);
   selectedCountyObserver.observe(selectedCountyName, {
     childList: true,
