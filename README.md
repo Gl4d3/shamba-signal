@@ -1,55 +1,78 @@
-# Shamba Signal
+# 🌱 Shamba Signal
 
-**A real-data maize yield research demo for Kenya**
+**An honest machine-learning study of Kenya's county-level maize yields.**
 
-Shamba Signal investigates whether official county-year maize data and weather features can support
-a useful predictive model—and presents the answer honestly in a researcher-facing dashboard.
+Shamba Signal asks a simple question:
 
-This is a personal portfolio project demonstrating official-data reconciliation, leakage-resistant
-machine learning, scientific go/no-go judgement, and product delivery. It is not an operational
-forecasting service.
+> Can a small set of annual ERA5 weather features improve maize-yield prediction enough to beat transparent historical baselines?
 
-## Result: an honest weather no-go
+The answer was **no—not enough**. Instead of hiding that result or searching endlessly for a better-looking model, the project publishes the no-go and makes the evidence explorable.
 
-The private modelling panel contains 564 county-year rows across all 47 Kenya counties for
-2012-2023, with 563 usable labels. The frozen split is 2012-2021 train, 2022 validation, and
-provisional 2023 test.
+<p align="center">
+  <img src="docs/assets/weather-evidence-dashboard/earthy-dashboard-overview.svg" alt="Shamba Signal earthy evidence dashboard showing model comparison, county evidence, and system status" width="900">
+</p>
 
-| Provisional-2023 model | MAE t/ha | RMSE t/ha |
+## 🎯 The result
+
+The study reconciled a private panel of **564 county-year rows** across all **47 Kenyan counties** for 2012–2023. Of those, 563 yield labels were usable.
+
+The temporal split was fixed before evaluation:
+
+- **2012–2021:** training
+- **2022:** model selection
+- **2023:** one-time final test; official labels are provisional
+
+| Model on provisional 2023 | MAE t/ha ↓ | RMSE t/ha ↓ |
 | --- | ---: | ---: |
-| County historical mean | **0.2998** | **0.3982** |
+| **County historical mean** | **0.2998** | **0.3982** |
 | Weather Ridge | 0.3370 | 0.4537 |
-| Ridge, alpha 100 | 0.3615 | 0.4783 |
+| Temporal Ridge | 0.3615 | 0.4783 |
 | Previous year | 0.4651 | 0.6057 |
 
-One small, reproducible ERA5 weather feature set improved the temporal Ridge baseline but did **not**
-beat the county historical mean. The model selection used 2022; provisional 2023 was evaluated once.
-That makes the result a scientifically useful no-go, not an invitation to keep model-shopping.
+Weather Ridge improved on Temporal Ridge, but remained **0.0372 t/ha behind** the county historical mean on MAE. The scientifically correct decision was therefore **no-go** for this feature set.
 
-The local dashboard turns this result into an evidence journey: national model comparison, county
-history, county-level provisional-2023 predictions/errors, feature definitions, lineage, and the
-limitations that govern interpretation.
+## 🧠 What the ML pipeline does
 
-## Dashboard
+```mermaid
+flowchart LR
+    A[Official county maize data] --> B[Reconciled 47-county panel]
+    W[Open-Meteo ERA5] --> C[4 annual weather features]
+    B --> D[Leakage-safe temporal split]
+    C --> D
+    D --> E[Previous year]
+    D --> F[County historical mean]
+    D --> G[Temporal Ridge]
+    D --> H[Weather Ridge]
+    E --> I[Provisional 2023 test]
+    F --> I
+    G --> I
+    H --> I
+    I --> J[FastAPI evidence dashboard]
+```
 
-![Shamba Signal desktop evidence overview](docs/assets/weather-evidence-dashboard/desktop-overview.png)
+The weather model uses:
 
-The committed overview contains aggregate evidence only. The private local fixture unlocks the
-interactive 47-county history and prediction view without redistributing source-derived rows.
+- annual precipitation total;
+- wet-day count, where daily precipitation is greater than 1 mm;
+- annual mean 2 m temperature; and
+- annual maximum 2 m temperature.
 
-## Current boundary
+Same-year production and harvested area are excluded because yield is derived from them and including them would leak the answer.
 
-- Output grain is county x year for maize; this is a retrospective end-of-year backtest.
-- The 2023 source values are provisional.
-- Annual labels do not validate mid-season, county-season, ward, pixel, farm, causal, or advisory
-  claims.
-- Official source bytes and row-level derived data remain private while redistribution terms are
-  unresolved.
-- AWS is a documented portability option only; no cloud deployment is claimed.
+## 🖥️ What the dashboard can do
 
-## Local setup
+- Compare all models using **MAE or RMSE**.
+- Explore annual yield history for any of the 47 counties.
+- Compare the selected county's 2023 actual value with four model predictions.
+- Show signed prediction errors and the closest model.
+- Export county evidence as CSV or the complete evaluation fixture as JSON.
+- Explain the split, features, lineage, provisional status, limitations, release, and service health.
 
-Python 3.12 and uv 0.10.x are required.
+Every analytical value comes from the generated evaluation fixture. The interface does not invent forecasts, advisories, prices, alerts, maps, or feature importance.
+
+## ⚙️ Run locally
+
+Requirements: **Python 3.12** and **uv 0.10.x**.
 
 ```bash
 uv sync --locked --extra dev
@@ -57,46 +80,48 @@ make verify
 make run
 ```
 
-With the approved private panel mounted, build the local fixture and then run the app:
+Open `http://127.0.0.1:8000`.
+
+To rebuild the private weather experiment and dashboard fixture:
 
 ```bash
 uv run python scripts/run_weather_experiment.py \
   --panel /path/to/modelling_panel.csv \
   --weather-cache data/raw/open-meteo-era5-batch-v1 \
   --output-root data/processed/weather-experiment-v1
-make run
 ```
 
-Open `http://127.0.0.1:8000`. Raw weather responses, the panel, predictions, and the generated
-fixture are intentionally ignored by Git while redistribution permission remains unresolved.
+The official source snapshots, row-level panel, cached weather responses, predictions, and generated private fixture remain outside Git while redistribution terms are unresolved.
 
-## Method in brief
+## 🧱 Lightweight architecture
 
-1. Reconcile official county-level annual maize labels into a 47-county, 2012–2023 private panel.
-2. Freeze 2012–2021 for training, 2022 for model selection, and provisional 2023 for the final test.
-3. Compare transparent temporal references with one Ridge family using four annual
-   [Open-Meteo ERA5](https://open-meteo.com/en/docs/historical-weather-api) features.
-4. Present the national and county-level evidence, including the no-go, in the local dashboard.
+- **FastAPI** serves the application and JSON endpoints.
+- **NumPy** powers the bounded modelling experiment.
+- **HTML, CSS, JavaScript, and SVG** provide a responsive interactive dashboard.
+- No database, React build chain, worker queue, authentication layer, or cloud deployment is required for this portfolio release.
 
-This is not a mid-season operational forecast, farm measurement, causal analysis, or advisory tool.
+AWS portability is documented as an architectural option only; it is not presented as implemented infrastructure.
 
-## CV-ready summary
+## ⚠️ Read the evidence correctly
 
-Built a reproducible Kenya maize county-year retrospective ML study from difficult official sources:
-reconciled a 47-county 2012–2023 panel, enforced leakage-safe temporal splits, tested ERA5 weather
-features against transparent baselines, published an honest no-go when the county historical mean
-remained best, and delivered the evidence in a FastAPI dashboard.
+This is a **retrospective county-year backtest**. It is not:
 
-## Start here
+- a mid-season or live operational forecast;
+- a ward-, pixel-, or farm-level yield estimate;
+- a causal explanation of maize yield;
+- agronomic advice or a farmer advisory system; or
+- a deployed national service.
 
-- [Remote execution handoff](REMOTE_EXECUTION.md)
-- [Current PRD](docs/product/PRD.md)
+## 📚 Project notes
+
+- [Product requirements](docs/product/PRD.md)
 - [MVP definition](docs/product/MVP.md)
-- [Completion slices](docs/roadmap/IMPLEMENTATION_SLICES.md)
-- [Modelling panel](docs/data/county-year-modelling-panel.md)
-- [Baseline result](docs/modelling/temporal-baseline-result.md)
+- [County-year modelling panel](docs/data/county-year-modelling-panel.md)
+- [Temporal baseline result](docs/modelling/temporal-baseline-result.md)
 - [Weather feature value test](docs/modelling/weather-feature-value-test.md)
 - [Architecture boundary](docs/architecture/ARCHITECTURE.md)
+- [Dashboard design QA](design-qa.md)
 
-The completion scope is deliberately closed. No further infrastructure, sources, or model families
-are planned for this portfolio release.
+## ✅ Status
+
+The portfolio release is complete. No additional sources, model families, infrastructure, or speculative features are planned for this version.
