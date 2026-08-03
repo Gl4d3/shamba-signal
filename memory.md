@@ -59,3 +59,14 @@
   focused local verification and user-visible browser proof.
 - Do not add infrastructure, validators, registries, governance, source hunts, speculative models,
   or further planning slices. Complete weather experiment, dashboard, README/screenshots, then stop.
+
+## 2026-08-03 completion receipt
+
+- The supplied private modelling panel and KNBS report matched their approved SHA-256 hashes.
+- The bounded Open-Meteo ERA5 weather experiment selected Ridge alpha 10 on 2022. On provisional
+  2023, Weather Ridge MAE is 0.3370 t/ha (RMSE 0.4537): better than temporal Ridge (0.3615), but
+  not county historical mean (0.2998). The project records a no-go and stops modelling.
+- `scripts/run_weather_experiment.py` caches the single raw weather response outside Git and writes
+  local features, metrics, predictions, and dashboard fixture under ignored paths.
+- The status homepage was replaced by the evidence dashboard. README, method note, and AWS
+  portability diagram now describe the completed county-year retrospective study.
