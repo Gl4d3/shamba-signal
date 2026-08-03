@@ -20,10 +20,11 @@ On provisional 2023, county historical mean is the strongest model at 0.2998 t/h
 (0.3615) beats previous year (0.4651) but not county mean. See
 `docs/modelling/temporal-baseline-result.md`.
 
-## Slice 4 — Weather feature value test
+## Completed — Slice 4: weather feature value test
 
-**Outcome:** one defensible weather feature source is joined to the fixed county-year panel and one
-weather-informed tabular model is evaluated on the existing split.
+**Outcome:** Open-Meteo ERA5 annual features were joined to the fixed panel and one weather Ridge
+model was evaluated on the frozen split. It improved temporal Ridge but did not beat the 0.2998 t/ha
+county historical mean on provisional 2023, so this slice concludes **no-go**.
 
 **Minimum implementation:**
 
@@ -36,10 +37,10 @@ weather-informed tabular model is evaluated on the existing split.
 **Time/scope guardrail:** if a source cannot be made to work in a bounded attempt, switch once to
 one official alternative. Do not restart broad data-source research.
 
-## Slice 5 — Real-data evidence dashboard
+## Completed — Slice 5: real-data evidence dashboard
 
-**Outcome:** the status-only homepage becomes a polished researcher-facing dashboard backed by the
-generated evaluation fixture.
+**Outcome:** the status-only homepage is replaced with a researcher-facing FastAPI/static dashboard
+backed by the generated private evaluation fixture.
 
 **Minimum implementation:**
 
@@ -53,10 +54,10 @@ generated evaluation fixture.
 No maps, authentication, database, backend service split, or deployment is required unless the
 simple dashboard demonstrably cannot meet the journey without it.
 
-## Slice 6 — Portfolio closeout
+## Completed — Slice 6: portfolio closeout
 
-**Outcome:** another engineer, researcher, or hiring reviewer can understand and run the finished
-project.
+**Outcome:** another engineer, researcher, or hiring reviewer can reproduce and understand the
+finished project, its no-go result, and its evidence boundaries.
 
 **Minimum implementation:**
 
