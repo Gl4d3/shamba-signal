@@ -35,3 +35,27 @@
 - Applied Python 3.12-safe Ruff modernization and corrected lockfile tests to validate the current UV extra-dependency format rather than an invalid manual Pytest-to-Pygments edge.
 - Enforced LF for deterministic feasibility artifacts through `.gitattributes`; the generated scorecard is byte-stable on this worktree.
 - Local verification uses `uv run pytest -q --basetemp .pytest-tmp` because the shared Windows temp root is denied. The current split and visual-proof checkpoint passes 170 tests, followed by lint, repository and Slice 2 validators, compilation, API smoke, and desktop/mobile browser checks.
+
+# Remote execution reset and completion contract (2026-08-03)
+
+- The project is now explicitly a finishable personal/CV research demo, not an enterprise
+  foundation. `docs/product/PRD.md` is the current completion contract.
+- The scientific claim is narrowed to a Kenya maize county-year retrospective backtest and
+  evidence dashboard. Annual labels do not support mid-season, seasonal, farm, causal, or advisory
+  claims.
+- Completed evidence on `main`: a private 564-row 2012-2023 panel (563 usable) and leakage-safe
+  temporal baselines. On provisional 2023, county historical mean remains best at 0.2998 t/ha MAE;
+  ridge is 0.3615 and previous-year is 0.4651.
+- The only remaining ML work is one bounded weather-feature value test against the 0.2998 benchmark.
+  Whether it wins or produces a no-go, implementation then moves directly to a real-data dashboard
+  and portfolio closeout.
+- `REMOTE_EXECUTION.md` is the canonical next-agent handoff. It includes motivations, private
+  artifact hashes/access limits, execution order, anti-overengineering rules, and definition of
+  done.
+- Source workbooks, reports, row-level panel, and predictions remain outside Git while
+  redistribution permission is unresolved. The root workbook filename is ignored to prevent an
+  accidental public commit.
+- GitHub Actions issue #12 is an external account/billing pre-run blocker. Do not debug CI; use
+  focused local verification and user-visible browser proof.
+- Do not add infrastructure, validators, registries, governance, source hunts, speculative models,
+  or further planning slices. Complete weather experiment, dashboard, README/screenshots, then stop.

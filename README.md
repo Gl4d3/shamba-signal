@@ -1,79 +1,62 @@
 # Shamba Signal
 
-**County-year maize-label research infrastructure for Kenya**
+**A real-data maize yield research demo for Kenya**
 
-Shamba Signal is building a research-grade decision-intelligence workflow for a narrow question:
-can reconciled official county-year data for one feasibility-selected crop support a baseline-feasibility decision?
+Shamba Signal investigates whether official county-year maize data and weather features can support
+a useful predictive model—and presents the answer honestly in a researcher-facing dashboard.
 
-## Current implementation state
+This is a personal portfolio project demonstrating official-data reconciliation, leakage-resistant
+machine learning, scientific go/no-go judgement, and product delivery. It is not an operational
+forecasting service.
 
-**Implemented through Slice 1:**
+## Current evidence
 
-- approved PRD, MVP, architecture, scientific boundaries, and implementation slices;
-- a FastAPI application shell with `/`, `/healthz`, `/openapi.json`, and
-  `/api/v1/platform/status`;
-- a public foundation page that reports implemented, next, and planned capabilities;
-- a candidate source catalogue, repository validator, tests, and hardened CI definition;
-- a versioned evidence register, four crop profiles, and all 47 county profiles;
-- deterministic feasibility scoring and sensitivity analysis under the approved
-  `35/20/15/10/10/10` weights;
-- generated scorecard, machine-readable selection, and canonical decision record.
+The private modelling panel contains 564 county-year rows across all 47 Kenya counties for
+2012-2023, with 563 usable labels. The frozen split is 2012-2021 train, 2022 validation, and
+provisional 2023 test.
 
-**Current metadata-level selection:** maize is the MVP crop, Busia is the deep-dive county, and
-Trans Nzoia is the fallback. This is a Slice 2 acquisition hypothesis, not proof of label
-completeness, satellite usability, or model skill.
+| Provisional-2023 model | MAE t/ha | RMSE t/ha |
+| --- | ---: | ---: |
+| County historical mean | **0.2998** | **0.3982** |
+| Ridge, alpha 100 | 0.3615 | 0.4783 |
+| Previous year | 0.4651 | 0.6057 |
 
-**Current Slice 2 checkpoint:** Slice 2A is complete: an original KNBS/NIPFN workbook is accepted
-and preserved outside Git with SHA-256 lineage. Its verified tidy sheet has 1,128 observations: all
-47 counties × three indicators × eight annual years (2012-2018 and 2020). A local-only package
-produces 376 county-year rows and confirms Busia under the explicit annual-data policy. It is
-source-bound, private, and not model-ready. Slice 2B is next: reconcile conflicting official 2020
-vintages, extend the annual panel, and assess county-year baseline feasibility. No season labels,
-forecast, decision support, or resolved source precedence is claimed. See
-[`docs/data/slice-2-acquisition-status.md`](docs/data/slice-2-acquisition-status.md).
+Target history alone does not beat the county historical mean. The remaining experiment adds one
+bounded weather feature set; after that result, the project moves directly to the evidence UI and
+portfolio closeout.
 
-**Out of scope for this release:** season labels, a trained model, forecast, crop-stress analysis,
-decision support, dashboards, scheduling, AWS deployment, and Druid. The annual local-only target
-is not a redistribution approval and must not be inferred as a model.
+## Current boundary
 
-## Release boundary
+- Output grain is county x year for maize.
+- The 2023 source values are provisional.
+- Annual labels do not validate mid-season, county-season, ward, pixel, farm, causal, or advisory
+  claims.
+- Official source bytes and row-level derived data remain private while redistribution terms are
+  unresolved.
+- AWS is a documented portability option only; no cloud deployment is claimed.
 
-The release stops with Slice 2B official annual-label reconciliation. Its only planned modelling
-outcome is a county-year baseline feasibility or no-go study after reconciliation; it does not
-promise a forecast, season labels, or decision support.
-
-## Reproducible local setup
+## Local setup
 
 Python 3.12 and uv 0.10.x are required.
 
 ```bash
 uv sync --locked --extra dev
 make verify
-make feasibility
 make run
 ```
 
-`make feasibility` regenerates:
+Open `http://127.0.0.1:8000` after starting the app. Private data build and modelling commands are
+documented in the relevant data/model files and require the approved external snapshots.
 
-- `data/feasibility/scorecard.csv`
-- `data/feasibility/selection.json`
-- `docs/data/pilot-selection-decision.md`
+## Start here
 
-Open `http://127.0.0.1:8000`. The platform contract is available at
-`http://127.0.0.1:8000/api/v1/platform/status`.
+- [Remote execution handoff](REMOTE_EXECUTION.md)
+- [Current PRD](docs/product/PRD.md)
+- [MVP definition](docs/product/MVP.md)
+- [Completion slices](docs/roadmap/IMPLEMENTATION_SLICES.md)
+- [Modelling panel](docs/data/county-year-modelling-panel.md)
+- [Baseline result](docs/modelling/temporal-baseline-result.md)
+- [Architecture boundary](docs/architecture/ARCHITECTURE.md)
 
-## Repository map
-
-- `src/shamba_signal/` — implemented application, feasibility, and domain code.
-- `tests/` — behavioral, OpenAPI, deterministic-artifact, validator, and contract tests.
-- `data/catalog/` — candidate source metadata; no raw restricted datasets.
-- `data/feasibility/` — metadata-level evidence inputs and generated selection artifacts.
-- `docs/product/` — PRD and MVP definition.
-- `docs/architecture/` — logical local architecture and deferred AWS mapping.
-- `docs/roadmap/` — testable implementation slices and no-go outcomes.
-- `docs/data/` — source discovery, access, licensing evidence, and pilot decision record.
-- `.github/` — read-only CI and contribution workflow.
-
-See [the pilot decision](docs/data/pilot-selection-decision.md),
-[the PRD](docs/product/PRD.md), [architecture](docs/architecture/ARCHITECTURE.md), and
-[implementation slices](docs/roadmap/IMPLEMENTATION_SLICES.md).
+The remaining scope is deliberately small: one weather feature value test, one real-data evidence
+dashboard, and portfolio closeout. No more foundation work is required.

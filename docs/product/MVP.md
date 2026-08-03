@@ -1,55 +1,41 @@
-# Shamba Signal MVP Definition
+# Shamba Signal MVP
 
-> **Historical product vision:** this document predates the Slice 2A/2B evidence decision. It is
-> not the current release contract; the release ends at Slice 2B and only contemplates a
-> county-year baseline feasibility/no-go study after reconciliation.
+## One sentence
 
-## Single sentence
+A polished local research dashboard that uses real official county-year maize data to show whether
+one weather-informed model improves on transparent temporal baselines for Kenya.
 
-Investigate whether one data-selected crop can support a defensible mid-season county-season yield forecast across Kenya, with one county deep dive, uncertainty, lineage, and explicit abstention when evidence is insufficient.
+## What is already real
 
-## Current state
+- A reconciled private modelling panel with 564 county-year rows across all 47 counties for
+  2012-2023; 563 labels are usable.
+- Frozen splits: 2012-2021 train, 2022 validation, provisional 2023 test.
+- Leakage-safe previous-year, county-mean, and ridge baselines.
+- Provisional-2023 county-mean benchmark: 0.2998 t/ha MAE and 0.3982 t/ha RMSE.
+- Ridge improves on previous year but does not beat county mean.
 
-The foundation implements product documentation, a FastAPI shell, a public status page, source catalogue, repository validation, tests, and CI definition. No target dataset, trained model, forecast fixture, research dashboard, advisory engine, scheduler, AWS deployment, or Druid benchmark exists yet.
+## What remains
 
-## Primary user
+1. Add one small, reproducible county-year weather feature table.
+2. Run one weather-informed model against the frozen split and make a keep/no-go decision.
+3. Generate a safe evaluation fixture that powers a real-data evidence dashboard.
+4. Build and browser-verify the dashboard.
+5. Finish the README, screenshots, limitations, and concise AWS portability diagram.
 
-Agricultural researchers and programme analysts. County extension leadership and food-security teams are secondary users of the same evidence. Farmer-facing workflows are outside the first release.
+## Acceptance
 
-## Future supported output
+- The weather experiment does not inspect 2023 during selection and is compared directly with
+  0.2998 t/ha MAE.
+- Failure to beat the benchmark is presented as a valid result, not hidden by more model search.
+- The UI shows national metrics, model comparison, county history, county-level 2023 prediction
+  and error, feature definitions, lineage summary, and limitations using real artifacts.
+- Nothing suggests that annual county labels validate mid-season, seasonal, ward, pixel, farm,
+  causal, or advisory claims.
+- A fresh contributor with access to the approved private snapshots can reproduce the pipeline and
+  run the app with documented commands.
 
-For each county that passes evidence and model gates:
+## Stop list
 
-- estimated yield in tonnes per hectare;
-- calibrated prediction bounds;
-- historical baseline and anomaly;
-- evidence-quality status;
-- forecast cutoff, calendar, source, feature, and model lineage;
-- explicit abstention when support is inadequate.
-
-Ward and pixel layers may show relative yield potential or crop-stress indicators. They must never be labelled measured ward or farm yield without matching validation data.
-
-## Immediate MVP critical path
-
-1. Reproducible target dataset.
-2. Honest baseline forecast or documented no-go result.
-3. Minimal evidence UI driven by a real versioned fixture.
-4. Remote-sensing complexity only after a precise improvement hypothesis.
-
-## Acceptance criteria
-
-- The crop and pilot county are provisionally selected by a reproducible metadata-level scorecard and confirmed or replaced using downloaded records.
-- A clean environment rebuilds the county-season modelling table from documented, checksummed snapshots.
-- Reported and derived yield remain distinguishable; derivation obeys positive-area, matching-period, matching-crop, matching-county, and compatible-unit rules.
-- The baseline slice either beats mandatory naïve baselines on frozen geographic and temporal holdouts, or publishes an insufficiency/no-go result and abstains.
-- Every supported forecast contains prediction bounds, evidence quality, cutoff, and lineage.
-- The first UI uses real or unmistakably labelled versioned fixtures and exposes insufficient-evidence states.
-
-## Explicit non-goals for the immediate delivery
-
-- Farm-level or measured ward-level yield prediction.
-- Multiple crops before one crop is validated.
-- Temporal CNNs before the baseline research question is answered.
-- Full national dashboard before a real forecast fixture exists.
-- Advisory generation, scheduled operations, AWS deployment, SageMaker, Druid, or premature microservices.
-- Automated resource allocation or farm-specific agronomic prescriptions.
+Do not add more source registries, validators, abstraction layers, cloud resources, databases,
+workers, queues, schedulers, governance processes, advisory features, or speculative models. The
+remaining MVP is an ML experiment plus a user-visible product, not another foundation phase.

@@ -1,165 +1,132 @@
-# Product Requirements Document — Shamba Signal
+# Shamba Signal Product Requirements Document
 
-> **Historical product vision:** this document is not the current release contract. The current
-> release ends at Slice 2B; county-season, forecasting, crop-stress, and advisory claims are out
-> of scope pending a county-year reconciliation and baseline-feasibility/no-go decision.
+**Status:** Current completion contract
 
-**Status:** Approved programme; foundation implementation only
-**Product direction:** Modular decision-intelligence platform
-**Primary geography:** Kenya
-**Validated output grain:** County × crop × season
+**Product:** A local, evidence-backed maize yield research demo for Kenya
 
-## 1. Product statement
+**Release grain:** County x year, not county x season or farm
 
-Shamba Signal is intended to become a research-grade agricultural decision-intelligence platform that produces defensible mid-season county-level crop-yield forecasts for Kenya, exposes uncertainty and evidence quality, explains non-causal environmental signals associated with each supported estimate, and may later surface response options from approved expert playbooks.
+## 1. Why this project exists
 
-The foundation implements product and scientific contracts, a FastAPI shell, public status page, source catalogue, repository validation, tests, a lockfile, and a hardened CI definition. It does **not** contain a downloaded target dataset, trained model, calibrated forecast, research dashboard, scheduler, advisory engine, AWS deployment, or Druid benchmark.
+Shamba Signal is a personal portfolio project that bridges production Python/data engineering
+experience into digital-agriculture research. It should demonstrate that the owner can:
 
-## 2. Central research question
+- turn difficult official data into a reproducible modelling dataset;
+- make honest scientific decisions about leakage, holdouts, uncertainty, and no-go results;
+- implement and evaluate a useful machine-learning experiment;
+- translate model evidence into a polished, understandable product; and
+- explain how the local design could map to cloud services without building an unnecessary
+  cloud platform.
 
-Can publicly obtainable county-season data for the **feasibility-selected crop** support a defensible mid-season forecast that either:
+It is not an enterprise foundation, a national operational service, or an excuse to accumulate
+infrastructure. The end goal does not justify more scaffolding.
 
-1. beats mandatory naïve baselines under frozen geographic and temporal holdouts; or
-2. produces a documented insufficiency/no-go result and abstains from unsupported forecasting?
+## 2. Product statement
 
-Metadata-level feasibility may identify a provisional crop and county. Downloaded records must confirm or replace that choice before modelling.
+Shamba Signal lets a researcher inspect Kenya county-level maize yield history, compare simple
+temporal baselines with one weather-informed model, and understand where the evidence supports
+or fails to support a predictive claim.
 
-## 3. Users
+The product is complete even if weather features do not beat the strongest naive baseline,
+provided the result is reproducible, visible in the UI, and reported honestly.
 
-### Primary user
+## 3. Evidence boundary
 
-Agricultural researchers and programme analysts who need reproducible data, model evidence, uncertainty, lineage, held-out evaluation, exports, and backtest controls.
+The available official labels are annual county aggregates. Therefore this release is a
+county-year retrospective backtest and evidence explorer. It must not be described as:
 
-### Secondary users
+- a mid-season operational forecast;
+- measured ward-, pixel-, or farm-level yield;
+- agronomic advice or a farmer decision system;
+- a causal explanation of yield; or
+- a deployed national service.
 
-County extension leadership, food-security teams, and programme managers may use the same evidence to prioritise verification and preparedness. Farmer-facing and field-prescription workflows are deferred.
+The current test year, 2023, is provisional in the source report. That limitation must remain
+visible wherever results are presented.
 
-## 4. Product principles
+## 4. Primary user and journey
 
-1. **Evidence before prediction.** A forecast without lineage and uncertainty is incomplete.
-2. **Baselines before complexity.** Deep models follow transparent baselines and a precise improvement hypothesis.
-3. **Resolution honesty.** County labels cannot validate ward- or farm-level yield.
-4. **Data selects the pilot.** Crop, county, and historical window emerge from evidence.
-5. **No-go is valid.** Insufficient evidence causes abstention, not a manufactured success claim.
-6. **Advisory by permission.** AI may contextualise approved playbooks; it may not invent interventions.
-7. **Working slices before cloud migration.** AWS and Druid follow a functioning local data-to-forecast loop.
-8. **Merged reality governs status.** Public wording distinguishes designed, implemented, tested, merged, deployed, and verified-with-real-data states.
+The primary user is an agricultural researcher or programme analyst evaluating whether the
+available public evidence supports a useful county-level model.
 
-## 5. Scope
+The finished local UI must let the user:
 
-### Geography and resolution
+1. see the national 2023 backtest summary and the winning model;
+2. compare model MAE/RMSE against county historical mean and previous year;
+3. select a county and inspect historical actuals plus the 2023 prediction/error;
+4. see which weather features were tested and whether they added value;
+5. understand data coverage, provisional-label status, leakage exclusions, and limitations; and
+6. export or inspect the displayed evaluation data without encountering invented values.
 
-- Kenya-wide outputs only for counties that pass evidence gates.
-- One deep-dive county selected by data quality and coverage.
-- Missing counties remain absent, degraded, or abstained; they are not smoothed into a complete map.
-- Ward and pixel layers may show relative yield potential or crop-stress indicators, never measured local yield without matching labels.
+## 5. Functional requirements
 
-### Crop and timing
+### FR-01 — Reproducible real-data pipeline
 
-- One crop is selected through feasibility and confirmed with downloaded records.
-- The MVP forecast point is mid-season.
-- County-specific calendars are preferred; a documented national or agro-ecological fallback is allowed.
-- Every run records the calendar source, forecast cutoff, and fallback decision.
+Given the approved private source snapshots, documented commands rebuild the county-year panel,
+weather feature table, evaluation outputs, and versioned UI fixture. Source-derived row-level data
+remains outside Git while redistribution permission is unresolved.
 
-## 6. Functional requirements
+### FR-02 — One bounded weather experiment
 
-### FR-01 — Feasibility and provisional selection
+Use one accessible, documented weather source and a small defensible feature set. Keep the frozen
+split: 2012-2021 train, 2022 model selection, provisional 2023 final test. Same-year production and
+harvested area remain excluded because yield is derived from them.
 
-Profile candidate labels and explanatory sources, publish the scoring evidence and limitations, and clearly distinguish measured metadata, documented evidence, and expert judgement. Stability is claimed only for the registered sensitivity scenarios.
+The weather-informed model is retained only if its provisional-2023 MAE beats the county historical
+mean benchmark of 0.2998 t/ha. If it does not, publish the no-go result and stop adding models.
 
-### FR-02 — Source registry and immutable snapshots
+### FR-03 — Honest evaluation artifact
 
-For each applicable source and snapshot, record:
+Publish MAE and RMSE for every compared model, county-level errors, feature definitions, split
+definitions, and a concise limitations statement. Do not use random-row splits, tune on 2023, or
+describe correlation or feature importance as causation.
 
-- source ID, publisher, and dataset title;
-- landing URL and exact acquisition URL or request parameters;
-- access method, source version, and retrieval timestamp;
-- spatial and temporal coverage;
-- HTTP/content metadata, media type, and byte size;
-- content checksum and schema fingerprint;
-- licence or terms evidence, decision, and redistribution status;
-- a portable logical or content-addressed storage identifier;
-- transformation code revision.
+### FR-04 — Minimal evidence dashboard
 
-Adapters must validate status, redirects, content type, payload shape, and expected schema; reject HTML/login/bot/error documents; use bounded timeouts; preserve original bytes before transformation; and never store credentials, cookies, bearer tokens, signed URLs, or developer-machine absolute paths in canonical manifests.
+Replace the foundation/status-only page with a polished local research dashboard driven entirely
+by a generated, versioned evaluation fixture. The UI must clearly distinguish actual, predicted,
+baseline, unavailable, and provisional values. It must work on desktop and mobile and include an
+honest no-go state if no model beats the naive benchmark.
 
-Access permission and redistribution permission are separate decisions. Restricted or unresolved bytes are not committed merely because they can be downloaded.
+### FR-05 — Portfolio closeout
 
-### FR-03 — Canonical county-season target table
+The README must tell the completed problem/data/method/result/product story, include verified UI
+screenshots, provide reproducible local commands, and state the evidence boundaries. One concise
+architecture diagram may show how the proven local workflow maps to AWS; no AWS deployment is
+required.
 
-The typed target record contains stable county identifiers, source-provided and canonical names, crop code, year or season, calendar source, element, original and normalised values/units, production, harvested area, reported yield, derived yield, source flag, derivation method, quality class, and snapshot ID.
+## 6. Quality requirements
 
-Reported and derived yield remain separate. Derived yield may be calculated only when:
+- The core data and metric calculations have focused regression tests.
+- A clean local happy path produces the real evaluation artifact and launches the UI.
+- The final UI is verified in a real browser at desktop and mobile widths.
+- No secrets, source-restricted bytes, private paths, or fabricated data enter Git.
+- Documentation and the UI use the same metrics and capability claims.
 
-- harvested area is strictly greater than zero;
-- production and area refer to the same county, crop, and period;
-- units are compatible and conversions are recorded;
-- the source and derivation method are retained;
-- reconciliation tolerance is explicit.
+Repository-wide test expansion, additional validators, service decomposition, observability,
+scheduling, deployment automation, and governance work are not quality requirements for this
+personal project.
 
-Derived yield never silently replaces reported yield.
+## 7. Definition of done
 
-### FR-04 — Feature and cutoff contract
+Shamba Signal is finished when all of the following are true:
 
-Feature generation may use climate, vegetation, moisture, soil, terrain, calendar, and historical-lag inputs only when they were available by the configured forecast cutoff. Every feature table records source snapshot IDs and transformation revision.
+- the existing official maize panel and one weather feature set produce a frozen-split result;
+- the weather model either beats 0.2998 t/ha MAE or yields an explicit, reproducible no-go;
+- a researcher can explore the real evaluation in the local dashboard;
+- the dashboard has browser-verified desktop and mobile evidence;
+- the README presents the final result and exact limitations as a CV/portfolio case study; and
+- all completion changes are merged and pushed to `main`.
 
-### FR-05 — Mandatory baseline models
+## 8. Explicit non-goals
 
-The first modelling slice implements:
+- More source discovery after one usable weather source is found.
+- County-season reconstruction from annual labels.
+- Satellite imagery, CNNs, LSTMs, transformers, feature stores, or MLOps platforms.
+- Advisory playbooks, recommendations, chatbots, scheduling, queues, or microservices.
+- PostgreSQL, Druid, SageMaker, AWS deployment, production monitoring, or enterprise governance.
+- Multi-crop expansion, farmer-facing workflows, or farm-level claims.
+- CI repair while GitHub Actions remains blocked before job execution by the repository account.
 
-- historical county mean;
-- previous-season value;
-- simple linear or regularised regression;
-- one tree-based model.
-
-A temporal neural model is considered only after the baseline slice is complete and a precise improvement hypothesis exists.
-
-### FR-06 — Evaluation and leakage controls
-
-- Geographic and temporal folds are defined before training.
-- Random-row splits are debugging-only.
-- Hyperparameter selection does not inspect final holdouts.
-- Headline metrics are MAE, RMSE, prediction-interval coverage, and interval width.
-- Errors are reported by county, season/year, and evidence-quality class.
-- Results are compared against historical mean and previous-season baselines.
-- Correlation, SHAP, and feature importance are not described as causal evidence.
-
-### FR-07 — Forecast contract
-
-Each supported forecast records point estimate, prediction interval, historical baseline, anomaly, evidence quality, forecast cutoff, calendar, source/feature/model lineage, and run identifier. Unsupported cases expose an abstention or insufficient-evidence state.
-
-### FR-08 — Minimal evidence UI
-
-The first useful interface is built only after a real versioned forecast fixture exists. It shows county outlook, selected-county history, actual versus predicted values, prediction interval, evidence quality, cutoff, lineage, and visible abstention. It does not interpolate missing counties or invent sample forecasts.
-
-### FR-09 — Deferred advisory and operations
-
-Guardrailed advisory, scheduled operations, AWS, SageMaker, Druid, multi-crop support, and farmer-facing interfaces remain deferred until the target dataset and baseline research gates pass. Advisory output, when implemented, may select only approved playbook actions and may not provide farm-specific dosage, irrigation quantity, pesticide, fertiliser, or treatment prescriptions.
-
-## 7. Non-functional requirements
-
-- **Reproducibility:** locked dependencies, checksummed inputs, deterministic configuration, and byte- or value-stable generated artifacts.
-- **Auditability:** snapshot-to-target-to-forecast lineage and immutable run metadata.
-- **Portability:** logical storage identifiers and contracts that map from local execution to S3/RDS later.
-- **Security:** no secrets, environment files, restricted source data, signed URLs, or machine-specific artifacts in Git.
-- **Accessibility:** keyboard-operable UI and non-colour-only status communication.
-- **Truthfulness:** no model-performance, deployment, or service-maturity claim without corresponding evidence.
-
-## 8. Success and no-go criteria
-
-A baseline slice is accepted when either:
-
-1. a model beats historical mean and previous-season baselines under the approved geographic and temporal holdouts while meeting documented interval-coverage requirements; or
-2. the slice publishes a reproducible insufficiency/no-go report, identifies the failed evidence or performance gates, and abstains from unsupported forecasting.
-
-A successful product demonstration must let a researcher reproduce the selected dataset and evaluation, trace every displayed value to its source and model artifact, and see uncertainty, evidence quality, and abstention states.
-
-## 9. Delivery sequence
-
-1. Merge and verify the product foundation.
-2. Complete metadata-level feasibility and provisional selection.
-3. Acquire and quality-check real target records, producing a canonical dataset or rigorous insufficiency result.
-4. Build mandatory baseline models and publish success or no-go evidence.
-5. Build the minimal evidence UI from a real versioned fixture.
-6. Consider remote-sensing sequence models only after a precise baseline-improvement hypothesis.
-7. Defer full dashboard work, advisory, scheduling, AWS, and Druid until the central data-to-forecast loop is proven.
+Any future idea outside this contract belongs in a short “future possibilities” note, not in the
+implementation path for completing the project.

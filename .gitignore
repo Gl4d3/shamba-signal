@@ -22,3 +22,6 @@ data/processed/
 artifacts/models/
 artifacts/forecasts/
 artifacts/source-probe.json
+
+# Manually supplied official source workbook; redistribution is unresolved.
+Maize-Production-2012-2020-Combined.xlsx
