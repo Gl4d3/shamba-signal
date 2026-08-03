@@ -3,33 +3,97 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Shamba Signal crop-yield data feasibility for Kenya">
-  <title>Shamba Signal</title>
+  <meta name="description" content="Shamba Signal Kenya maize yield evidence dashboard">
+  <title>Shamba Signal — Evidence dashboard</title>
   <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
   <main>
-    <section class="hero">
-      <p class="eyebrow">Research-grade agricultural decision intelligence</p>
-      <h1>Shamba Signal</h1>
-      <p class="lede">Metadata-level feasibility selected maize and Busia. Slice 2A is a ready annual snapshot package, explicitly source-bound and not model-ready.</p>
-      <div class="status" id="api-status" aria-live="polite">Checking the platform contract…</div>
+    <header class="site-header">
+      <a class="wordmark" href="#top">Shamba<br><em>Signal</em></a>
+      <p>Kenya maize yield<br>evidence explorer</p>
+      <span class="header-state">2012–2023 · county × year</span>
+    </header>
+
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div>
+        <p class="eyebrow">The completed experiment</p>
+        <h1 id="hero-title">Weather adds signal.<br><em>Not enough to win.</em></h1>
+      </div>
+      <div class="hero-copy">
+        <p id="result-statement">Loading the private evaluation fixture…</p>
+        <p class="quiet">A disciplined county-year retrospective backtest, not an operational yield forecast.</p>
+      </div>
     </section>
-    <section class="grid" aria-label="MVP boundaries">
-      <article><span>Ready package</span><h2>Annual snapshot</h2><p>Accepted annual labels remain private and source-bound. They are not model-ready.</p></article>
-      <article><span>Next gate</span><h2>Official label reconciliation</h2><p>Conflicting official 2020 vintages must be reconciled before the annual panel can be extended.</p></article>
-      <article><span>Planned research</span><h2>County-year baseline feasibility</h2><p>A later study may assess reconciled annual labels. It will not infer seasons from annual totals.</p></article>
+
+    <section class="metric-grid" aria-label="National provisional 2023 results">
+      <article class="metric metric--benchmark">
+        <p>Benchmark to beat</p><strong id="benchmark-mae">—</strong><span>MAE · county historical mean</span>
+      </article>
+      <article class="metric">
+        <p>Weather Ridge</p><strong id="weather-mae">—</strong><span id="weather-delta">MAE · provisional 2023</span>
+      </article>
+      <article class="metric">
+        <p>Model selected on</p><strong>2022</strong><span>Frozen validation year</span>
+      </article>
+      <article class="metric">
+        <p>Evaluation scope</p><strong>47</strong><span>Kenyan counties</span>
+      </article>
     </section>
-    <section class="boundary">
-      <div><p class="eyebrow">Scientific boundary</p><h2>No season labels, forecast, or decision support.</h2></div>
-      <p>No crop calendar may disaggregate annual totals, and source precedence remains unresolved.</p>
+
+    <section class="comparison section-rule" aria-labelledby="comparison-title">
+      <div class="section-heading"><p class="eyebrow">The national result</p><h2 id="comparison-title">Transparent models, one final test.</h2></div>
+      <div class="model-list" id="data-model-metrics" aria-live="polite"></div>
     </section>
-    <section class="next">
-      <p class="eyebrow">Current repository state</p>
-      <h2>Slice 2A annual snapshot is ready</h2>
-      <p>The accepted annual package is source-bound and not model-ready. Slice 2B official annual label reconciliation is next because conflicting official 2020 vintages require review. Planned modelling is county-year baseline feasibility only. No season labels, forecast, or decision support are claimed.</p>
+
+    <section class="county section-rule" aria-labelledby="county-title">
+      <div class="section-heading county-heading">
+        <div><p class="eyebrow">County evidence</p><h2 id="county-title">History meets the final backtest.</h2></div>
+        <label for="county-selector">Explore a county
+          <select id="county-selector" disabled><option>Loading counties…</option></select>
+        </label>
+      </div>
+      <div class="county-grid">
+        <article class="chart-card">
+          <div class="chart-label"><span>Actual annual yield</span><span>t/ha</span></div>
+          <svg id="history-chart" viewBox="0 0 720 270" role="img" aria-label="County yield history"></svg>
+          <div class="chart-years"><span>2012</span><span>2023*</span></div>
+        </article>
+        <aside class="test-card">
+          <p class="eyebrow">Provisional 2023</p>
+          <h3 id="county-name">—</h3>
+          <dl>
+            <div><dt>Actual yield</dt><dd id="county-actual">—</dd></div>
+            <div><dt>County mean prediction</dt><dd id="county-baseline">—</dd></div>
+            <div><dt>Weather Ridge prediction</dt><dd id="county-weather">—</dd></div>
+            <div><dt>Weather Ridge error</dt><dd id="county-error">—</dd></div>
+          </dl>
+          <p class="provisional">* 2023 labels are provisional in the official source report.</p>
+        </aside>
+      </div>
     </section>
+
+    <section class="method section-rule" aria-labelledby="method-title">
+      <div class="section-heading"><p class="eyebrow">What was tested</p><h2 id="method-title">Four weather features.<br>One regularized model.</h2></div>
+      <div class="method-content">
+        <ol id="feature-list" class="feature-list"></ol>
+        <div class="method-note">
+          <p>Weather features use annual ERA5 reanalysis at representative county points. The model saw 2012–2021 for training, chose regularization on 2022, and evaluated provisional 2023 once.</p>
+          <p>Same-year production and harvested area are excluded: yield is their ratio.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="limits section-rule" aria-labelledby="limits-title">
+      <div class="section-heading"><p class="eyebrow">Read the evidence correctly</p><h2 id="limits-title">Retrospective county-year evidence only.</h2></div>
+      <ul id="limitation-list" class="limitation-list"></ul>
+    </section>
+
+    <footer>
+      <p>Shamba Signal · official county-year labels + Open‑Meteo ERA5 reanalysis</p>
+      <p>The local evaluation fixture is generated from approved private source snapshots; source bytes and row-level artifacts are not redistributed.</p>
+    </footer>
   </main>
-  <script src="/static/app.js?v=3" defer></script>
+  <script src="/static/app.js?v=4" defer></script>
 </body>
 </html>
