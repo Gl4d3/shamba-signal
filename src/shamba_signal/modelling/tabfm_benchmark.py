@@ -9,7 +9,6 @@ from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
-from typing import TypeAlias
 
 import numpy as np
 
@@ -19,7 +18,7 @@ from shamba_signal.modelling.temporal_baselines import (
 )
 from shamba_signal.modelling.weather_experiment import WeatherFeature
 
-FeatureValue: TypeAlias = str | int | float
+type FeatureValue = str | int | float
 
 TEMPORAL_COLUMNS = (
     "county_id",
@@ -224,7 +223,11 @@ def metrics(
 ) -> ExtendedMetrics:
     """Calculate the complete metric contract for one aligned prediction set."""
 
-    if not actual or len(actual) != len(predicted) or len(actual) != len(county_mean):
+    if (
+        len(actual) == 0
+        or len(actual) != len(predicted)
+        or len(actual) != len(county_mean)
+    ):
         raise ValueError("metric inputs must be non-empty and equally sized")
     actual_values = np.asarray(actual, dtype=float)
     predicted_values = np.asarray(predicted, dtype=float)
