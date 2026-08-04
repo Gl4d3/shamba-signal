@@ -1,0 +1,48 @@
+[project]
+name = "shamba-signal-tabfm-experiment"
+version = "0.1.0"
+description = "Isolated TabFM rolling temporal benchmark for Shamba Signal"
+requires-python = ">=3.12"
+dependencies = [
+  "shamba-signal",
+  "tabfm[pytorch]",
+  "numpy==2.2.0",
+  "pandas==2.2.3",
+  "scikit-learn==1.6.0",
+  "scipy==1.17.1",
+  "torch==2.12.1+cpu",
+]
+
+[project.optional-dependencies]
+dev = ["pytest==8.3.4", "ruff==0.9.9"]
+
+[project.scripts]
+shamba-tabfm = "shamba_tabfm.cli:main"
+
+[tool.uv.sources]
+shamba-signal = { path = "../..", editable = true }
+tabfm = { git = "https://github.com/google-research/tabfm.git", rev = "b8a8b090c66d1b9e7af278003461582219996b6a" }
+torch = { index = "pytorch-cpu" }
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src", "../../src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[build-system]
+requires = ["setuptools==75.8.0"]
+build-backend = "setuptools.build_meta"
