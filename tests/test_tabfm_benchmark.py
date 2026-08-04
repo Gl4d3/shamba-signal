@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import math
 
+import numpy as np
 import pytest
 
 from shamba_signal.modelling.tabfm_benchmark import (
@@ -65,8 +66,8 @@ def test_tabfm_rows_preserve_county_as_categorical_text() -> None:
     assert isinstance(row.temporal_features["county_id"], str)
     assert tuple(row.weather_features) == WEATHER_COLUMNS
     assert row.features(include_weather=False) == row.temporal_features
-    assert set(row.features(include_weather=True)) == set(row.temporal_features) | set(
-        WEATHER_COLUMNS
+    assert set(row.features(include_weather=True)) == (
+        set(row.temporal_features) | set(WEATHER_COLUMNS)
     )
 
 
@@ -127,9 +128,8 @@ def test_decision_is_strong_go_for_stable_weather_win() -> None:
 
 
 def test_decision_is_model_go_weather_no_go_when_weather_adds_nothing() -> None:
-    assert classify_decision(_aggregate(0.40, 0.32, 0.34, weather_wins=4)).code == (
-        "model_go_weather_no_go"
-    )
+    decision = classify_decision(_aggregate(0.40, 0.32, 0.34, weather_wins=4))
+    assert decision.code == "model_go_weather_no_go"
 
 
 def test_decision_is_inconclusive_for_unstable_or_bad_tail_win() -> None:
@@ -141,3 +141,13 @@ def test_decision_is_no_go_when_tabfm_does_not_beat_county_mean() -> None:
     assert classify_decision(_aggregate(0.30, 0.35, 0.34, weather_wins=1)).code == (
         "no_go"
     )
+
+
+def test_metrics_accept_numpy_arrays() -> None:
+    result = metrics(
+        actual=np.array([1.0, 2.0]),
+        predicted=np.array([1.1, 1.9]),
+        county_mean=np.array([1.2, 2.2]),
+    )
+
+    assert result.mae == pytest.approx(0.1)
