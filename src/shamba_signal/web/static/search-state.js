@@ -25,3 +25,7 @@ if (globalCountySearch && selectedCountyName) {
     }
   });
 }
+
+import('/static/tabfm-study.js?v=1').catch((error) => {
+  console.warn('Optional TabFM study module could not be loaded.', error);
+});
