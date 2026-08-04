@@ -36,3 +36,11 @@ def test_tabfm_method_note_documents_protocol_and_private_outputs() -> None:
     assert "tabfm-non-commercial-v1.0" in note
     assert "predictions.csv" in note
     assert "future untouched year" in note
+
+
+def test_isolated_project_does_not_conflict_with_root_numpy_pin() -> None:
+    project = (ROOT / "experiments/tabfm/pyproject.toml").read_text(encoding="utf-8")
+    makefile = (ROOT / "Makefile").read_text(encoding="utf-8")
+
+    assert '"numpy==2.2.0"' not in project
+    assert "ruff check experiments/tabfm/src experiments/tabfm/tests" in makefile
