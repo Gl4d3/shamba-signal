@@ -23,6 +23,11 @@ The project pins Google Research TabFM to commit
 checkpoint. Model weights are downloaded by TabFM from Hugging Face and remain
 outside this repository.
 
+The checked-in environment selects the pinned **CPU** PyTorch wheel for the most
+portable default. `--device cuda` is accepted only for users who deliberately
+replace that wheel with the matching CUDA-enabled PyTorch build; the runner
+fails clearly when CUDA is requested but unavailable.
+
 ## Run
 
 ```bash
@@ -43,5 +48,6 @@ uv run --project experiments/tabfm pytest experiments/tabfm/tests -q
 ```
 
 These tests inject a fake regressor and verify feature columns, categorical
-county handling, context configuration, and deterministic prediction contracts.
-They do not download or load the real checkpoint.
+county handling, context configuration, resolved device recording, and
+deterministic prediction contracts. They do not download or load the real
+checkpoint.
