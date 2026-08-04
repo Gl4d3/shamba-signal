@@ -119,3 +119,13 @@ def test_weather_provider_appends_only_the_four_approved_weather_columns() -> No
         "mean_temperature_c",
         "max_temperature_c",
     )
+
+
+def test_provider_manifest_records_resolved_device() -> None:
+    provider = TabFMPredictionProvider(
+        model=object(),
+        regressor_class=FakeRegressor,
+        device="cpu",
+    )
+
+    assert provider.manifest["device"] == "cpu"
