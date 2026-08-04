@@ -25,3 +25,16 @@ if (globalCountySearch && selectedCountyName) {
     }
   });
 }
+
+function renumberSidebarNavigation() {
+  const methodNumber = document.querySelector('.sidebar-nav a[href="#method"] span');
+  const qualityNumber = document.querySelector('.sidebar-nav a[href="#quality"] span');
+  if (methodNumber) methodNumber.textContent = '05';
+  if (qualityNumber) qualityNumber.textContent = '06';
+}
+
+import('/static/tabfm-study.js?v=1')
+  .then(renumberSidebarNavigation)
+  .catch((error) => {
+    console.warn('Optional TabFM study module could not be loaded.', error);
+  });
