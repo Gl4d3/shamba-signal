@@ -6,7 +6,6 @@ requires-python = ">=3.12"
 dependencies = [
   "shamba-signal",
   "tabfm[pytorch]",
-  "numpy==2.2.0",
   "pandas==2.2.3",
   "scikit-learn==1.6.0",
   "scipy==1.17.1",
