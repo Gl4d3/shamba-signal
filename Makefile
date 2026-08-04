@@ -31,6 +31,7 @@ run:
 	uv run uvicorn shamba_signal.api.app:app --reload --host 127.0.0.1 --port 8000
 
 tabfm-test:
+	uv run --project experiments/tabfm --extra dev ruff check experiments/tabfm/src experiments/tabfm/tests
 	uv run --project experiments/tabfm --extra dev pytest experiments/tabfm/tests -q
 
 tabfm-run:
