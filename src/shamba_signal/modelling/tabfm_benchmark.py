@@ -1,8 +1,8 @@
-"""Exploratory TabFM rolling temporal benchmark contracts.
+"""Dependency-free contracts for the exploratory TabFM temporal benchmark.
 
-This module intentionally has no dependency on TabFM, pandas, PyTorch, or the
-Hugging Face Hub. It owns the leakage-safe fold, metric, decision, and artifact
-contracts used by the isolated experiment runner.
+The real TabFM, pandas, PyTorch, and Hugging Face dependencies live only in the
+isolated experiment environment. This module owns leakage-safe folds, metrics,
+and deterministic scientific decisions.
 """
 
 from __future__ import annotations
@@ -13,7 +13,10 @@ from typing import TypeAlias
 
 import numpy as np
 
-from shamba_signal.modelling.temporal_baselines import PanelExample, build_lagged_examples
+from shamba_signal.modelling.temporal_baselines import (
+    PanelExample,
+    build_lagged_examples,
+)
 from shamba_signal.modelling.weather_experiment import WeatherFeature
 
 FeatureValue: TypeAlias = str | int | float
@@ -57,6 +60,7 @@ class TemporalFold:
     evaluation_year: int
     training: tuple[BenchmarkRow, ...]
     evaluation: tuple[BenchmarkRow, ...]
+    county_means: Mapping[str, float]
 
 
 @dataclass(frozen=True)
@@ -146,6 +150,16 @@ def _row_from_lagged(row: object, feature: WeatherFeature) -> BenchmarkRow:
     )
 
 
+def _county_means_from_examples(
+    examples: Sequence[PanelExample], evaluation_year: int
+) -> dict[str, float]:
+    grouped: dict[str, list[float]] = {}
+    for row in examples:
+        if row.year < evaluation_year:
+            grouped.setdefault(row.county_id, []).append(row.yield_t_per_ha)
+    return {county: float(np.mean(values)) for county, values in grouped.items()}
+
+
 def build_temporal_folds(
     examples: Sequence[PanelExample],
     weather_features: Sequence[WeatherFeature],
@@ -185,11 +199,18 @@ def build_temporal_folds(
             raise ValueError(f"evaluation year {year} has no historical context")
         if not evaluation:
             raise ValueError(f"evaluation year {year} has no evaluation rows")
+        county_means = _county_means_from_examples(examples, year)
+        missing_means = sorted({row.county_id for row in evaluation} - set(county_means))
+        if missing_means:
+            raise ValueError(
+                f"county means are missing evaluation counties: {missing_means}"
+            )
         folds.append(
             TemporalFold(
                 evaluation_year=year,
                 training=training,
                 evaluation=evaluation,
+                county_means=county_means,
             )
         )
     return tuple(folds)
@@ -201,7 +222,7 @@ def metrics(
     predicted: Sequence[float],
     county_mean: Sequence[float],
 ) -> ExtendedMetrics:
-    """Calculate the full benchmark metric contract for one aligned prediction set."""
+    """Calculate the complete metric contract for one aligned prediction set."""
 
     if not actual or len(actual) != len(predicted) or len(actual) != len(county_mean):
         raise ValueError("metric inputs must be non-empty and equally sized")
@@ -254,7 +275,8 @@ def classify_decision(aggregate: AggregateResult) -> BenchmarkDecision:
     if weather.mae < county.mae:
         stable = weather_model.fold_wins_vs_county_mean >= 4
         weather_adds_value = weather.mae < temporal.mae
-        tail_is_controlled = weather.worst_absolute_error <= county.worst_absolute_error * 1.2
+        tail_limit = county.worst_absolute_error * 1.2
+        tail_is_controlled = weather.worst_absolute_error <= tail_limit
         if stable and weather_adds_value and tail_is_controlled:
             return BenchmarkDecision(
                 code="strong_go",
@@ -268,7 +290,8 @@ def classify_decision(aggregate: AggregateResult) -> BenchmarkDecision:
             code="inconclusive",
             headline="TabFM improved pooled error, but the evidence was not stable enough.",
             rationale=(
-                "At least one stability, incremental-weather, or tail-error requirement failed."
+                "At least one stability, incremental-weather, or tail-error "
+                "requirement failed."
             ),
         )
 
@@ -282,5 +305,8 @@ def classify_decision(aggregate: AggregateResult) -> BenchmarkDecision:
     return BenchmarkDecision(
         code="no_go",
         headline="TabFM did not beat the county historical mean.",
-        rationale="Neither TabFM variant improved pooled MAE over the strongest simple baseline.",
+        rationale=(
+            "Neither TabFM variant improved pooled MAE over the strongest simple "
+            "baseline."
+        ),
     )
