@@ -12,6 +12,7 @@ def test_dashboard_bootstraps_optional_tabfm_study_module() -> None:
 
     assert bootstrap.status_code == 200
     assert "import('/static/tabfm-study.js?v=1')" in bootstrap.text
+    assert "renumberSidebarNavigation" in bootstrap.text
     assert study.status_code == 200
     assert styles.status_code == 200
 
