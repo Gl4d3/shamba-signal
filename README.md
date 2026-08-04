@@ -102,6 +102,21 @@ The official source snapshots, row-level panel, cached weather responses, predic
 
 AWS portability is documented as an architectural option only; it is not presented as implemented infrastructure.
 
+## 🧪 Exploratory TabFM extension
+
+A separate, optional research slice now supports a rolling temporal comparison of **TabFM Temporal** and **TabFM Weather** against the transparent baselines. It runs from an isolated PyTorch environment, writes a versioned local fixture, and appears in the dashboard without adding TabFM or model weights to the FastAPI runtime.
+
+**No TabFM score is claimed in this repository until the private panel, cached weather data, and real pretrained checkpoint have been run.** The primary repeated evidence comes from expanding-window evaluations for 2018–2022. The 2023 fold is post-hoc and remains provisional because the project had already inspected those labels during the original bounded experiment.
+
+```bash
+make tabfm-test
+make tabfm-run \
+  TABFM_PANEL=/path/to/modelling_panel.csv \
+  TABFM_WEATHER_CACHE=data/raw/open-meteo-era5-batch-v1
+```
+
+The default checkpoint uses a separate **non-commercial, non-production** licence. See the [TabFM temporal benchmark note](docs/modelling/tabfm-temporal-benchmark.md) for the protocol, decision rules, private artifacts, and interpretation boundary.
+
 ## ⚠️ Read the evidence correctly
 
 This is a **retrospective county-year backtest**. It is not:
@@ -119,9 +134,10 @@ This is a **retrospective county-year backtest**. It is not:
 - [County-year modelling panel](docs/data/county-year-modelling-panel.md)
 - [Temporal baseline result](docs/modelling/temporal-baseline-result.md)
 - [Weather feature value test](docs/modelling/weather-feature-value-test.md)
+- [TabFM temporal benchmark](docs/modelling/tabfm-temporal-benchmark.md)
 - [Architecture boundary](docs/architecture/ARCHITECTURE.md)
 - [Dashboard design QA](design-qa.md)
 
 ## ✅ Status
 
-The portfolio release is complete. No additional sources, model families, infrastructure, or speculative features are planned for this version.
+The original portfolio release remains complete. The TabFM benchmark is an isolated exploratory extension and does not change the published weather no-go.
