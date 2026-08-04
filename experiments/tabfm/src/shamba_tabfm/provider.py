@@ -22,9 +22,16 @@ SUPPORTED_MODELS = {"tabfm_temporal": False, "tabfm_weather": True}
 class TabFMPredictionProvider:
     """Create a fresh sklearn-compatible TabFM regressor for each temporal fold."""
 
-    def __init__(self, *, model: object, regressor_class: type[Any]) -> None:
+    def __init__(
+        self,
+        *,
+        model: object,
+        regressor_class: type[Any],
+        device: str = "unknown",
+    ) -> None:
         self.model = model
         self.regressor_class = regressor_class
+        self.device = device
 
     @property
     def manifest(self) -> dict[str, object]:
@@ -32,6 +39,7 @@ class TabFMPredictionProvider:
             "tabfm_commit": TABFM_COMMIT,
             "checkpoint": CHECKPOINT,
             "backend": "pytorch",
+            "device": self.device,
             "n_estimators": 16,
             "max_num_rows": None,
             "max_num_features": 500,
@@ -135,4 +143,8 @@ def load_pytorch_provider(*, device: str = "auto") -> TabFMPredictionProvider:
         model = model.to(resolved_device)
     if hasattr(model, "eval"):
         model.eval()
-    return TabFMPredictionProvider(model=model, regressor_class=TabFMRegressor)
+    return TabFMPredictionProvider(
+        model=model,
+        regressor_class=TabFMRegressor,
+        device=resolved_device,
+    )
